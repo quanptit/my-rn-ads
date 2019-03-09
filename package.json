@@ -1,0 +1,26 @@
+{
+  "name": "my-rn-ads",
+  "version": "1.0.0",
+  "description": "my-rn-ads",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "link_global": "yarn link react-native-cached-image rn-fetch-blob lodash @types/lodash @types/react @types/react-native react react-native my-rn-base-component my-rn-base-utils my-rn-common-resource react-native-router-flux",
+    "install_pk": "yarn install"
+  },
+  "keywords": [
+    "ads"
+  ],
+  "author": "Quan Trinh Van",
+  "license": "Quan Trinh Van",
+  "nativePackage": true,
+  "dependencies": {},
+  "devDependencies": {
+  },
+  "peerDependencies": {
+    "my-rn-common-resource": "git+https://gitlab.com/react-native-my-libs/my-rn-common-resource.git",
+    "my-rn-base-component": "git+https://gitlab.com/react-native-my-libs/my-rn-base-component.git",
+    "my-rn-base-utils": "git+https://gitlab.com/react-native-my-libs/my-rn-base-utils.git"
+  }
+}

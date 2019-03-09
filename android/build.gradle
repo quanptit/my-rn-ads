@@ -1,0 +1,47 @@
+apply plugin: 'com.android.library'
+
+repositories {
+    maven { url 'https://s3.amazonaws.com/moat-sdk-builds' }
+}
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        consumerProguardFiles 'proguard-rules.pro'
+    }
+}
+
+dependencies {
+    implementation 'com.facebook.react:react-native:+'
+    api project(':AppShareLibs')
+    api project(':BaseLibs')
+    // Unity Ads
+//    implementation project(':unity-ads')
+//    implementation 'com.mopub.mediation:unityads:3.0.1.0'
+    // AppLovin
+//    implementation 'com.applovin:applovin-sdk:9.2.1'
+//    implementation 'com.mopub.mediation:applovin:9.2.1.0'
+    // Tapjoy
+    //    implementation 'com.tapjoy:tapjoy-android-sdk:12.2.0@aar'
+    //    implementation 'com.mopub.mediation:tapjoy:12.2.0.1'
+    // Vungle
+//    implementation 'com.github.vungle:vungle-android-sdk:6.3.24'
+//    implementation 'com.mopub.mediation:vungle:6.3.24.1'
+    // AdColony
+//    implementation 'com.adcolony:sdk:3.3.7'
+//    implementation 'com.mopub.mediation:adcolony:3.3.7.1'
+    // Chartboost
+//    implementation files('libs/chartboost_7.31.jar')
+//    implementation 'com.mopub.mediation:chartboost:7.3.1.1'
+
+    // smaato ======
+//    implementation files('libs/SOMAAndroid-9.1.4-release.aar')
+
+    api project(':MopubFacebookAudienceNetworkMediation')
+    api 'com.google.android.gms:play-services-ads:17.1.3'
+}
