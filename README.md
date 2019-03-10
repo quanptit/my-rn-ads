@@ -34,6 +34,14 @@ include ':AppShareLibs'
 ##### Xóa mấy cái layout liên quan đến ads, splash_activity.xml, dialog_confirm_exit_ads.xml
 - Xóa trong manifresh
 
+### Cách sử dụng
+Trước khi load app:
+```
+await RNAdsUtils.initAds(PathUtils.getROOT() + Keys.ADS_SETTING);
+await RNAdsUtils.loadNativeAdsWhenStartAppIfNeed();
+```
+ 
+
 ### Cập nhật từ ứng dụng cũ
 - tìm kiếm import RNAdsUtils ==> import RNAdsUtils from "my-rn-ads/RNAdsUtils"  
 - import NativeAdsView => import NativeAdsView from "my-rn-ads/NativeAdsView"
