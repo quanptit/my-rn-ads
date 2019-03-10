@@ -1,10 +1,12 @@
 package com.my.rn.Ads.full.start;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.util.Log;
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
 import com.baseLibs.utils.PreferenceUtils;
+import com.facebook.react.bridge.UiThreadUtil;
 import com.my.rn.Ads.IAdLoaderCallback;
 import com.my.rn.Ads.SplashActivity;
 import com.my.rn.Ads.full.center.AdsFullManager;
@@ -15,10 +17,13 @@ abstract class BaseFullStartAds {
     protected abstract void adsShow() throws Exception;
 
     public abstract void destroy();
-
-    protected abstract boolean isSkipThisAds();
+    public abstract String getKeyAds();
 
     protected abstract String getLogTAG();
+
+    private boolean isSkipThisAds() {
+        return TextUtils.isEmpty(getKeyAds());
+    }
 
     public void showStartAds(Activity activity, final IAdLoaderCallback iAdLoaderCallback) {
         if (isSkipThisAds()) {
@@ -43,11 +48,6 @@ abstract class BaseFullStartAds {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            BaseApplication.getHandler().postDelayed(new Runnable() {
-                @Override public void run() {
-                    SplashActivity.finishActivity();
-                }
-            }, 100);
         } else {
             Log.d(getLogTAG(), "Time out: ==> Not show. time load = "
                     + (System.currentTimeMillis() - AdsFullManager.timeCallShowStart));
@@ -73,6 +73,11 @@ abstract class BaseFullStartAds {
 
     protected void onAdOpened() {
         Log.d(getLogTAG(), "onAdOpened");
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override public void run() {
+                SplashActivity.finishActivity();
+            }
+        });
         PreferenceUtils.saveLongSetting(KeysAds.LAST_TIME_SHOW_ADS, System.currentTimeMillis());
     }
 

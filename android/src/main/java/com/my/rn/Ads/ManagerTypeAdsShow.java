@@ -92,11 +92,18 @@ public class ManagerTypeAdsShow {
                     saveIntSettingIfExit(settingsJsonObj, banner);
                     saveIntSettingIfExit(settingsJsonObj, large_native);
                     saveIntSettingIfExit(settingsJsonObj, small_native);
+
+                    if (settingsJsonObj.has("key_start")) {
+                        JsonObject key_start = settingsJsonObj.getAsJsonObject("key_start");
+                        saveStringSettingIfExit(key_start, KEY_ADX_START, "ADX");
+                        saveStringSettingIfExit(key_start, KEY_ADMOB_START, "ADMOB");
+                        saveStringSettingIfExit(key_start, KEY_FB_START, "FB");
+                    }
+                    PreferenceUtils.saveLongSetting(UPDATE_ADS_TIME, System.currentTimeMillis());
+                    Log.d(TAG, "updateSetting Complete: " + jsonSettingStr);
                 } catch (JsonSyntaxException e) {
                     e.printStackTrace();
                 }
-                PreferenceUtils.saveLongSetting(UPDATE_ADS_TIME, System.currentTimeMillis());
-                Log.d(TAG, "updateSetting Complete: " + jsonSettingStr);
             }
 
             @Override public void onError(String errorStr) {
@@ -112,6 +119,14 @@ public class ManagerTypeAdsShow {
     private static void saveIntSettingIfExit(JsonObject settingsJsonObj, String prefKey, String jsonKey) {
         if (settingsJsonObj.has(jsonKey))
             PreferenceUtils.saveIntSetting(prefKey, settingsJsonObj.get(jsonKey).getAsInt());
+    }
+
+    private static void saveStringSettingIfExit(JsonObject settingsJsonObj, String prefKey, String jsonKey) {
+        if (settingsJsonObj.has(jsonKey)) {
+            String value = settingsJsonObj.get(jsonKey).getAsString();
+            if (!TextUtils.isEmpty(value))
+                PreferenceUtils.saveStringSetting(prefKey, value);
+        }
     }
     //endregion
 
@@ -203,5 +218,9 @@ public class ManagerTypeAdsShow {
 
     private static final String TAG = "TYPE_ADS_SHOW";
     private static final String UPDATE_ADS_TIME = "UPDATE_ADS_TIME";
+
+    public static final String KEY_ADX_START = "KEY_ADX_START";
+    public static final String KEY_FB_START = "KEY_FB_START";
+    public static final String KEY_ADMOB_START = "KEY_ADMOB_START";
     //endregion
 }

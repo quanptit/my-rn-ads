@@ -14,13 +14,12 @@ public class MopubStart extends BaseFullStartAds {
         return "MOPUB_START";
     }
 
-    @Override protected boolean isSkipThisAds() {
-        return TextUtils.isEmpty(KeysAds.getMOPUB_FULL_START());
+    @Override public String getKeyAds() {
+        return KeysAds.getMOPUB_FULL_START();
     }
 
-
     @Override protected void adsInitAndLoad(Activity activity, final IAdLoaderCallback iAdLoaderCallback) throws Exception {
-        interstitialAdsStart = new MoPubInterstitial(activity, KeysAds.getMOPUB_FULL_START());
+        interstitialAdsStart = new MoPubInterstitial(activity, getKeyAds());
         interstitialAdsStart.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
 
             @Override public void onInterstitialLoaded(MoPubInterstitial interstitial) {

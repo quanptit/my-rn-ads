@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.text.TextUtils;
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
+import com.baseLibs.utils.PreferenceUtils;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.InterstitialAd;
 import com.facebook.ads.InterstitialAdListener;
 import com.my.rn.Ads.IAdLoaderCallback;
+import com.my.rn.Ads.ManagerTypeAdsShow;
 
 public class Fb extends BaseFullStartAds {
     private InterstitialAd interstitialAdsStart;
@@ -17,12 +19,15 @@ public class Fb extends BaseFullStartAds {
         return "FB_START";
     }
 
-    @Override protected boolean isSkipThisAds() {
-        return TextUtils.isEmpty(KeysAds.FB_FULL_START);
+    @Override public String getKeyAds() {
+        String keySave = PreferenceUtils.getStringSetting(ManagerTypeAdsShow.KEY_FB_START, null);
+        if (!TextUtils.isEmpty(keySave))
+            return keySave;
+        return KeysAds.FB_FULL_START;
     }
 
     @Override protected void adsInitAndLoad(Activity activity, final IAdLoaderCallback iAdLoaderCallback) throws Exception {
-        interstitialAdsStart = new InterstitialAd(BaseApplication.getAppContext(), KeysAds.FB_FULL_START);
+        interstitialAdsStart = new InterstitialAd(BaseApplication.getAppContext(), getKeyAds());
         interstitialAdsStart.setAdListener(new InterstitialAdListener() {
             @Override public void onAdLoaded(Ad ad) {
                 Fb.this.onAdLoaded();

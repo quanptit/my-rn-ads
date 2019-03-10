@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.text.TextUtils;
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
+import com.baseLibs.utils.PreferenceUtils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.my.rn.Ads.BuildConfig;
 import com.my.rn.Ads.IAdLoaderCallback;
+import com.my.rn.Ads.ManagerTypeAdsShow;
 
 public class Admob extends BaseFullStartAds {
     private InterstitialAd interstitialAds;
@@ -22,9 +24,13 @@ public class Admob extends BaseFullStartAds {
         interstitialAds = null;
     }
 
-    @Override protected boolean isSkipThisAds() {
-        return TextUtils.isEmpty(KeysAds.getAdmod_START());
+    @Override public String getKeyAds() {
+        String keySave = PreferenceUtils.getStringSetting(ManagerTypeAdsShow.KEY_ADMOB_START, null);
+        if (!TextUtils.isEmpty(keySave))
+            return keySave;
+        return KeysAds.getAdmod_START();
     }
+
 
     @Override protected void adsShow() throws Exception {
         if (interstitialAds != null)
@@ -33,7 +39,7 @@ public class Admob extends BaseFullStartAds {
 
     @Override protected void adsInitAndLoad(Activity activity, final IAdLoaderCallback iAdLoaderCallback) throws Exception {
         interstitialAds = new InterstitialAd(BaseApplication.getAppContext());
-        interstitialAds.setAdUnitId(KeysAds.getAdmod_START());
+        interstitialAds.setAdUnitId(getKeyAds());
         interstitialAds.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {

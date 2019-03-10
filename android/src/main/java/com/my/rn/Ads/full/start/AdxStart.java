@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.text.TextUtils;
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
+import com.baseLibs.utils.PreferenceUtils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
 import com.my.rn.Ads.BuildConfig;
 import com.my.rn.Ads.IAdLoaderCallback;
+import com.my.rn.Ads.ManagerTypeAdsShow;
 
 public class AdxStart extends BaseFullStartAds {
     private PublisherInterstitialAd interstitialAdsStart;
@@ -17,13 +19,16 @@ public class AdxStart extends BaseFullStartAds {
         return "ADX-START";
     }
 
-    @Override protected boolean isSkipThisAds() {
-        return TextUtils.isEmpty(KeysAds.getAdxFullStart());
+    @Override public String getKeyAds() {
+        String keySave = PreferenceUtils.getStringSetting(ManagerTypeAdsShow.KEY_ADX_START, null);
+        if (!TextUtils.isEmpty(keySave))
+            return keySave;
+        return KeysAds.getAdxFullStart();
     }
 
     @Override protected void adsInitAndLoad(Activity activity, final IAdLoaderCallback iAdLoaderCallback) throws Exception {
         interstitialAdsStart = new PublisherInterstitialAd(BaseApplication.getAppContext());
-        interstitialAdsStart.setAdUnitId(KeysAds.getAdxFullStart());
+        interstitialAdsStart.setAdUnitId(getKeyAds());
         interstitialAdsStart.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {

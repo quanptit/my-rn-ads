@@ -44,4 +44,5 @@ dependencies {
 
     api project(':MopubFacebookAudienceNetworkMediation')
     api 'com.google.android.gms:play-services-ads:17.1.3'
+    api 'com.facebook.android:audience-network-sdk:5.1.0'
 }
