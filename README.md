@@ -34,13 +34,6 @@ include ':AppShareLibs'
 ##### Xóa mấy cái layout liên quan đến ads, splash_activity.xml, dialog_confirm_exit_ads.xml
 - Xóa trong manifresh
 
-### Cách sử dụng
-nếu cần show native Ads ngay. gọi hàm sau tại thời điểm loading của ứng dụng 
-```
-await RNAdsUtils.loadNativeBannerAds()
-```
- 
-
 ### Cập nhật từ ứng dụng cũ
 - tìm kiếm import RNAdsUtils ==> import RNAdsUtils from "my-rn-ads/RNAdsUtils"  
 - import NativeAdsView => import NativeAdsView from "my-rn-ads/NativeAdsView"

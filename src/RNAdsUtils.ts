@@ -10,6 +10,7 @@ export class RNAdsUtils {
     }
 
     //region ========== Native ads ======
+    /**Nếu setting cái quảng cáo banner ưu tiên hiển thị, thay vì cái native thì sẽ bỏ qua ko tải quảng cáo native*/
     static async loadNativeAdsWhenStartAppIfNeed(): Promise<boolean> {
         if (await RNAdsUtils.isPreferShowBanner(5)) return false;
         return RNAdsUtils.loadNativeAds();
@@ -45,6 +46,7 @@ export class RNAdsUtils {
 
     //endregion
 
+    //region full center & exit ads
     static showFullCenterAds(): Promise<boolean> {
         console.log("Call showFullCenterAds");
         if (Platform.OS === "ios")
@@ -63,6 +65,7 @@ export class RNAdsUtils {
         console.log("Call showExitAds");
         DialogExitAds.showDialogExit();
     }
+    //endregion
 
     static loadRewardVideoAds() {
         if (Platform.OS === "ios")

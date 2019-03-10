@@ -8,6 +8,7 @@ export class RNAdsUtils {
         }, 5000);
     }
     //region ========== Native ads ======
+    /**Nếu setting cái quảng cáo banner ưu tiên hiển thị, thay vì cái native thì sẽ bỏ qua ko tải quảng cáo native*/
     static async loadNativeAdsWhenStartAppIfNeed() {
         if (await RNAdsUtils.isPreferShowBanner(5))
             return false;
@@ -42,6 +43,7 @@ export class RNAdsUtils {
         return NativeModules.RNAdsUtils.cacheNativeAdsIfNeed(typeAds);
     }
     //endregion
+    //region full center & exit ads
     static showFullCenterAds() {
         console.log("Call showFullCenterAds");
         if (Platform.OS === "ios")
@@ -58,6 +60,7 @@ export class RNAdsUtils {
         console.log("Call showExitAds");
         DialogExitAds.showDialogExit();
     }
+    //endregion
     static loadRewardVideoAds() {
         if (Platform.OS === "ios")
             NativeModules.RNCommonUtilsIOS.loadRewardVideoAds();
