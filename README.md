@@ -24,8 +24,10 @@ include ':BaseLibs'
 project(':BaseLibs').projectDir = new File('S:/Codes/libs/ReactNativeLibs/BaseLibs')
 include ':AppShareLibs'
 
-//include ':my-rn-ads'
-//project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android')
+include ':MopubFacebookAudienceNetworkMediation'
+project(':MopubFacebookAudienceNetworkMediation').projectDir = new File('S:/Codes/react-native-my-libs/MopubFacebookAudienceNetworkMediation')
+include ':my-rn-ads'
+project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android') // mopub
 
 ```
 
