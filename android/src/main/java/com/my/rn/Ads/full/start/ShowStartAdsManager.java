@@ -2,6 +2,7 @@ package com.my.rn.Ads.full.start;
 
 import android.app.Activity;
 import android.util.Log;
+import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
 import com.baseLibs.utils.BaseUtils;
 import com.mopub.common.SdkInitializationListener;
@@ -58,16 +59,14 @@ public class ShowStartAdsManager {
                 }
             };
 
-//             TOD remove
-//            if (true) {
-//                BaseApplication.getHandler().postDelayed(new Runnable() {
-//                    @Override public void run() {
-//                        SplashActivity.finishActivity();
-//                    }
-//                }, 800);
-//                return;
-//            }
-            //////////////////
+            if (KeysAds.IS_SKIP_START_ADS) {
+                BaseApplication.getHandler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        SplashActivity.finishActivity();
+                    }
+                }, 800);
+                return;
+            }
 
             showStartAds(activity, 0, iAdLoaderCallback1);
         } catch (Exception e) {

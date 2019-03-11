@@ -46,6 +46,11 @@ public class RNAdsUtilsModule extends ReactContextBaseJavaModule implements Life
 
     // region Full screen and Reward Ads
     @ReactMethod
+    public void canShowFullCenterAds(final Promise promise) {
+        promise.resolve(!AdsFullManager.isDoNotShowAds() && AdsFullManager.getInstance().isCachedCenter());
+    }
+
+    @ReactMethod
     public void showFullCenterAds(final Promise promise) {
         final Activity activity = getSafeActivity();
         if (activity == null) {
