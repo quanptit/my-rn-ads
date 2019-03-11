@@ -1,6 +1,8 @@
 import {NativeModules, Platform} from 'react-native'
 import {DialogExitAds} from "./DialogExitAds";
 import {Actions} from 'react-native-router-flux'
+import {sendError} from "my-rn-base-utils";
+import {DialogUtils} from "my-rn-base-component";
 
 export class RNAdsUtils {
     static async initAds(settingAdsUrl: string): Promise<boolean> {
@@ -47,6 +49,10 @@ export class RNAdsUtils {
     //endregion
 
     //region full center & exit ads
+    static canShowFullCenterAds(): Promise<boolean> {
+        return NativeModules.RNAdsUtils.canShowFullCenterAds();
+    }
+
     static showFullCenterAds(): Promise<boolean> {
         console.log("Call showFullCenterAds");
         if (Platform.OS === "ios")
@@ -55,9 +61,23 @@ export class RNAdsUtils {
             return NativeModules.RNAdsUtils.showFullCenterAds();
     }
 
-    static async showFullCenterAdsAndBackPress() {
-        await excuteFuncWithTimeOut(() => RNAdsUtils.showFullCenterAds(), 1000);
+    static async showFullCenterAdsAndBackPress(showRateDialogIfNoAds: {
+        review_title: string, review_description: string,
+        yes_sure: string, remind_me_late: string, androidID: string, iosId: string
+    } = null) {
+        let canShowFullCenterAds: boolean;
+        try {
+            canShowFullCenterAds = await RNAdsUtils.canShowFullCenterAds();
+            if (canShowFullCenterAds)
+                await excuteFuncWithTimeOut(() => RNAdsUtils.showFullCenterAds(), 1000);
+        } catch (e) {sendError(e) }
         Actions.pop();
+        if (showRateDialogIfNoAds != null) {
+            // noinspection JSIgnoredPromiseFromCall
+            DialogUtils.showRateDialogIfNeed(showRateDialogIfNoAds.review_title, showRateDialogIfNoAds.review_description,
+                showRateDialogIfNoAds.yes_sure, showRateDialogIfNoAds.remind_me_late,
+                showRateDialogIfNoAds.androidID, showRateDialogIfNoAds.iosId);
+        }
     }
 
     /**Callback true, false chỉ ra có ads để show hay không*/
@@ -65,8 +85,10 @@ export class RNAdsUtils {
         console.log("Call showExitAds");
         DialogExitAds.showDialogExit();
     }
+
     //endregion
 
+    // Reward Ads
     static loadRewardVideoAds() {
         if (Platform.OS === "ios")
             NativeModules.RNCommonUtilsIOS.loadRewardVideoAds();
@@ -86,6 +108,8 @@ export class RNAdsUtils {
             return NativeModules.RNCommonUtilsIOS.canShowRewardVideoAds();
         return NativeModules.RNAdsUtils.canShowRewardVideoAds();
     }
+
+    //endregion
 
     static getTypeShowBanner(index: number): Promise<"FB" | "ADMOB" | "ADX" | "MOPUB"> {
         return NativeModules.RNAdsUtils.getTypeShowBanner(index);
