@@ -1,5 +1,4 @@
 import { NativeModules, Platform } from 'react-native';
-import { DialogExitAds } from "./DialogExitAds";
 import { Actions } from 'react-native-router-flux';
 import { sendError } from "my-rn-base-utils";
 import { DialogUtils } from "my-rn-base-component";
@@ -71,11 +70,6 @@ export class RNAdsUtils {
             // noinspection JSIgnoredPromiseFromCall
             DialogUtils.showRateDialogIfNeed(showRateDialogIfNoAds.review_title, showRateDialogIfNoAds.review_description, showRateDialogIfNoAds.yes_sure, showRateDialogIfNoAds.remind_me_late, showRateDialogIfNoAds.androidID, showRateDialogIfNoAds.iosId);
         }
-    }
-    /**Callback true, false chỉ ra có ads để show hay không*/
-    static showExitAds() {
-        console.log("Call showExitAds");
-        DialogExitAds.showDialogExit();
     }
     //endregion
     // Reward Ads

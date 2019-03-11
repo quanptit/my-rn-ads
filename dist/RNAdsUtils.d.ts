@@ -16,8 +16,6 @@ export declare class RNAdsUtils {
         androidID: string;
         iosId: string;
     }): Promise<void>;
-    /**Callback true, false chỉ ra có ads để show hay không*/
-    static showExitAds(): void;
     static loadRewardVideoAds(): void;
     static showRewardVideoAds(): void;
     static canShowRewardVideoAds(): Promise<boolean>;
