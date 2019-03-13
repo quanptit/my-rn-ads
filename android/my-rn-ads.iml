@@ -189,5 +189,8 @@
     <orderEntry type="module" module-name="AppShareLibs" />
     <orderEntry type="module" module-name="MopubFacebookAudienceNetworkMediation" />
     <orderEntry type="module" module-name="BaseLibs" />
+    <orderEntry type="module" module-name="AppShareLibs" />
+    <orderEntry type="module" module-name="MopubFacebookAudienceNetworkMediation" />
+    <orderEntry type="module" module-name="BaseLibs" />
   </component>
 </module>
