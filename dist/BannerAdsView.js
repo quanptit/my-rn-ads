@@ -25,7 +25,6 @@ export class BannerAdsView extends Component {
     }
     async update(noFail) {
         let typeShow = await RNAdsUtils.getTypeShowBanner(noFail);
-        console.log("update Ads noFail: = " + noFail, "typeShow = ", typeShow, this.state.typeShow);
         if (typeShow === this.state.typeShow) {
             noFail++;
             typeShow = await RNAdsUtils.getTypeShowBanner(noFail);

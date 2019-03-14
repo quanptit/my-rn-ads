@@ -4,9 +4,15 @@ import { sendError } from "my-rn-base-utils";
 import { DialogUtils } from "my-rn-base-component";
 export class RNAdsUtils {
     static async initAds(settingAdsUrl) {
-        return excuteFuncWithTimeOut(() => {
-            return NativeModules.RNAdsUtils.initAds(settingAdsUrl);
-        }, 5000);
+        try {
+            return excuteFuncWithTimeOut(() => {
+                return NativeModules.RNAdsUtils.initAds(settingAdsUrl);
+            }, 5000);
+        }
+        catch (e) {
+            sendError(e);
+            return false;
+        }
     }
     //region ========== Native ads ======
     /**Nếu setting cái quảng cáo banner ưu tiên hiển thị, thay vì cái native thì sẽ bỏ qua ko tải quảng cáo native*/

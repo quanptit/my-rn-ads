@@ -31,13 +31,13 @@ public class MopubInitUtils {
         MoPub.initializeSdk(BaseApplication.getAppContext(), configBuilder.build(), new SdkInitializationListener() {
             @Override public void onInitializationFinished() {
                 Log.d("MopubInitUtils", "MoPub onInitializationFinished");
-                moPubIniting = false;
                 if (listMopubInitializationListener != null) {
                     for (SdkInitializationListener initializationListener : listMopubInitializationListener) {
                         initializationListener.onInitializationFinished();
                     }
                     listMopubInitializationListener.clear();
                 }
+                moPubIniting = false;
             }
         });
     }

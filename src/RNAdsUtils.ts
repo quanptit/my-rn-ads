@@ -5,9 +5,14 @@ import {DialogUtils} from "my-rn-base-component";
 
 export class RNAdsUtils {
     static async initAds(settingAdsUrl: string): Promise<boolean> {
-        return excuteFuncWithTimeOut(() => {
-            return NativeModules.RNAdsUtils.initAds(settingAdsUrl);
-        }, 5000);
+        try {
+            return excuteFuncWithTimeOut(() => {
+                return NativeModules.RNAdsUtils.initAds(settingAdsUrl);
+            }, 5000);
+        } catch (e) {
+            sendError(e);
+            return false;
+        }
     }
 
     //region ========== Native ads ======

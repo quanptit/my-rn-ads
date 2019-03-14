@@ -39,10 +39,38 @@ project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn
 ### Cách sử dụng
 Trước khi load app:
 ```
-await RNAdsUtils.initAds(PathUtils.getROOT() + Keys.ADS_SETTING);
-await RNAdsUtils.loadNativeAdsWhenStartAppIfNeed();
+OfflineAdsSetting.setAndroidID(Keys.androidID);
+// init cái mopub + sẽ update cái setting Ads từ server
+await RNAdsUtils.initAds(Keys.getADS_SETTING_ORDER());
 ```
- 
+
+### VPS Ads File Setting    
+định dạng file có dạng như sau:
+```json
+{
+  "full_start": 2,
+  "full_center": 0,
+  "banner": 0,
+  "large_native": 0,
+  "small_native": 0,
+  "key_start": {
+    "ADX": "ca-app-pub-3940256099942544/1033173712",
+    "FB": "",
+    "ADMOB": ""
+  }
+}
+```
+	* 0:  Mopub => FB => Admob => ADX
+	* 1:  FB => Mopub => Admob => ADX
+	* 2:  Admob => ADX => FB => Mopub
+	* 3: Mopub => ADX => FB => Admob
+
+Native sẽ luôn là Mopub. Các setting large_native, small_native là để chỉ ra sử dụng native hay banner thay thế cho cái native đó.
+- large_native = 0    ==>  hiển thị cái large là native
+- large_native = 1    ==>  hiển thị cái large là RECT banner
+
+
+key_start: Có thể có hoặc không. Setting giá trị key cho ads start 
 
 ### Cập nhật từ ứng dụng cũ
 - tìm kiếm import RNAdsUtils ==> import RNAdsUtils from "my-rn-ads/RNAdsUtils"  
