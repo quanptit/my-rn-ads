@@ -41,8 +41,12 @@ export class BannerAdsView extends Component<Props, { noFail: number, typeShow: 
 
     private async update(noFail: number) {
         let typeShow = await RNAdsUtils.getTypeShowBanner(noFail);
-        if (typeShow === this.state.typeShow)
-            typeShow = null;
+        if (typeShow === this.state.typeShow) {
+            noFail++;
+            typeShow = await RNAdsUtils.getTypeShowBanner(noFail);
+            if (typeShow === this.state.typeShow)
+                typeShow = null;
+        }
 
         let offlineAds = typeShow == null ? await OfflineAdsSetting.getPreferAds(true) : null;
         if (typeShow == null && offlineAds == null && this.props.onAdFailedToLoad) {
@@ -72,9 +76,10 @@ export class BannerAdsView extends Component<Props, { noFail: number, typeShow: 
                 return <AdxBannerView style={this.props.style} typeAds={this.props.typeAds}
                                       onAdFailedToLoad={this.onAdFailedToLoad.bind(this)}/>;
             case "NONE":
-                let heihgt = this.props.typeAds === "RECTANGLE_HEIGHT_250" ? 250 : 50;
-                return <View style={{height: heihgt}}/>;
+                return <View style={{height: this.props.typeAds === "RECTANGLE_HEIGHT_250" ? 250 : 50}}/>;
             default:
+                if (this.state.offlineAds == null)
+                    return <View style={{height: this.props.typeAds === "RECTANGLE_HEIGHT_250" ? 250 : 50}}/>;
                 return <RowOfflineAds myAdsObj={this.state.offlineAds}/>;
         }
     }
@@ -83,6 +88,7 @@ export class BannerAdsView extends Component<Props, { noFail: number, typeShow: 
         let fbTypeAds = this.props.typeAds;
         if (fbTypeAds === "SMART_BANNER")
             fbTypeAds = "BANNER_50";
-        return <FbBannerView style={this.props.style} typeAds={fbTypeAds} onAdFailedToLoad={this.onAdFailedToLoad.bind(this)}/>
+        return <FbBannerView style={this.props.style} typeAds={fbTypeAds}
+                             onAdFailedToLoad={this.onAdFailedToLoad.bind(this)}/>
     }
 }

@@ -138,6 +138,7 @@ public class ManagerTypeAdsShow {
     public static int getTypeShowBaner(int index) {
         if (index > 3 || !BaseUtils.isOnline()) return -1;
         int typeOrderShowInSetting = PreferenceUtils.getIntSetting(banner, Mopub_FB_Admob_ADX);
+        typeOrderShowInSetting = Admob_ADX_FB_Mopub; //TODO move
         int typeShowBanner = getTypeShow(index, typeOrderShowInSetting);
         if (canShowBannerType(typeShowBanner)) return typeShowBanner;
         return getTypeShowBaner(index + 1);

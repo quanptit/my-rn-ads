@@ -2,6 +2,7 @@ package com.my.rn.Ads.modules;
 
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -29,6 +30,7 @@ class FbBannerUI extends ReactViewGroup implements AdListener, LifecycleEventLis
     private AdView myAdView;
     private RCTEventEmitter mEventEmitter;
     private AdSize mSize;
+    private FrameLayout frameLayoutAds;
 
     public FbBannerUI(ThemedReactContext context) {
         super(context);
@@ -39,8 +41,24 @@ class FbBannerUI extends ReactViewGroup implements AdListener, LifecycleEventLis
 
     private void createAdViewIfCan() {
         if (myAdView == null && mSize != null) {
+            removeAllChild();
+            this.frameLayoutAds = new FrameLayout(mContext);
+            addView(frameLayoutAds, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
             myAdView = new AdView(this.getContext(), getPlacementID(), mSize);
             myAdView.setAdListener(this);
+
+            Resources r = mContext.getResources();
+            int pxW;
+            int widthDpi = mSize.getWidth();
+            if (widthDpi < 0) {
+                if (mSize == AdSize.RECTANGLE_HEIGHT_250)
+                    pxW = BaseUtils.convertDpToPixel(320);
+                else
+                    pxW = r.getDisplayMetrics().widthPixels;
+            } else
+                pxW = BaseUtils.convertDpToPixel(widthDpi);
+            int pxH = BaseUtils.convertDpToPixel(mSize.getHeight());
+            frameLayoutAds.addView(myAdView, new FrameLayout.LayoutParams(pxW, pxH));
             myAdView.loadAd();
         }
     }
@@ -58,36 +76,33 @@ class FbBannerUI extends ReactViewGroup implements AdListener, LifecycleEventLis
         event.putString("errorMessage", adError.getErrorMessage());
         L.d("FbBannerUI onError: " + adError.getErrorMessage());
         mEventEmitter.receiveEvent(getId(), RNAdsUtilsModule.EVENT_AD_FAILED_TO_LOAD, event);
+        removeAllChild();
+    }
 
+    private void removeAllChild(){
+        removeAllViews();
         myAdView = null;
+        frameLayoutAds = null;
     }
 
     @Override
     public void onAdLoaded(Ad ad) {
-        if (myAdView == null) return;
-        this.removeAllViews();
+        if (frameLayoutAds == null) return;
         Resources r = mContext.getResources();
         int pxW;
         int widthDpi = mSize.getWidth();
-        if (widthDpi<0){
+        if (widthDpi < 0) {
             if (mSize == AdSize.RECTANGLE_HEIGHT_250)
                 pxW = BaseUtils.convertDpToPixel(320);
             else
                 pxW = r.getDisplayMetrics().widthPixels;
-        }else
+        } else
             pxW = BaseUtils.convertDpToPixel(widthDpi);
 
         int pxH = BaseUtils.convertDpToPixel(mSize.getHeight());
-//        L.d("FB BANNER: onAdLoaded: pxW =" + pxW + ", mSize.getHeight(): " + mSize.getHeight()); //TOD
-//        myAdView.measure(pxW, pxH);
-//        myAdView.layout(0, 0, pxW, pxH);
-//        addView(myAdView);
-
-        FrameLayout frameLayout = new FrameLayout(mContext);
-        addView(frameLayout);
-        frameLayout.addView(myAdView, new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL));
-        frameLayout.measure(pxW, pxH);
-        frameLayout.layout(0, 0, pxW, pxH);
+        L.d("FB BANNER: onAdLoaded => layout: pxW: " + pxW + ", pxH: " + pxH + ", ScreenW: " + r.getDisplayMetrics().widthPixels); //TOD
+        frameLayoutAds.measure(pxW, pxH);
+        frameLayoutAds.layout(0, 0, pxW, pxH);
     }
 
     @Override

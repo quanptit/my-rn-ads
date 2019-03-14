@@ -4,6 +4,7 @@ import {NativeModules} from "react-native";
 
 let androidID: string;
 
+// Lấy ads trong file này. Nó thường được lưu khi tải left men. RNFetchBlob.fs.dirs.CacheDir + "/ads"
 export class OfflineAdsSetting {
     /** Cần gọi hàm này trước. trong index*/
     public static setAndroidID(id: string) {

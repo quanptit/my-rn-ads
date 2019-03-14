@@ -25,8 +25,13 @@ export class BannerAdsView extends Component {
     }
     async update(noFail) {
         let typeShow = await RNAdsUtils.getTypeShowBanner(noFail);
-        if (typeShow === this.state.typeShow)
-            typeShow = null;
+        console.log("update Ads noFail: = " + noFail, "typeShow = ", typeShow, this.state.typeShow);
+        if (typeShow === this.state.typeShow) {
+            noFail++;
+            typeShow = await RNAdsUtils.getTypeShowBanner(noFail);
+            if (typeShow === this.state.typeShow)
+                typeShow = null;
+        }
         let offlineAds = typeShow == null ? await OfflineAdsSetting.getPreferAds(true) : null;
         if (typeShow == null && offlineAds == null && this.props.onAdFailedToLoad) {
             this.props.onAdFailedToLoad(0);
@@ -49,9 +54,10 @@ export class BannerAdsView extends Component {
             case "ADX":
                 return <AdxBannerView style={this.props.style} typeAds={this.props.typeAds} onAdFailedToLoad={this.onAdFailedToLoad.bind(this)}/>;
             case "NONE":
-                let heihgt = this.props.typeAds === "RECTANGLE_HEIGHT_250" ? 250 : 50;
-                return <View style={{ height: heihgt }}/>;
+                return <View style={{ height: this.props.typeAds === "RECTANGLE_HEIGHT_250" ? 250 : 50 }}/>;
             default:
+                if (this.state.offlineAds == null)
+                    return <View style={{ height: this.props.typeAds === "RECTANGLE_HEIGHT_250" ? 250 : 50 }}/>;
                 return <RowOfflineAds myAdsObj={this.state.offlineAds}/>;
         }
     }

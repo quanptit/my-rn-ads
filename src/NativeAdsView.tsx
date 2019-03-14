@@ -16,7 +16,7 @@ interface Props {
     style?: StyleProp<ViewStyle>
 }
 
-export class NativeAdsView extends Component<Props, { isLoading: boolean, needRender: boolean, height: number, bannerFail: boolean }> {
+export class NativeAdsView extends Component<Props, { isLoading: boolean, needRender: boolean, height: number }> {
     public static TYPE_SUMMARY_FB = 0;
     public static TYPE_SUMMARY_SMALL_CUSTOM = 1;
     public static TYPE_SUMMARY_LARGE = 3;
@@ -33,7 +33,7 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
 
     constructor(props) {
         super(props);
-        this.state = {needRender: false, isLoading: true, height: getHeightAds(this.props.typeAds), bannerFail: false};
+        this.state = {needRender: false, isLoading: true, height: getHeightAds(this.props.typeAds)};
     }
 
     async componentDidMount() {
@@ -77,24 +77,22 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
 
     //region banner backup =============
     private _renderBanner50Ads() {
-        if (this.state.bannerFail) return null;
+        // if (this.state.bannerFail) return null;
         return (
             <View style={[styles.container, this.props.style]}>
-                <BannerAdsView typeAds="BANNER_50"
-                               onAdFailedToLoad={() => {this.setState({bannerFail: true})}}/>
+                <BannerAdsView typeAds="BANNER_50"/>
             </View>
         );
     }
 
     private _renderRectBannerAds() {
-        if (this.state.bannerFail) return null;
+        // if (this.state.bannerFail) return null;
 
         return (
             <Col stretch style={this.props.style}>
                 <Text style={styles.tvSponsored}>Sponsored by: </Text>
                 <View style={styles.containerBannerAds}>
-                    <BannerAdsView typeAds="RECTANGLE_HEIGHT_250"
-                                   onAdFailedToLoad={() => {this.setState({bannerFail: true})}}/>
+                    <BannerAdsView typeAds="RECTANGLE_HEIGHT_250"/>
                 </View>
             </Col>
         );
