@@ -97,8 +97,8 @@ export class RNAdsUtils {
         return NativeModules.RNAdsUtils.canShowRewardVideoAds();
     }
     //endregion
-    static getTypeShowBanner(index) {
-        return NativeModules.RNAdsUtils.getTypeShowBanner(index);
+    static getTypeShowBanner(typeAds, index) {
+        return NativeModules.RNAdsUtils.getTypeShowBanner(typeAds, index);
     }
 }
 function excuteFuncWithTimeOut(func, miliSeconds) {

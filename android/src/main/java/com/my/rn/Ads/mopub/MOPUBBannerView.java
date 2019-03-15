@@ -2,6 +2,7 @@ package com.my.rn.Ads.mopub;
 
 import android.content.res.Resources;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import com.appsharelib.KeysAds;
 import com.baseLibs.utils.L;
@@ -43,6 +44,7 @@ class MOPUBBannerUI extends MoPubView implements MoPubView.BannerAdListener, Lif
             this.setAdUnitId(KeysAds.getMOPUB_BANNER_LARGE());
         else
             this.setAdUnitId(KeysAds.getMOPUB_BANNER());
+        Log.d("MOPUBBannerUI", "setTypeAds and load ads");
         this.loadAd();
     }
 

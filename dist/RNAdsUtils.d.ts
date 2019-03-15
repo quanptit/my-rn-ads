@@ -19,5 +19,5 @@ export declare class RNAdsUtils {
     static loadRewardVideoAds(): void;
     static showRewardVideoAds(): void;
     static canShowRewardVideoAds(): Promise<boolean>;
-    static getTypeShowBanner(index: number): Promise<"FB" | "ADMOB" | "ADX" | "MOPUB">;
+    static getTypeShowBanner(typeAds: "RECTANGLE_HEIGHT_250" | "BANNER_50" | "SMART_BANNER", index: number): Promise<"FB" | "ADMOB" | "ADX" | "MOPUB">;
 }

@@ -109,8 +109,8 @@ export class RNAdsUtils {
 
     //endregion
 
-    static getTypeShowBanner(index: number): Promise<"FB" | "ADMOB" | "ADX" | "MOPUB"> {
-        return NativeModules.RNAdsUtils.getTypeShowBanner(index);
+    static getTypeShowBanner(typeAds: "RECTANGLE_HEIGHT_250" | "BANNER_50" | "SMART_BANNER", index: number): Promise<"FB" | "ADMOB" | "ADX" | "MOPUB"> {
+        return NativeModules.RNAdsUtils.getTypeShowBanner(typeAds, index);
     }
 }
 

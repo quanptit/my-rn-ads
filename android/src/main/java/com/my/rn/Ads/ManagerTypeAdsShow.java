@@ -133,21 +133,33 @@ public class ManagerTypeAdsShow {
     // region get type show banner
 
     /**
+     * typeAds: "RECTANGLE_HEIGHT_250" | "BANNER_50" | "SMART_BANNER"
+     *
      * @param index thể hiện lần load thứ .... VD load lần 0 fail => load lần 1 ...
      */
-    public static int getTypeShowBaner(int index) {
-        if (index > 3 || !BaseUtils.isOnline()) return -1;
+    public static int getTypeShowBaner(String typeAds, int index) {
+        if (index > 3 || !BaseUtils.isOnline())
+            return -1;
         int typeOrderShowInSetting = PreferenceUtils.getIntSetting(banner, Mopub_FB_Admob_ADX);
         int typeShowBanner = getTypeShow(index, typeOrderShowInSetting);
-        if (canShowBannerType(typeShowBanner)) return typeShowBanner;
-        return getTypeShowBaner(index + 1);
+        if (canShowBannerType(typeAds, typeShowBanner))
+            return typeShowBanner;
+        return getTypeShowBaner(typeAds, index + 1);
     }
 
-    private static boolean canShowBannerType(int type) {
+    private static boolean canShowBannerType(String typeAds, int type) {
         if (type == TYPE_ADMOB) return !TextUtils.isEmpty(KeysAds.getADMOD_BANER_NO_REFRESH());
         if (type == TYPE_ADX) return !TextUtils.isEmpty(KeysAds.getAdxBanner());
-        if (type == TYPE_MOPUB) return !TextUtils.isEmpty(KeysAds.getMOPUB_BANNER());
-        if (type == TYPE_FB) return !TextUtils.isEmpty(KeysAds.FB_BANNER);
+        if (type == TYPE_MOPUB) {
+            if (typeAds.equals("RECTANGLE_HEIGHT_250"))
+                return !TextUtils.isEmpty(KeysAds.getMOPUB_BANNER_LARGE());
+            return !TextUtils.isEmpty(KeysAds.getMOPUB_BANNER());
+        }
+        if (type == TYPE_FB) {
+            if (typeAds.equals("RECTANGLE_HEIGHT_250"))
+                return !TextUtils.isEmpty(KeysAds.FB_BANNER_RECT);
+            return !TextUtils.isEmpty(KeysAds.FB_BANNER);
+        }
         return true;
     }
     //endregion

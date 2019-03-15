@@ -27,7 +27,7 @@ export class BannerAdsView extends Component {
     async getNewTypeShow() {
         if (this.noFail > 4)
             return null;
-        let typeShow = await RNAdsUtils.getTypeShowBanner(this.noFail);
+        let typeShow = await RNAdsUtils.getTypeShowBanner(this.props.typeAds, this.noFail);
         if (typeShow == null)
             return typeShow;
         if (typeShow === this.state.typeShow) {
