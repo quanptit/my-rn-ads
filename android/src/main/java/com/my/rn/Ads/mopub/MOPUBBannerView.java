@@ -119,7 +119,6 @@ class MOPUBBannerUI extends MoPubView implements MoPubView.BannerAdListener, Lif
     //region hide
     @Override
     public void onHostResume() {
-
     }
 
     @Override

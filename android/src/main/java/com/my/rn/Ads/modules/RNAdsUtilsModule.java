@@ -137,8 +137,8 @@ public class RNAdsUtilsModule extends ReactContextBaseJavaModule implements Life
      * Nếu return null => show Ads là các app của mình thay thế <TH không có mạng sẽ show cái này>
      */
     @ReactMethod
-    public void getTypeShowBanner(int index, final Promise promise) {
-        int type = ManagerTypeAdsShow.getTypeShowBaner(index);
+    public void getTypeShowBanner(String typeAds, int index, final Promise promise) {
+        int type = ManagerTypeAdsShow.getTypeShowBaner(typeAds, index);
         switch (type) {
             case ManagerTypeAdsShow.TYPE_MOPUB:
                 promise.resolve("MOPUB");

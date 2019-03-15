@@ -8,6 +8,7 @@ import android.os.CountDownTimer;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
@@ -31,7 +32,9 @@ public class SplashActivity extends FragmentActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         Window window = getWindow();
         window.setFormat(PixelFormat.RGBA_8888);
-
+        if (getIntent().getBooleanExtra("FULL_SCREEN", false)) {
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
         setContentView(R.layout.activity_splash);
         instance = this;
 
@@ -104,9 +107,10 @@ public class SplashActivity extends FragmentActivity {
     }
 
 
-    public static void openActivity(Activity activity) {
+    public static void openActivity(Activity activity, boolean isFullScreen) {
         if (instance != null) return;
         Intent intent = new Intent(activity, SplashActivity.class);
+        intent.putExtra("FULL_SCREEN", isFullScreen);
         activity.startActivity(intent);
     }
 }

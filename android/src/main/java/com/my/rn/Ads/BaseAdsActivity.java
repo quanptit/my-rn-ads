@@ -10,7 +10,7 @@ public class BaseAdsActivity extends BaseReactActivtiy {
     @Override protected void breforeSuperOnCreate() {
         super.breforeSuperOnCreate();
         AdsFullManager.setMainActivity(this);
-        new ShowStartAdsManager().showStartAds(this);
+        new ShowStartAdsManager().showStartAds(this, isShowFullScreen());
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {

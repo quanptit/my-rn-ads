@@ -26,9 +26,9 @@ public class ShowStartAdsManager {
     /**
      * gọi StartAds và init Mopub. callback sau khi init xong
      */
-    public void showStartAds(final Activity activity) {
+    public void showStartAds(final Activity activity, boolean isFullScreen) {
         Log.d(TAG, "showStartAds Call");
-        SplashActivity.openActivity(activity);
+        SplashActivity.openActivity(activity, isFullScreen);
         try {
             if (activity == null || AdsFullManager.isDoNotShowAds() || !BaseUtils.isOnline()) {
                 Log.d(TAG, "ShowStartAdsManager Offline or Vip => Finish activity =============== " + (activity == null));
