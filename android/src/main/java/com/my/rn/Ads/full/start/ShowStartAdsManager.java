@@ -41,10 +41,15 @@ public class ShowStartAdsManager {
             }
 
             AdsFullManager.timeCallShowStart = System.currentTimeMillis();
-            final IAdLoaderCallback iAdLoaderCallback3 = new IAdLoaderCallback() {
+            final IAdLoaderCallback iAdLoaderCallback4 = new IAdLoaderCallback() {
                 @Override public void onAdsFailedToLoad() {
                     SplashActivity.finishActivity();
                     destroy();
+                }
+            };
+            final IAdLoaderCallback iAdLoaderCallback3 = new IAdLoaderCallback() {
+                @Override public void onAdsFailedToLoad() {
+                    showStartAds(activity, 3, iAdLoaderCallback4);
                 }
             };
 

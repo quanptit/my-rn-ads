@@ -16,14 +16,16 @@ interface Props {
     style?: StyleProp<ViewStyle>
 }
 
-export class BannerAdsView extends Component<Props, { noFail: number, typeShow: string, offlineAds?: any }> {
+export class BannerAdsView extends Component<Props, { typeShow: string, offlineAds?: any }> {
     static defaultProps = {
         typeAds: "SMART_BANNER"
     };
+    private noFail: number;
 
     constructor(props) {
         super(props);
-        this.state = {noFail: 0, typeShow: "NONE"};
+        this.state = {typeShow: "NONE"};
+        this.noFail = 0;
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -31,38 +33,37 @@ export class BannerAdsView extends Component<Props, { noFail: number, typeShow: 
     }
 
     async componentDidMount() {
-        await this.update(this.state.noFail);
+        await this.updateTypeShow();
     }
 
     async onAdFailedToLoad() {
-        let newNoFail = this.state.noFail + 1;
-        await this.update(newNoFail);
+        this.noFail = this.noFail + 1;
+        await this.updateTypeShow(true);
     }
 
-    private async update(noFail: number) {
-        let typeShow = await RNAdsUtils.getTypeShowBanner(noFail);
-        if (typeShow === this.state.typeShow) {
-            noFail++;
-            typeShow = await RNAdsUtils.getTypeShowBanner(noFail);
-            if (typeShow === this.state.typeShow)
-                typeShow = null;
-        }
+    private async getNewTypeShow(): Promise<string> {
+        if (this.noFail > 4) return null;
 
-        let offlineAds = typeShow == null ? await OfflineAdsSetting.getPreferAds(true) : null;
-        if (typeShow == null && offlineAds == null && this.props.onAdFailedToLoad) {
+        let typeShow = await RNAdsUtils.getTypeShowBanner(this.noFail);
+        if (typeShow == null) return typeShow;
+        if (typeShow === this.state.typeShow) {
+            this.noFail = this.noFail + 1;
+            return await this.getNewTypeShow();
+        }
+        return typeShow;
+    }
+
+    private async updateTypeShow(isFromFailCallback: boolean = false) {
+        let typeShow = await this.getNewTypeShow();
+        let offlineAds = (typeShow == null) ? await OfflineAdsSetting.getPreferAds(true) : null;
+        if (isFromFailCallback && typeShow == null && offlineAds == null && this.props.onAdFailedToLoad) {
             this.props.onAdFailedToLoad(0);
             return;
         }
-
-        this.setState({noFail: noFail, typeShow: typeShow, offlineAds: offlineAds});
+        this.setState({typeShow: typeShow, offlineAds: offlineAds});
     }
 
     render() {
-        // if (true){
-        //     return <AdxBannerView style={this.props.style} typeAds={this.props.typeAds}
-        //                           onAdFailedToLoad={this.onAdFailedToLoad.bind(this)}/>;
-        // }
-
         switch (this.state.typeShow) {
             case "MOPUB":
                 return <MOPUBBannerView style={this.props.style} typeAds={this.props.typeAds}

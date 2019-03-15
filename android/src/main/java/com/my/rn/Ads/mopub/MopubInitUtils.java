@@ -23,7 +23,7 @@ public class MopubInitUtils {
         if (listener != null) listMopubInitializationListener.add(listener);
         if (moPubIniting) return;
         moPubIniting = true;
-        SdkConfiguration.Builder configBuilder = new SdkConfiguration.Builder(KeysAds.getMOPUB_BANNER_LARGE());
+        SdkConfiguration.Builder configBuilder = new SdkConfiguration.Builder(KeysAds.getMOPUB_FULL_START());
         if (BuildConfig.DEBUG)
             configBuilder.withLogLevel(MoPubLog.LogLevel.INFO);
         else
