@@ -81,7 +81,8 @@ export class BannerAdsView extends Component<Props, { typeShow: string, offlineA
             default:
                 if (this.state.offlineAds == null)
                     return <View style={{height: this.props.typeAds === "RECTANGLE_HEIGHT_250" ? 250 : 50}}/>;
-                return <RowOfflineAds myAdsObj={this.state.offlineAds}/>;
+                return <RowOfflineAds style={{height: this.props.typeAds === "RECTANGLE_HEIGHT_250" ? 250 : undefined}}
+                                      myAdsObj={this.state.offlineAds}/>;
         }
     }
 
