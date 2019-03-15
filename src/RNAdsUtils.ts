@@ -6,9 +6,10 @@ import {DialogUtils} from "my-rn-base-component";
 export class RNAdsUtils {
     static async initAds(settingAdsUrl: string): Promise<boolean> {
         try {
-            return excuteFuncWithTimeOut(() => {
+            let result = excuteFuncWithTimeOut(() => {
                 return NativeModules.RNAdsUtils.initAds(settingAdsUrl);
             }, 5000);
+            return result;
         } catch (e) {
             sendError(e);
             return false;
@@ -57,6 +58,10 @@ export class RNAdsUtils {
         return NativeModules.RNAdsUtils.canShowFullCenterAds();
     }
 
+    static cacheAdsCenter() {
+        NativeModules.RNAdsUtils.cacheAdsCenter();
+    }
+
     static showFullCenterAds(): Promise<boolean> {
         console.log("Call showFullCenterAds");
         if (Platform.OS === "ios")
@@ -74,6 +79,8 @@ export class RNAdsUtils {
             canShowFullCenterAds = await RNAdsUtils.canShowFullCenterAds();
             if (canShowFullCenterAds)
                 await excuteFuncWithTimeOut(() => RNAdsUtils.showFullCenterAds(), 1000);
+            else
+                setTimeout(RNAdsUtils.cacheAdsCenter, 1000);
         } catch (e) {sendError(e) }
         Actions.pop();
         if (showRateDialogIfNoAds != null) {
