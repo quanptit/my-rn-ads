@@ -1,0 +1,21 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        consumerProguardFiles 'proguard-rules.pro'
+    }
+}
+
+dependencies {
+    api 'com.facebook.react:react-native:+'
+    api project(':AppShareLibs')
+    api project(':BaseLibs')
+    api 'com.google.android.gms:play-services-ads:17.1.3'
+}

@@ -4,13 +4,12 @@ import android.os.Bundle;
 import com.baseLibs.BaseReactActivtiy;
 import com.mopub.common.MoPub;
 import com.my.rn.Ads.full.center.AdsFullManager;
+import com.my.rn.Ads.full.start.BaseShowStartAdsManager;
 import com.my.rn.Ads.full.start.ShowStartAdsManager;
 
-public class BaseAdsActivity extends BaseReactActivtiy {
-    @Override protected void breforeSuperOnCreate() {
-        super.breforeSuperOnCreate();
-        AdsFullManager.setMainActivity(this);
-        new ShowStartAdsManager().showStartAds(this, isShowFullScreen());
+public class BaseAdsActivity extends BasicAdsActivity {
+    @Override protected BaseShowStartAdsManager createInstance() {
+        return new ShowStartAdsManager();
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +47,6 @@ public class BaseAdsActivity extends BaseReactActivtiy {
     }
 
     @Override protected void onDestroy() {
-        AdsFullManager.getInstance().destroy();
         MoPub.onDestroy(this);
         super.onDestroy();
     }

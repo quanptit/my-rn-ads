@@ -1,24 +1,27 @@
 package com.my.rn.Ads.modules;
 
-import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
 import com.baseLibs.BaseApplication;
-import com.baseLibs.utils.L;
-import com.facebook.react.bridge.*;
+import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.UiThreadUtil;
 import com.mopub.common.SdkInitializationListener;
 import com.my.rn.Ads.ApplicationContainAds;
 import com.my.rn.Ads.ManagerTypeAdsShow;
 import com.my.rn.Ads.full.center.AdsFullManager;
 import com.my.rn.Ads.mopub.MopubNativeManager;
 
-public class RNAdsUtilsModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
-    public static final String EVENT_AD_FAILED_TO_LOAD = "onAdFailedToLoad";
-    public static final String EVENT_SIZE_CHANGE = "onSizeChange";
-    private static String TAG = "RN_ADS_MODULE";
+public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
+    private static final String TAG = "RN_ADS_MODULE";
+
+    public RNAdsUtilsModule(ReactApplicationContext reactContext) {
+        super(reactContext);
+    }
 
     @ReactMethod
-    public void initAds(final String urlAdsSetting, final Promise promise) {
+    @Override public void initAds(final String urlAdsSetting, final Promise promise) {
         Log.d(TAG, "initAds Call");
         UiThreadUtil.runOnUiThread(new Runnable() {
             @Override public void run() {
@@ -44,91 +47,28 @@ public class RNAdsUtilsModule extends ReactContextBaseJavaModule implements Life
         });
     }
 
-    // region Full screen and Reward Ads
     @ReactMethod
-    public void canShowFullCenterAds(final Promise promise) {
-        promise.resolve(!AdsFullManager.isDoNotShowAds() && AdsFullManager.getInstance().isCachedCenter());
-    }
-
-    @ReactMethod
-    public void showFullCenterAds(final Promise promise) {
-        final Activity activity = getSafeActivity();
-        if (activity == null) {
-            L.e("showFullCenterAds Fail: getSafeActivity NULL ===================");
-            return;
-        }
-        ApplicationContainAds.getHandler().post(new Runnable() {
-            @Override public void run() {
-                ApplicationContainAds.getAdsFullManager().showAdsCenter(activity, promise);
-            }
-        });
-    }
-
-    @ReactMethod
-    public void showRewardVideoAds() {
-        final Activity activity = getSafeActivity();
-        if (activity == null) {
-            L.e("showRewardVideoAds Fail: getSafeActivity NULL ===================");
-            return;
-        }
-        BaseApplication.getHandler().post(new Runnable() {
-            @Override public void run() {
-                ApplicationContainAds.getAdsFullManager().showAdsCenter(activity, true, null);
-            }
-        });
-    }
-
-    @ReactMethod
-    public void loadRewardVideoAds() {
-        final Activity activity = getSafeActivity();
-        if (activity == null) {
-            L.e("loadRewardVideoAds Fail: getSafeActivity NULL ===================");
-            return;
-        }
-        UiThreadUtil.runOnUiThread(new Runnable() {
-            @Override public void run() {
-                ApplicationContainAds.getAdsFullManager().cacheAdsCenter(activity, true);
-            }
-        });
-    }
-
-    @ReactMethod
-    public void canShowRewardVideoAds(final Promise promise) {
-        ApplicationContainAds.getHandler().post(new Runnable() {
-            @Override public void run() {
-                promise.resolve(ApplicationContainAds.getAdsFullManager().isCachedCenter());
-            }
-        });
-    }
-    //endregion
-
-    @ReactMethod
-    public void isPreferShowBanner(int typeAds, final Promise promise) {
-        promise.resolve(ManagerTypeAdsShow.isPreferShowBanner(typeAds));
-    }
-
-    @ReactMethod
-    public void loadNativeAds(final Promise promise) {
+    @Override public void loadNativeAds(final Promise promise) {
         new Thread(new Runnable() {
             @Override public void run() {
                 try {
                     MopubNativeManager.getInstance().cacheNativeAndWaitForComplete();
                     promise.resolve(1);
-                } catch (InterruptedException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
-                    promise.reject(e.getMessage());
+                    promise.reject("0", e.getMessage());
                 }
             }
         }).start();
     }
 
     @ReactMethod
-    public void canShowNativeAds(int typeAds, final Promise promise) {
+    @Override public void canShowNativeAds(int typeAds, Promise promise) {
         promise.resolve(MopubNativeManager.getInstance().canShowNativeAds(typeAds));
     }
 
     @ReactMethod
-    public void cacheNativeAdsIfNeed(int typeAds) {
+    @Override public void cacheNativeAdsIfNeed(int typeAds) {
         MopubNativeManager.getInstance().checkAndLoadAds();
     }
 
@@ -137,7 +77,7 @@ public class RNAdsUtilsModule extends ReactContextBaseJavaModule implements Life
      * Nếu return null => show Ads là các app của mình thay thế <TH không có mạng sẽ show cái này>
      */
     @ReactMethod
-    public void getTypeShowBanner(String typeAds, int index, final Promise promise) {
+    @Override public void getTypeShowBanner(String typeAds, int index, final Promise promise) {
         int type = ManagerTypeAdsShow.getTypeShowBaner(typeAds, index);
         switch (type) {
             case ManagerTypeAdsShow.TYPE_MOPUB:
@@ -156,38 +96,39 @@ public class RNAdsUtilsModule extends ReactContextBaseJavaModule implements Life
                 promise.resolve(null);
                 return;
             default:
-                promise.resolve("MOPUB");
+                promise.resolve(null);
                 break;
         }
     }
 
-    //region init & utils
-    public RNAdsUtilsModule(ReactApplicationContext reactContext) {
-        super(reactContext);
-        reactContext.addLifecycleEventListener(this);
+    //region not change. but need override with @ReactMethod
+
+    @ReactMethod @Override public void isPreferShowBanner(int typeAds, Promise promise) {
+        super.isPreferShowBanner(typeAds, promise);
     }
 
-    @Override public String getName() {
-        return "RNAdsUtils";
+    @ReactMethod  @Override public void canShowFullCenterAds(Promise promise) {
+        super.canShowFullCenterAds(promise);
     }
 
-    private Activity getSafeActivity() {
-        Activity activity = getCurrentActivity();
-        if (activity == null)
-            return AdsFullManager.getMainActivity();
-        return activity;
+    @ReactMethod @Override public void cacheAdsCenter() {
+        super.cacheAdsCenter();
     }
 
-    @Override public void onHostResume() {
-
+    @ReactMethod @Override public void showFullCenterAds(Promise promise) {
+        super.showFullCenterAds(promise);
     }
 
-    @Override public void onHostPause() {
-
+    @ReactMethod @Override public void showRewardVideoAds() {
+        super.showRewardVideoAds();
     }
 
-    @Override public void onHostDestroy() {
-        AdsFullManager.getInstance().destroy();
+    @ReactMethod @Override public void loadRewardVideoAds() {
+        super.loadRewardVideoAds();
+    }
+
+    @ReactMethod @Override public void canShowRewardVideoAds(Promise promise) {
+        super.canShowRewardVideoAds(promise);
     }
     //endregion
 }

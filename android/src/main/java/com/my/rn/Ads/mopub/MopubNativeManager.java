@@ -21,11 +21,12 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
     private static final String TAG = "MOPUB_NATIVE";
 
     public MopubNativeManager(Context context) {
+        if (KeysAds.getMOPUB_NATIVE()==null) return;
         moPubNative = new MoPubNative(context, KeysAds.getMOPUB_NATIVE(), this);
         MopubNativeRenderUtils.initAdRender(moPubNative);
     }
 
-    public void cacheNativeAndWaitForComplete() throws InterruptedException {
+    public void cacheNativeAndWaitForComplete() throws Exception {
         if (!nativeAds.isEmpty()) return;
         Log.d(TAG, "cacheNativeAndWaitForComplete");
         long startTimeLoad = System.currentTimeMillis();
@@ -107,7 +108,12 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
     private int countLoadError = 0;
 
     public boolean isCached() {
-        return !nativeAds.isEmpty();
+        try {
+            return !nativeAds.isEmpty();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     //endregion
 }

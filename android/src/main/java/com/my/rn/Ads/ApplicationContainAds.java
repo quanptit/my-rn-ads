@@ -3,13 +3,14 @@ package com.my.rn.Ads;
 import com.baseLibs.BaseApplication;
 import com.facebook.ads.AudienceNetworkAds;
 import com.my.rn.Ads.full.center.AdsFullManager;
+import com.my.rn.Ads.full.center.BaseAdsFullManager;
 import com.my.rn.Ads.mopub.MopubInitUtils;
 import com.my.rn.Ads.mopub.MopubNativeManager;
 
-public class ApplicationContainAds extends BaseApplication {
-    protected AdsFullManager adsFullManager;
+public class ApplicationContainAds extends BaseApplicationContainAds {
     protected MopubInitUtils mopubInitUtils;
     protected MopubNativeManager mopubNativeManager;
+    protected AdsFullManager adsFullManager;
 
     public static MopubInitUtils getMopubInitUtils() {
         if (getInstance().mopubInitUtils == null)
@@ -23,10 +24,10 @@ public class ApplicationContainAds extends BaseApplication {
         return getInstance().mopubNativeManager;
     }
 
-    public static AdsFullManager getAdsFullManager() {
-        if (getInstance().adsFullManager == null)
-            getInstance().adsFullManager = new AdsFullManager();
-        return getInstance().adsFullManager;
+    @Override public BaseAdsFullManager getAdsFullManager() {
+        if (adsFullManager == null)
+            adsFullManager = new AdsFullManager();
+        return adsFullManager;
     }
 
     @Override

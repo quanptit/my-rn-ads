@@ -14,8 +14,8 @@ public class MopubFullCenter extends BaseFullCenterAds {
         return "MOPUB_CENTER";
     }
 
-    @Override protected boolean isSkipThisAds() {
-        return TextUtils.isEmpty(KeysAds.getMOPUB_FULL_CENTER());
+    @Override public String getKeyAds() {
+        return KeysAds.getMOPUB_FULL_CENTER();
     }
 
     @Override public boolean isCachedCenter() {
@@ -37,7 +37,7 @@ public class MopubFullCenter extends BaseFullCenterAds {
         }
     }
 
-    @Override protected void adsInitAndLoad(Activity activity, final IAdLoaderCallback iAdLoaderCallback) throws Exception{
+    @Override protected void adsInitAndLoad(Activity activity, final IAdLoaderCallback iAdLoaderCallback) throws Exception {
         interstitialCenter = new MoPubInterstitial(activity, KeysAds.getMOPUB_FULL_CENTER());
         interstitialCenter.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
             @Override public void onInterstitialLoaded(MoPubInterstitial interstitial) {

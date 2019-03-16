@@ -1,0 +1,30 @@
+<manifest package="com.my.rn.Ads"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application
+        android:hardwareAccelerated="true"
+        android:usesCleartextTraffic="true">
+        <!-- Facebook Ads -->
+        <activity
+            android:name="com.facebook.ads.AudienceNetworkActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:hardwareAccelerated="true"/>
+
+        <activity
+            android:name="com.adclient.android.sdk.view.AdClientSdkActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="unspecified"/>
+
+        <activity
+            android:name="com.adclient.android.sdk.video.AdClientVideoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="unspecified"/>
+
+        <activity
+            android:name="com.adclient.android.sdk.inapp.landing.AdClientInAppLandingActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+
+        <service android:name="com.adclient.android.sdk.synchronization.AdClientSynchronizer"/>
+
+    </application>
+</manifest>
