@@ -18,16 +18,16 @@ export class RNAdsUtils {
 
     //region ========== Native ads ======
     /**Nếu setting cái quảng cáo banner ưu tiên hiển thị, thay vì cái native thì sẽ bỏ qua ko tải quảng cáo native*/
-    static async loadNativeAdsWhenStartAppIfNeed(): Promise<boolean> {
-        if (await RNAdsUtils.isPreferShowBanner(5)) return false;
-        return RNAdsUtils.loadNativeAds();
+    static async loadNativeAdsWhenStartAppIfNeed(typeAds: number): Promise<boolean> {
+        if (await RNAdsUtils.isPreferShowBanner(typeAds)) return false;
+        return RNAdsUtils.loadNativeAds(typeAds);
     }
 
-    static async loadNativeAds(): Promise<boolean> {
+    static async loadNativeAds(typeAds: number): Promise<boolean> {
         try {
             await excuteFuncWithTimeOut(() => {
-                return NativeModules.RNAdsUtils.loadNativeAds()
-            }, 3000);
+                return NativeModules.RNAdsUtils.loadNativeAds(typeAds);
+            }, 5000);
             console.log("loadNativeAds: Success");
             return true;
         } catch (e) {
