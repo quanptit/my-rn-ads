@@ -12,10 +12,10 @@ android {
         consumerProguardFiles 'proguard-rules.pro'
     }
 }
-
+def playServicesAds = gradle.ext.ads == "upltv" ? "16.0.0" : "17.1.3"
 dependencies {
     api 'com.facebook.react:react-native:+'
     api project(':AppShareLibs')
     api project(':BaseLibs')
-    api 'com.google.android.gms:play-services-ads:17.1.3'
+    api "com.google.android.gms:play-services-ads:$playServicesAds"
 }

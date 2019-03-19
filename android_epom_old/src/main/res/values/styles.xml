@@ -1,0 +1,24 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#05a4e2</item>
+        <item name="colorPrimaryDark">#008dcc</item>
+        <item name="colorAccent">#FF4081</item>
+    </style>
+
+    <style name="Theme.TranslucentLightNoFloating" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="Theme.TranslucentLight" parent="Theme.TranslucentLightNoFloating">
+        <item name="android:windowIsFloating">true</item>
+    </style>
+</resources>

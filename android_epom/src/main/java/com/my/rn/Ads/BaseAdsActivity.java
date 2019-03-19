@@ -20,13 +20,33 @@ public class BaseAdsActivity extends BasicAdsActivity {
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
-//        try {
-//            requestConsent(savedInstanceState);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         super.onCreate(savedInstanceState);
         MoPub.onCreate(this);
+        requestConsent(savedInstanceState);
+    }
+
+    private void requestConsent(Bundle savedInstanceState){
+        if (savedInstanceState == null) {
+            final ConsentInformationManager consentInformationManager = ConsentInformationManager.getInstance(this);
+            //first activity start
+            consentInformationManager.requestConsentStatusUpdate(new OnConsentStatusUpdateListener() {
+                @Override
+                public void onConsentStateUpdated(ConsentStatus consentStatus, LocationStatus locationStatus) {
+                    if (consentStatus == ConsentStatus.UNKNOWN && consentInformationManager.getLocationStatus() == LocationStatus.IN_EEA) {
+                        try {
+//                            loadConsentForm();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailed(String message) {
+
+                }
+            });
+        }
     }
 
     @Override

@@ -32,20 +32,18 @@ public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
     }
 
     @ReactMethod
-    @Override public void loadNativeAds(int typeAds, final Promise promise) {
-        promise.resolve(0);
-        //TODO
-//        new Thread(new Runnable() {
-//            @Override public void run() {
-//                try {
-//                    MopubNativeManager.getInstance().cacheNativeAndWaitForComplete();
-//                    promise.resolve(1);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    promise.reject("0", e.getMessage());
-//                }
-//            }
-//        }).start();
+    @Override public void loadNativeAds(final int typeAds, final Promise promise) {
+        new Thread(new Runnable() {
+            @Override public void run() {
+                try {
+                    EpomNativeManager.getInstance().cacheNativeAndWaitForComplete(typeAds);
+                    promise.resolve(1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    promise.reject("0", e.getMessage());
+                }
+            }
+        }).start();
     }
 
     @ReactMethod
@@ -87,7 +85,7 @@ public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
         super.isPreferShowBanner(typeAds, promise);
     }
 
-    @ReactMethod  @Override public void canShowFullCenterAds(Promise promise) {
+    @ReactMethod @Override public void canShowFullCenterAds(Promise promise) {
         super.canShowFullCenterAds(promise);
     }
 

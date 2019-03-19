@@ -1,10 +1,12 @@
 package com.my.rn.Ads.natives;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import com.adclient.android.sdk.nativeads.*;
 import com.adclient.android.sdk.type.AdType;
 import com.adclient.android.sdk.type.ParamsType;
@@ -13,22 +15,22 @@ import com.baseLibs.utils.BaseUtils;
 import com.facebook.react.bridge.UiThreadUtil;
 import com.my.rn.Ads.modules.NativeAdsView;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
 public class EpomCacheUtils implements ClientNativeAdListener {
-    private static final String TAG = "EPOM_CACHE";
+    private static final String TAG = "EPOM_NA_CACHE";
     private Context context;
     private AdClientNativeAd adClientNativeAd;
-    private AdClientNativeAdRenderer adRenderer;
-    private int errorCount;
+    //    private AdClientNativeAdRenderer adRenderer;
+    private int layoutId;
 
     public EpomCacheUtils(Context context, int layoutId) {
         this.context = context;
-        adRenderer = EpomNativeRenderUtils.createNativeAdRendererForLarge(context, layoutId);
-        errorCount = 0;
+        this.layoutId = layoutId;
     }
 
-    public void showNewNativeAds(Activity activityParam, final NativeAdsView nativeAdsView, final ViewGroup parent) {
+    public void showNewNativeAds(Activity activityParam, final NativeAdsView nativeAdsView, final FrameLayout parent) {
         if (!isCached()) {
             Log.e(TAG, "showNewNativeAds Fail not cache");
             return;
@@ -38,22 +40,24 @@ public class EpomCacheUtils implements ClientNativeAdListener {
             Log.e(TAG, "showNewNativeAds Fail:  activity NULL ==========");
             return;
         }
-        UiThreadUtil.runOnUiThread(new Runnable() {
-            @Override public void run() {
-                View view = adClientNativeAd.getView(activity);
-                adClientNativeAd.renderView(view);
-                adClientNativeAd.registerImpressionsAndClicks(view);
-                View rating = adClientNativeAd.getRenderer().getViewByType(view, AdClientNativeAdBinder.ViewType.RATING_VIEW);
-                if (rating != null && rating.getVisibility() == View.INVISIBLE)
-                    rating.setVisibility(View.GONE);
-                parent.addView(view);
-                nativeAdsView.adClientNativeAd = adClientNativeAd;
-                adClientNativeAd = null;
+        View view = adClientNativeAd.getView(activity);
+        if (view.getParent() != null) ((ViewGroup) view.getParent()).removeView(view);
+        adClientNativeAd.renderView(view);
+        adClientNativeAd.registerImpressionsAndClicks(view);
+        View rating = adClientNativeAd.getRenderer().getViewByType(view, AdClientNativeAdBinder.ViewType.RATING_VIEW);
+        if (rating != null && rating.getVisibility() == View.INVISIBLE)
+            rating.setVisibility(View.GONE);
+        parent.addView(view, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        parent.requestLayout();
+        nativeAdsView.adClientNativeAd = adClientNativeAd;
+        EpomCacheUtils.this.adClientNativeAd = null;
 
-                // Cache New ads
-                cache();
-            }
-        });
+        // Cache New ads
+        cache();
+    }
+
+    public boolean isCaching() {
+        return adClientNativeAd != null && adClientNativeAd.isLoadingInProgress();
     }
 
     public boolean isCached() {
@@ -61,29 +65,31 @@ public class EpomCacheUtils implements ClientNativeAdListener {
     }
 
     public void cache() {
-        if (adClientNativeAd != null) {
-            if ((adClientNativeAd.isLoadingInProgress() || adClientNativeAd.isAdLoaded()))
-                return;
-            else
-                destroy();
-        }
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override public void run() {
+                if (adClientNativeAd != null) {
+                    if ((adClientNativeAd.isLoadingInProgress() || adClientNativeAd.isAdLoaded()))
+                        return;
+                    else
+                        destroy();
+                }
+                AdClientNativeAdRenderer adRenderer = EpomNativeRenderUtils.createNativeAdRendererForLarge(context, layoutId);
 
-        HashMap<ParamsType, Object> configuration = new HashMap<>();
-        configuration.put(ParamsType.AD_PLACEMENT_KEY, KeysAds.EPOM_NATIVE);
-        configuration.put(ParamsType.ADTYPE, AdType.NATIVE_AD.toString());
-        configuration.put(ParamsType.AD_SERVER_URL, "https://appservestar.com/");
-        configuration.put(ParamsType.REFRESH_INTERVAL, 0);
-        adClientNativeAd = new AdClientNativeAd(context, configuration, adRenderer);
-        adClientNativeAd.setClientNativeAdListener(this);
-        adClientNativeAd.load();
+                HashMap<ParamsType, Object> configuration = new HashMap<>();
+                configuration.put(ParamsType.AD_PLACEMENT_KEY, KeysAds.EPOM_NATIVE);
+                configuration.put(ParamsType.ADTYPE, AdType.NATIVE_AD.toString());
+                configuration.put(ParamsType.AD_SERVER_URL, "https://appservestar.com/");
+                configuration.put(ParamsType.REFRESH_INTERVAL, 0);
+                adClientNativeAd = new AdClientNativeAd(context, configuration, adRenderer);
+                adClientNativeAd.setClientNativeAdListener(EpomCacheUtils.this);
+                adClientNativeAd.load();
+            }
+        });
     }
 
     @Override public void onFailedToReceiveAd(AdClientNativeAd adClientNativeAd, String message, boolean b) {
         Log.d(TAG, "onFailedToReceiveAd message = " + message);
-        //Fail => cach lai
-        errorCount++;
-        if (errorCount > 3) return;
-        cache();
+        destroy();
     }
 
     @Override public void onImpressionAd(AdClientNativeAd adClientNativeAd, boolean b) {
@@ -96,7 +102,6 @@ public class EpomCacheUtils implements ClientNativeAdListener {
 
     @Override public void onLoadingAd(AdClientNativeAd adClientNativeAd, boolean isLoaded, String message, boolean callbackFromUIThread) {
         Log.d(TAG, "onLoadingAd isLoaded = " + isLoaded + ", message = " + message);
-        if (isLoaded) errorCount = 0;
     }
 
     @Override public void onRefreshedAd(AdClientNativeAd adClientNativeAd, RefreshType refreshType, String message, boolean callbackFromUIThread) {
@@ -104,7 +109,6 @@ public class EpomCacheUtils implements ClientNativeAdListener {
     }
 
     public void destroy() {
-        errorCount = 0;
         try {
             if (adClientNativeAd != null) {
                 adClientNativeAd.destroy();

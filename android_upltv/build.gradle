@@ -1,0 +1,37 @@
+apply plugin: 'com.android.library'
+
+repositories {
+    maven { url 'https://s3.amazonaws.com/moat-sdk-builds' }
+    maven { url "https://maven.google.com" }
+    maven { url "https://s3.amazonaws.com/avocarrot-android-builds/dist/" }
+    maven { url "https://jitpack.io" }
+}
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+configurations.all
+dependencies {
+    api "com.android.support:support-annotations:$rootProject.ext.supportVersion"
+    api project(':my-rn-ads-base')
+
+    implementation(name: 'UPAdsSdk_3.0.06', ext: 'aar')
+    implementation(name: 'adcolony_ads', ext: 'aar')
+    implementation(name: 'applovin_ads', ext: 'aar')
+    implementation(name: 'chartboost_ads', ext: 'aar')
+    implementation(name: 'ironsource_ads', ext: 'aar')
+    implementation(name: 'playable_ads', ext: 'aar')
+    implementation(name: 'unity_ads', ext: 'aar')
+    implementation(name: 'vungle_ads', ext: 'aar')
+//    api fileTree(include: ['*.aar'], dir: 'libs')
+    //if you use facebook
+    api 'com.facebook.android:audience-network-sdk:5.1.0'
+}

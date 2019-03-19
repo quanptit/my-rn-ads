@@ -1,17 +1,26 @@
 package com.my.rn.Ads.modules;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.adclient.android.sdk.nativeads.AdClientNativeAd;
+import com.adclient.android.sdk.nativeads.*;
+import com.adclient.android.sdk.type.AdType;
+import com.adclient.android.sdk.type.ParamsType;
+import com.appsharelib.KeysAds;
+import com.baseLibs.utils.L;
+import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.my.rn.Ads.full.center.BaseAdsFullManager;
-
+import com.my.rn.Ads.natives.EpomNativeManager;
 import java.util.Map;
 
 /**
@@ -20,8 +29,9 @@ import java.util.Map;
  * - Mỗi loại chỉ cache một cái
  * - Cache trước cái Exit.
  */
-public class NativeAdsView extends SimpleViewManager<View> {
+public class NativeAdsView extends SimpleViewManager<FrameLayout> {
     public static final String REACT_CLASS = "NativeAdsView";
+    private static final String TAG = REACT_CLASS;
     public AdClientNativeAd adClientNativeAd;
     private ThemedReactContext reactContext;
 
@@ -31,15 +41,14 @@ public class NativeAdsView extends SimpleViewManager<View> {
     }
 
     @ReactProp(name = "typeAds")
-    public void setTypeAds(FrameLayout view, Integer typeAds) {
-        if (view.getChildCount() > 0)
-            view.removeAllViews();
-        //TODO
-//        MopubNativeManager.getInstance().createNewAds(view.getContext(), typeAds, view);
+    public void setTypeAds(final FrameLayout parent, Integer typeAds) {
+        if (parent.getChildCount() > 0)
+            parent.removeAllViews();
+        EpomNativeManager.getInstance().showNewNativeAds(typeAds, this, parent);
     }
 
     @Override
-    protected View createViewInstance(final ThemedReactContext reactContext) {
+    protected FrameLayout createViewInstance(final ThemedReactContext reactContext) {
         this.reactContext = reactContext;
         return new FrameLayout(reactContext);
     }
@@ -53,8 +62,9 @@ public class NativeAdsView extends SimpleViewManager<View> {
         return activity != null ? activity : BaseAdsFullManager.getMainActivity();
     }
 
-    @Override public void onDropViewInstance(View view) {
+    @Override public void onDropViewInstance(FrameLayout view) {
         super.onDropViewInstance(view);
+        L.d("onDropViewInstance");
         try {
             if (adClientNativeAd != null) {
                 adClientNativeAd.destroy();

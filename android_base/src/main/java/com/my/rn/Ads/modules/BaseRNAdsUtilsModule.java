@@ -21,7 +21,12 @@ public abstract class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule im
     // region Full screen and Reward Ads
     @ReactMethod
     public void canShowFullCenterAds(final Promise promise) {
-        promise.resolve(!AdsUtils.isDoNotShowAds() && BaseAdsFullManager.getInstance().isCachedCenter());
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override public void run() {
+                promise.resolve(!AdsUtils.isDoNotShowAds() && BaseAdsFullManager.getInstance().isCachedCenter());
+            }
+        });
+
     }
 
     @ReactMethod

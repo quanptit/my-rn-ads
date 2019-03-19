@@ -33,6 +33,10 @@ public abstract class BaseShowStartAdsManager {
      */
     public void showStartAds(final Activity activity, boolean isFullScreen) {
         Log.d(TAG, "showStartAds Call");
+        if (KeysAds.IS_SKIP_START_ADS) {
+            return;
+        }
+
         SplashActivity.openActivity(activity, isFullScreen);
         try {
             if (activity == null || AdsUtils.isDoNotShowAds() || !BaseUtils.isOnline()) {
@@ -68,15 +72,6 @@ public abstract class BaseShowStartAdsManager {
                     showStartAds(activity, 1, iAdLoaderCallback2);
                 }
             };
-
-            if (KeysAds.IS_SKIP_START_ADS) {
-                BaseApplication.getHandler().postDelayed(new Runnable() {
-                    @Override public void run() {
-                        SplashActivity.finishActivity();
-                    }
-                }, 800);
-                return;
-            }
 
             showStartAds(activity, 0, iAdLoaderCallback1);
         } catch (Exception e) {

@@ -80,9 +80,14 @@ public abstract class BaseAdsFullManager {
         try {
             if (!skipCheck && (AdsUtils.isDoNotShowAds() || !canShowAdsCenter()))
                 return;
+            final IAdLoaderCallback iAdLoaderCallback3 = new IAdLoaderCallback() {
+                @Override public void onAdsFailedToLoad() {
+                    cacheAdsCenter(activity, 3, null);
+                }
+            };
             final IAdLoaderCallback iAdLoaderCallback2 = new IAdLoaderCallback() {
                 @Override public void onAdsFailedToLoad() {
-                    cacheAdsCenter(activity, 2, null);
+                    cacheAdsCenter(activity, 2, iAdLoaderCallback3);
                 }
             };
             IAdLoaderCallback iAdLoaderCallback1 = new IAdLoaderCallback() {

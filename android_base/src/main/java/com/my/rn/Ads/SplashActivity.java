@@ -53,8 +53,7 @@ public class SplashActivity extends FragmentActivity {
         int time = containSetting ? 9000 : 12000;
         startIncreasePercent(containSetting ? 5000 : 8000);
         Log.d(TAG, "onCreate Start delay finish time = " + time);
-        //TODO des
-        BaseApplication.getHandler().postDelayed(finshSplash, KeysAds.IS_DEVELOPMENT ? 30000 : time);
+        BaseApplication.getHandler().postDelayed(finshSplash, time);
     }
 
     private void startIncreasePercent(final int timeMiliseconds) {
