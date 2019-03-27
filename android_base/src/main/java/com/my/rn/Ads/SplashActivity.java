@@ -54,7 +54,7 @@ public class SplashActivity extends FragmentActivity {
 //        startIncreasePercent(containSetting ? 5000 : 8000);
 
         int time = KeysAds.SPLASH_MAX_TIME;
-        startIncreasePercent(time < 8000 ? time : 8000);
+        startIncreasePercent(time);
         Log.d(TAG, "onCreate Start delay finish time = " + time);
         BaseApplication.getHandler().postDelayed(finshSplash, time);
     }

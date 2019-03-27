@@ -5,9 +5,9 @@ export declare class RNAdsUtils {
     static loadNativeAds(typeAds: number): Promise<boolean>;
     static isPreferShowBanner(typeAds: number): Promise<boolean>;
     static canShowNativeAds(typeAds: number): Promise<boolean>;
-    static cacheNativeAdsIfNeed(typeAds: number): any;
+    static cacheNativeAdsIfNeed(typeAds: number): Promise<any>;
     static canShowFullCenterAds(): Promise<boolean>;
-    static cacheAdsCenter(): void;
+    static cacheAdsCenter(): Promise<any>;
     static showFullCenterAds(): Promise<boolean>;
     static showFullCenterAdsAndBackPress(showRateDialogIfNoAds?: {
         review_title: string;

@@ -8,6 +8,7 @@ import {RNAdsUtils} from "./RNAdsUtils";
 import {MOPUBBannerView} from "./bannerViews/MOPUBBannerView";
 import {RowOfflineAds} from "./RowOfflineAds";
 import {OfflineAdsSetting} from "./OfflineAdsSetting";
+import {RNCommonUtils} from "my-rn-base-utils";
 
 interface Props {
     typeAds?: "RECTANGLE_HEIGHT_250" | "BANNER_50" | "SMART_BANNER"
@@ -16,7 +17,7 @@ interface Props {
     style?: StyleProp<ViewStyle>
 }
 
-export class BannerAdsView extends Component<Props, { typeShow: string, offlineAds?: any }> {
+export class BannerAdsView extends Component<Props, { typeShow: string, offlineAds?: any, isVip: boolean }> {
     static defaultProps = {
         typeAds: "SMART_BANNER"
     };
@@ -24,7 +25,7 @@ export class BannerAdsView extends Component<Props, { typeShow: string, offlineA
 
     constructor(props) {
         super(props);
-        this.state = {typeShow: "NONE"};
+        this.state = {typeShow: "NONE", isVip: false};
         this.noFail = 0;
     }
 
@@ -33,6 +34,11 @@ export class BannerAdsView extends Component<Props, { typeShow: string, offlineA
     }
 
     async componentDidMount() {
+        let isVip = await RNCommonUtils.isVIPUser();
+        if (isVip) {
+            this.setState({isVip: true});
+            return;
+        }
         await this.updateTypeShow();
     }
 
@@ -64,6 +70,8 @@ export class BannerAdsView extends Component<Props, { typeShow: string, offlineA
     }
 
     render() {
+        if (this.state.isVip) return null;
+
         switch (this.state.typeShow) {
             case "MOPUB":
                 return <MOPUBBannerView style={this.props.style} typeAds={this.props.typeAds}

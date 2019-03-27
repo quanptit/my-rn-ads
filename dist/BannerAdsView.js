@@ -8,16 +8,22 @@ import { RNAdsUtils } from "./RNAdsUtils";
 import { MOPUBBannerView } from "./bannerViews/MOPUBBannerView";
 import { RowOfflineAds } from "./RowOfflineAds";
 import { OfflineAdsSetting } from "./OfflineAdsSetting";
+import { RNCommonUtils } from "my-rn-base-utils";
 export class BannerAdsView extends Component {
     constructor(props) {
         super(props);
-        this.state = { typeShow: "NONE" };
+        this.state = { typeShow: "NONE", isVip: false };
         this.noFail = 0;
     }
     shouldComponentUpdate(nextProps, nextState) {
         return !isEqual(this.state, nextState);
     }
     async componentDidMount() {
+        let isVip = await RNCommonUtils.isVIPUser();
+        if (isVip) {
+            this.setState({ isVip: true });
+            return;
+        }
         await this.updateTypeShow();
     }
     async onAdFailedToLoad() {
@@ -46,6 +52,8 @@ export class BannerAdsView extends Component {
         this.setState({ typeShow: typeShow, offlineAds: offlineAds });
     }
     render() {
+        if (this.state.isVip)
+            return null;
         switch (this.state.typeShow) {
             case "MOPUB":
                 return <MOPUBBannerView style={this.props.style} typeAds={this.props.typeAds} onAdFailedToLoad={this.onAdFailedToLoad.bind(this)}/>;

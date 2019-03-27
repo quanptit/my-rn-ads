@@ -9,6 +9,7 @@ interface Props {
 export declare class BannerAdsView extends Component<Props, {
     typeShow: string;
     offlineAds?: any;
+    isVip: boolean;
 }> {
     static defaultProps: {
         typeAds: string;

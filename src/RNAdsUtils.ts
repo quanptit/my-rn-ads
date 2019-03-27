@@ -1,10 +1,12 @@
 import {NativeModules, Platform} from 'react-native'
 import {Actions} from 'react-native-router-flux'
-import {sendError} from "my-rn-base-utils";
+import {RNCommonUtils, sendError} from "my-rn-base-utils";
 import {DialogUtils} from "my-rn-base-component";
 
 export class RNAdsUtils {
     static async initAds(settingAdsUrl: string): Promise<boolean> {
+        if (await RNCommonUtils.isVIPUser())
+            return true;
         try {
             let result = excuteFuncWithTimeOut(() => {
                 return NativeModules.RNAdsUtils.initAds(settingAdsUrl);
@@ -19,11 +21,15 @@ export class RNAdsUtils {
     //region ========== Native ads ======
     /**Nếu setting cái quảng cáo banner ưu tiên hiển thị, thay vì cái native thì sẽ bỏ qua ko tải quảng cáo native*/
     static async loadNativeAdsWhenStartAppIfNeed(typeAds: number): Promise<boolean> {
+        if (await RNCommonUtils.isVIPUser())
+            return false;
         if (await RNAdsUtils.isPreferShowBanner(typeAds)) return false;
         return RNAdsUtils.loadNativeAds(typeAds);
     }
 
     static async loadNativeAds(typeAds: number): Promise<boolean> {
+        if (await RNCommonUtils.isVIPUser())
+            return false;
         try {
             await excuteFuncWithTimeOut(() => {
                 return NativeModules.RNAdsUtils.loadNativeAds(typeAds);
@@ -42,11 +48,15 @@ export class RNAdsUtils {
     }
 
     static async canShowNativeAds(typeAds: number): Promise<boolean> {
+        if (await RNCommonUtils.isVIPUser())
+            return false;
         if (Platform.OS === "ios") return false;
         return NativeModules.RNAdsUtils.canShowNativeAds(typeAds);
     }
 
-    static cacheNativeAdsIfNeed(typeAds: number) {
+    static async cacheNativeAdsIfNeed(typeAds: number) {
+        if (await RNCommonUtils.isVIPUser())
+            return false;
         if (Platform.OS === "ios") return;
         return NativeModules.RNAdsUtils.cacheNativeAdsIfNeed(typeAds);
     }
@@ -54,16 +64,22 @@ export class RNAdsUtils {
     //endregion
 
     //region full center & exit ads
-    static canShowFullCenterAds(): Promise<boolean> {
+    static async canShowFullCenterAds(): Promise<boolean> {
+        if (await RNCommonUtils.isVIPUser())
+            return false;
         return NativeModules.RNAdsUtils.canShowFullCenterAds();
     }
 
-    static cacheAdsCenter() {
-        NativeModules.RNAdsUtils.cacheAdsCenter();
+    static async cacheAdsCenter() {
+        if (await RNCommonUtils.isVIPUser())
+            return;
+        return NativeModules.RNAdsUtils.cacheAdsCenter();
     }
 
-    static showFullCenterAds(): Promise<boolean> {
+    static async showFullCenterAds(): Promise<boolean> {
         console.log("Call showFullCenterAds");
+        if (await RNCommonUtils.isVIPUser())
+            return false;
         if (Platform.OS === "ios")
             return NativeModules.RNCommonUtilsIOS.showFullCenterAds();
         else

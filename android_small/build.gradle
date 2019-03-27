@@ -1,0 +1,21 @@
+apply plugin: 'com.android.library'
+
+repositories {
+    maven { url 'https://s3.amazonaws.com/moat-sdk-builds' }
+}
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+dependencies {
+    api project(':my-rn-ads-base')
+    api 'com.facebook.android:audience-network-sdk:5.1.0'
+}

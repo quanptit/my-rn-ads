@@ -76,6 +76,7 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
 
     // region Event callback load Ads
     @Override public void onNativeLoad(NativeAd nativeAd) {
+        Log.d("MopubNativeManager", "onNativeLoad");
         isLoading = false;
         nativeAds.add(nativeAd);
         _checkAndLoadAds(false);
