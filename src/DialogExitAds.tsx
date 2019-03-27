@@ -16,8 +16,8 @@ export class DialogExitAds extends BaseDialog<Props, any> {
             <Col style={{paddingVertical: 15}}>
                 <NativeAdsView typeAds={NativeAdsView.TYPE_DETAIL_VOCA}
                                isAlwayPreferNative allowBannerBackup={false}
-                               style={{marginBottom: 12, marginHorizontal: 3}}/>
-                <Text style={[{fontSize: 18, color: "#333333"}, styles.margin_h]}>
+                               style={{paddingBottom: 12, marginHorizontal: 3, borderBottomColor: "#CCCCCCAA", borderBottomWidth: 1}}/>
+                <Text style={[{fontSize: 18, marginTop: 12, color: "#333333"}, styles.margin_h]}>
                     {this.props.confirmDes != null ? this.props.confirmDes : "Are you sure want to quit?"}
                 </Text>
                 <Row style={[{marginTop: 15}, styles.margin_h]}>

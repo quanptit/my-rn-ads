@@ -57,7 +57,9 @@ export class NativeAdsView extends Component {
     }
     //endregion
     _renderNativeView() {
-        return (<NativeAdsViewRef style={[{ height: this.state.height }, this.props.style]} typeAds={this.props.typeAds}/>);
+        return (<View style={this.props.style}>
+                <NativeAdsViewRef style={{ height: this.state.height }} typeAds={this.props.typeAds}/>
+            </View>);
     }
     //region utils
     renderEmptyView() {
