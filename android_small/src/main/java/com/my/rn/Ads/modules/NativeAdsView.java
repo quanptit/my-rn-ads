@@ -2,12 +2,14 @@ package com.my.rn.Ads.modules;
 
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.my.rn.Ads.nativeads.NativeAdsManager;
 
 import java.util.Map;
 
@@ -24,8 +26,11 @@ public class NativeAdsView extends SimpleViewManager<View> {
     public void setTypeAds(FrameLayout view, Integer typeAds) {
         if (view.getChildCount() > 0)
             view.removeAllViews();
-        //TODO
-//        MopubNativeManager.getInstance().createNewAds(view.getContext(), typeAds, view);
+        View nativeAdsView = NativeAdsManager.createNewAds(view.getContext(), typeAds);
+        if (nativeAdsView != null) {
+            view.addView(nativeAdsView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            view.requestLayout();
+        }
     }
 
     @Override

@@ -9,7 +9,6 @@ import com.facebook.ads.*;
 
 
 import android.util.Log;
-import com.my.rn.Ads.full.AdsFullManager;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -63,14 +62,12 @@ abstract class BaseFbNativeAdsManager<T extends NativeAdBase> implements NativeA
 
 
     /*Cần chạy function ở background thread. TIMEOUT = 5000*/
-    public void cacheAndWaitForComplete(final boolean cacheCenterAds) throws InterruptedException {
-        if (!nativeAds.isEmpty() && !cacheCenterAds) return;
+    public void cacheAndWaitForComplete() throws InterruptedException {
+        if (!nativeAds.isEmpty()) return;
         long startTimeLoad = System.currentTimeMillis();
         BaseApplication.getHandler().post(new Runnable() {
             @Override public void run() {
                 _checkAndLoadAds(false);
-                if (cacheCenterAds)
-                    AdsFullManager.getInstance().cacheAdsCenter();
             }
         });
         while (true) {
@@ -119,7 +116,7 @@ abstract class BaseFbNativeAdsManager<T extends NativeAdBase> implements NativeA
         T ads = null;
         try {
             ads = getNextAds(false);
-            if (ads==null) ads = firstAds;
+            if (ads == null) ads = firstAds;
             if (ads != null) {
                 L.d("getNextAds: Return value: " + ads.getAdvertiserName());
                 if (mediaCacheFlag == NativeAdBase.MediaCacheFlag.NONE)

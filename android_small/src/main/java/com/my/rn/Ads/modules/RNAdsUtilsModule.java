@@ -10,6 +10,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.UiThreadUtil;
 import com.my.rn.Ads.ManagerTypeAdsShow;
 import com.my.rn.Ads.full.center.AdsFullManager;
+import com.my.rn.Ads.nativeads.NativeAdsManager;
 
 public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
     private static final String TAG = "RN_ADS_MODULE";
@@ -46,8 +47,7 @@ public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
         new Thread(new Runnable() {
             @Override public void run() {
                 try {
-                    //TODO
-//                    MopubNativeManager.getInstance().cacheNativeAndWaitForComplete();
+                    NativeAdsManager.cacheNativAndWaitForComplete();
                     promise.resolve(1);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -59,15 +59,12 @@ public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
 
     @ReactMethod
     @Override public void canShowNativeAds(int typeAds, Promise promise) {
-        //TODO
-        promise.resolve(false);
-//        promise.resolve(MopubNativeManager.getInstance().canShowNativeAds(typeAds));
+        promise.resolve(NativeAdsManager.getInstance().canShowNativeAds(typeAds));
     }
 
     @ReactMethod
     @Override public void cacheNativeAdsIfNeed(int typeAds) {
-        //TODO
-//        MopubNativeManager.getInstance().checkAndLoadAds();
+        NativeAdsManager.cacheNativeAds();
     }
 
     /**

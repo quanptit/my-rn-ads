@@ -208,18 +208,7 @@ public class ManagerTypeAdsShow {
         return PreferenceUtils.getIntSetting(KeysAds.TYPE_ADS_LIST_DETAIL_VOCA, TYPE_DETAIL_LIST3);
     }
 
-    public static int getPreferTypeAdsShowExit() {
-        return PreferenceUtils.getIntSetting(KeysAds.TYPE_ADS_EXIT, TYPE_DETAIL_LIST3);
-    }
-
-    public static int getTypeAdsNativeLikeBanner() {
-        return PreferenceUtils.getIntSetting(KeysAds.TYPE_ADS_LIKE_BANNER, TYPE_SUMMARY_LIST1);
-    }
     //endregion
-
-    public static boolean isNativeBanner(int typeAds) {
-        return typeAds == TYPE_SUMMARY_LIST1 || typeAds == TYPE_SUMMARY_LIST2;
-    }
 
     //region hide const
     // Tham khao file "VPS Ads File Setting" trong evernote de biet
