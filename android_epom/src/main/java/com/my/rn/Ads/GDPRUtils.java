@@ -1,7 +1,6 @@
 package com.my.rn.Ads;
 
 public class GDPRUtils {
-    //TODO
 
 //    private void requestConsent(Bundle savedInstanceState) {
 //        //region EEA

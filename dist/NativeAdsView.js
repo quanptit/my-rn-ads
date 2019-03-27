@@ -43,13 +43,11 @@ export class NativeAdsView extends Component {
     }
     //region banner backup =============
     _renderBanner50Ads() {
-        // if (this.state.bannerFail) return null;
         return (<View style={[styles.container, this.props.style]}>
                 <BannerAdsView typeAds="BANNER_50"/>
             </View>);
     }
     _renderRectBannerAds() {
-        // if (this.state.bannerFail) return null;
         return (<Col stretch style={this.props.style}>
                 <Text style={styles.tvSponsored}>Sponsored by: </Text>
                 <View style={styles.containerBannerAds}>

@@ -49,9 +49,12 @@ public class SplashActivity extends FragmentActivity {
             tvAppName.setText(appTitle);
         }
 
-        boolean containSetting = PreferenceUtils.contains(ManagerTypeAdsShow.full_start);
-        int time = containSetting ? 9000 : 12000;
-        startIncreasePercent(containSetting ? 5000 : 8000);
+//        boolean containSetting = PreferenceUtils.contains(ManagerTypeAdsShow.full_start);
+//        int time = PreferenceUtils.contains(ManagerTypeAdsShow.full_start) ? 9000 : 12000;
+//        startIncreasePercent(containSetting ? 5000 : 8000);
+
+        int time = KeysAds.SPLASH_MAX_TIME;
+        startIncreasePercent(time < 8000 ? time : 8000);
         Log.d(TAG, "onCreate Start delay finish time = " + time);
         BaseApplication.getHandler().postDelayed(finshSplash, time);
     }

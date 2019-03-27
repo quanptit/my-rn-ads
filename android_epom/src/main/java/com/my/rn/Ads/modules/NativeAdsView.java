@@ -24,7 +24,7 @@ import com.my.rn.Ads.natives.EpomNativeManager;
 import java.util.Map;
 
 /**
- * TODO: nếu ecpm tốt hơn banner. Nếu chưa cache => sẽ là loading.
+ * Can lam: nếu ecpm tốt hơn banner. Nếu chưa cache => sẽ là loading.
  * - Chỉ cache khi có một request được yêu cầu. Kiểu đã dùng loại nào => mới cache loại đó
  * - Mỗi loại chỉ cache một cái
  * - Cache trước cái Exit.

@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.text.TextUtils;
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
+import com.baseLibs.utils.PreferenceUtils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
 import com.my.rn.Ads.IAdLoaderCallback;
+import com.my.rn.Ads.ManagerTypeAdsShow;
 
 public class ADXCenter extends BaseFullCenterAds {
     private PublisherInterstitialAd interstitialCenter;
@@ -25,6 +27,9 @@ public class ADXCenter extends BaseFullCenterAds {
     }
 
     @Override public String getKeyAds() {
+        String keySave = PreferenceUtils.getStringSetting(ManagerTypeAdsShow.KEY_ADX_CENTER, null);
+        if (!TextUtils.isEmpty(keySave))
+            return keySave;
         return KeysAds.getAdxFullCenter();
     }
 

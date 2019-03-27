@@ -99,6 +99,13 @@ public class ManagerTypeAdsShow {
                         saveStringSettingIfExit(key_start, KEY_ADMOB_START, "ADMOB");
                         saveStringSettingIfExit(key_start, KEY_FB_START, "FB");
                     }
+                    if (settingsJsonObj.has("key_center")) {
+                        JsonObject key_center = settingsJsonObj.getAsJsonObject("key_center");
+                        saveStringSettingIfExit(key_center, KEY_ADX_CENTER, "ADX");
+                        saveStringSettingIfExit(key_center, KEY_ADMOB_CENTER, "ADMOB");
+                        saveStringSettingIfExit(key_center, KEY_FB_CENTER, "FB");
+                    }
+
                     PreferenceUtils.saveLongSetting(UPDATE_ADS_TIME, System.currentTimeMillis());
                     Log.d(TAG, "updateSetting Complete: " + jsonSettingStr);
                 } catch (JsonSyntaxException e) {
@@ -122,10 +129,14 @@ public class ManagerTypeAdsShow {
     }
 
     private static void saveStringSettingIfExit(JsonObject settingsJsonObj, String prefKey, String jsonKey) {
-        if (settingsJsonObj.has(jsonKey)) {
-            String value = settingsJsonObj.get(jsonKey).getAsString();
-            if (!TextUtils.isEmpty(value))
-                PreferenceUtils.saveStringSetting(prefKey, value);
+        try {
+            if (settingsJsonObj.has(jsonKey)) {
+                String value = settingsJsonObj.get(jsonKey).getAsString();
+                if (!TextUtils.isEmpty(value))
+                    PreferenceUtils.saveStringSetting(prefKey, value);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     //endregion
@@ -230,5 +241,8 @@ public class ManagerTypeAdsShow {
     public static final String KEY_ADX_START = "KEY_ADX_START";
     public static final String KEY_FB_START = "KEY_FB_START";
     public static final String KEY_ADMOB_START = "KEY_ADMOB_START";
+    public static final String KEY_ADX_CENTER = "KEY_ADX_CENTER";
+    public static final String KEY_FB_CENTER = "KEY_FB_CENTER";
+    public static final String KEY_ADMOB_CENTER = "KEY_ADMOB_CENTER";
     //endregion
 }

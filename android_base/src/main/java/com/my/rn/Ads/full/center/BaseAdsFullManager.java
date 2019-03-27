@@ -149,7 +149,7 @@ public abstract class BaseAdsFullManager {
 
     private static boolean canShowAdsCenter() {
 //        if (true)
-//            return true; //TOD
+//            return true; //TODOs
 
         long lastTimeShowAds = PreferenceUtils.getLongSetting(KeysAds.LAST_TIME_SHOW_ADS, 0);
         if (System.currentTimeMillis() - lastTimeShowAds > 5 * 60 * 1000)  // 1.5phut

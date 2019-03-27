@@ -40,9 +40,9 @@ dependencies {
     implementation 'com.inlocomedia.android:android-sdk:4.3.+'
 
     //if you use Appnext:
-//    implementation(name: 'AppnextAndroidSDKAds-2.4.5.472', ext: 'aar')
-//    implementation(name: 'AppnextAndroidSDKCore-2.4.5.472', ext: 'aar')
-//    implementation(name: 'AppnextAndroidSDKNativeAds-2.4.5.472', ext: 'aar')
+    implementation(name: 'AppnextAndroidSDKAds-2.4.5.472', ext: 'aar')
+    implementation(name: 'AppnextAndroidSDKCore-2.4.5.472', ext: 'aar')
+    implementation(name: 'AppnextAndroidSDKNativeAds-2.4.5.472', ext: 'aar')
 
     //if you use Avocarrot:
 //    implementation 'com.avocarrot.sdk:mediation-sdk-native-assets:4.10.3'

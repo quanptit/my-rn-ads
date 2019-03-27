@@ -33,22 +33,13 @@ public abstract class BaseShowStartAdsManager {
      */
     public void showStartAds(final Activity activity, boolean isFullScreen) {
         Log.d(TAG, "showStartAds Call");
-        if (KeysAds.IS_SKIP_START_ADS) {
+        if (KeysAds.IS_SKIP_START_ADS ||
+                (activity == null || AdsUtils.isDoNotShowAds() || !BaseUtils.isOnline())) {
             return;
         }
 
         SplashActivity.openActivity(activity, isFullScreen);
         try {
-            if (activity == null || AdsUtils.isDoNotShowAds() || !BaseUtils.isOnline()) {
-                Log.d(TAG, "ShowStartAdsManager Offline or Vip => Finish activity =============== " + (activity == null));
-                BaseApplication.getHandler().postDelayed(new Runnable() {
-                    @Override public void run() {
-                        SplashActivity.finishActivity();
-                    }
-                }, 800);
-                return;
-            }
-
             timeCallShowStart = System.currentTimeMillis();
             final IAdLoaderCallback iAdLoaderCallback4 = new IAdLoaderCallback() {
                 @Override public void onAdsFailedToLoad() {
@@ -111,5 +102,6 @@ public abstract class BaseShowStartAdsManager {
 
         destroyExtends();
     }
+
     protected abstract void destroyExtends();
 }

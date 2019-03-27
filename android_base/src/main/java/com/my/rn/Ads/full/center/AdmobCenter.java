@@ -2,12 +2,14 @@ package com.my.rn.Ads.full.center;
 
 import android.app.Activity;
 import android.text.TextUtils;
+import com.baseLibs.utils.PreferenceUtils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.my.rn.Ads.IAdLoaderCallback;
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
+import com.my.rn.Ads.ManagerTypeAdsShow;
 
 public class AdmobCenter extends BaseFullCenterAds {
     private InterstitialAd interstitialCenter;
@@ -25,6 +27,10 @@ public class AdmobCenter extends BaseFullCenterAds {
     }
 
     @Override public String getKeyAds() {
+        String keySave = PreferenceUtils.getStringSetting(ManagerTypeAdsShow.KEY_ADMOB_CENTER, null);
+        if (!TextUtils.isEmpty(keySave))
+            return keySave;
+
         return KeysAds.getAdmod_FULL();
     }
 

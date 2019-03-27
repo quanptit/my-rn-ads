@@ -77,7 +77,6 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
 
     //region banner backup =============
     private _renderBanner50Ads() {
-        // if (this.state.bannerFail) return null;
         return (
             <View style={[styles.container, this.props.style]}>
                 <BannerAdsView typeAds="BANNER_50"/>
@@ -86,8 +85,6 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
     }
 
     private _renderRectBannerAds() {
-        // if (this.state.bannerFail) return null;
-
         return (
             <Col stretch style={this.props.style}>
                 <Text style={styles.tvSponsored}>Sponsored by: </Text>

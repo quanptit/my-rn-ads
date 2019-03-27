@@ -2,6 +2,7 @@ package com.my.rn.Ads.modules;
 
 import android.text.TextUtils;
 import android.util.Log;
+import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -36,7 +37,7 @@ public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
                                         ManagerTypeAdsShow.updateAdsSetting(urlAdsSetting);
                                     AdsFullManager.getInstance().cacheAdsCenter(getSafeActivity());
                                 }
-                            }, 10000);
+                            }, KeysAds.IS_SKIP_START_ADS ? 3000 : 20000);
                         }
                     });
                 } catch (Exception e) {
@@ -48,7 +49,7 @@ public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
     }
 
     @ReactMethod
-    @Override public void loadNativeAds(final Promise promise) {
+    @Override public void loadNativeAds(int typeAds, final Promise promise) {
         new Thread(new Runnable() {
             @Override public void run() {
                 try {

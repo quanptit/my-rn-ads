@@ -9,6 +9,7 @@ import com.facebook.ads.InterstitialAd;
 import com.facebook.ads.InterstitialAdListener;
 
 import com.my.rn.Ads.IAdLoaderCallback;
+import com.my.rn.Ads.ManagerTypeAdsShow;
 import com.my.rn.Ads.SplashActivity;
 import com.baseLibs.utils.L;
 import com.baseLibs.utils.PreferenceUtils;
@@ -30,6 +31,9 @@ public class FbCenter extends BaseFullCenterAds {
     }
 
     @Override public String getKeyAds() {
+        String keySave = PreferenceUtils.getStringSetting(ManagerTypeAdsShow.KEY_FB_CENTER, null);
+        if (!TextUtils.isEmpty(keySave))
+            return keySave;
         return KeysAds.FB_FULL_ADS;
     }
 

@@ -21,11 +21,10 @@ public class BaseAdsActivity extends BasicAdsActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MoPub.onCreate(this);
         requestConsent(savedInstanceState);
     }
 
-    private void requestConsent(Bundle savedInstanceState){
+    private void requestConsent(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             final ConsentInformationManager consentInformationManager = ConsentInformationManager.getInstance(this);
             //first activity start
@@ -47,45 +46,5 @@ public class BaseAdsActivity extends BasicAdsActivity {
                 }
             });
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        MoPub.onStart(this);
-    }
-
-    protected void onStop() {
-        super.onStop();
-        MoPub.onStop(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MoPub.onPause(this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MoPub.onResume(this);
-    }
-
-    @Override
-    public void onRestart() {
-        super.onRestart();
-        MoPub.onRestart(this);
-    }
-
-    @Override protected void onDestroy() {
-        MoPub.onDestroy(this);
-        super.onDestroy();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        MoPub.onBackPressed(this);
     }
 }

@@ -1,10 +1,12 @@
 package com.my.rn.Ads.full.start;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.util.Log;
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
 import com.baseLibs.utils.BaseUtils;
+import com.facebook.react.bridge.UiThreadUtil;
 import com.mopub.common.SdkInitializationListener;
 import com.my.rn.Ads.*;
 import com.my.rn.Ads.full.center.AdsFullManager;
@@ -34,6 +36,14 @@ public class ShowStartAdsManager extends BaseShowStartAdsManager {
     }
 
     private synchronized void showMopubStart(final Activity activity, final IAdLoaderCallback iAdLoaderCallback) {
+        if (TextUtils.isEmpty(KeysAds.getMOPUB_FULL_CENTER())) {
+            UiThreadUtil.runOnUiThread(new Runnable() {
+                @Override public void run() {
+                    iAdLoaderCallback.onAdsFailedToLoad();
+                }
+            });
+            return;
+        }
         ApplicationContainAds.getMopubInitUtils().initMopub(new SdkInitializationListener() {
             @Override public void onInitializationFinished() {
                 mopubStart.showStartAds(activity, iAdLoaderCallback);
