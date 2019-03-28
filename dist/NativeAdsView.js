@@ -22,7 +22,8 @@ export class NativeAdsView extends Component {
             this.isPreferShowBanner = await RNAdsUtils.isPreferShowBanner(this.props.typeAds);
         if (!this.isPreferShowBanner) {
             this.isCachedNativeAds = await RNAdsUtils.canShowNativeAds(this.props.typeAds);
-            RNAdsUtils.cacheNativeAdsIfNeed(this.props.typeAds);
+            if (!this.props.skipCacheNative) // noinspection JSIgnoredPromiseFromCall
+                RNAdsUtils.cacheNativeAdsIfNeed(this.props.typeAds);
         }
         this.setState({ isLoading: false });
     }
@@ -74,7 +75,8 @@ NativeAdsView.TYPE_DETAIL_CUSTOM = 11;
 NativeAdsView.TYPE_DETAIL_VOCA = 12;
 NativeAdsView.defaultProps = {
     typeAds: 3,
-    allowBannerBackup: true
+    allowBannerBackup: true,
+    skipCacheNative: false
 };
 const styles = StyleSheet.create({
     container: { flexDirection: "column", justifyContent: 'flex-start', alignItems: 'center' },

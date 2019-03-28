@@ -3,6 +3,7 @@ import { StyleProp, ViewStyle } from 'react-native';
 interface Props {
     typeAds?: number;
     allowBannerBackup?: boolean;
+    skipCacheNative?: boolean;
     isAlwayPreferNative?: boolean;
     delayTime?: boolean;
     isScroll?: boolean;
@@ -24,6 +25,7 @@ export declare class NativeAdsView extends Component<Props, {
     static defaultProps: {
         typeAds: number;
         allowBannerBackup: boolean;
+        skipCacheNative: boolean;
     };
     constructor(props: any);
     componentDidMount(): Promise<void>;

@@ -9,7 +9,7 @@ import com.my.rn.Ads.*;
 import com.my.rn.Ads.AdsUtils;
 
 public abstract class BaseShowStartAdsManager {
-    private static final String TAG = "ShowStartAdsManager";
+    private static final String TAG = "SHOW_START";
     public static long timeCallShowStart;
     private Admob admobStart;
     private AdxStart adxStart;
@@ -35,6 +35,7 @@ public abstract class BaseShowStartAdsManager {
         Log.d(TAG, "showStartAds Call");
         if (KeysAds.IS_SKIP_START_ADS ||
                 (activity == null || AdsUtils.isDoNotShowAds() || !BaseUtils.isOnline())) {
+            Log.d(TAG, "SKIP show: offline, vip ... ");
             return;
         }
 

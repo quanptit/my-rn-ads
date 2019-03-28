@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {requireNativeComponent, Text, View, StyleSheet, ViewProperties, StyleProp, ViewStyle} from 'react-native'
+import {requireNativeComponent, Text, View, StyleSheet, StyleProp, ViewStyle} from 'react-native'
 import {BannerAdsView} from "./BannerAdsView";
 import {RNAdsUtils} from "./RNAdsUtils";
 import {isEqual} from "lodash"
@@ -10,6 +10,7 @@ let NativeAdsViewRef: any = requireNativeComponent('NativeAdsView');
 interface Props {
     typeAds?: number
     allowBannerBackup?: boolean
+    skipCacheNative?: boolean
     isAlwayPreferNative?: boolean
     delayTime?: boolean
     isScroll?: boolean
@@ -28,7 +29,8 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
     private isPreferShowBanner: boolean;
     static defaultProps = {
         typeAds: 3,
-        allowBannerBackup: true
+        allowBannerBackup: true,
+        skipCacheNative: false
     };
 
     constructor(props) {
@@ -49,7 +51,8 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
 
         if (!this.isPreferShowBanner) {
             this.isCachedNativeAds = await RNAdsUtils.canShowNativeAds(this.props.typeAds);
-            RNAdsUtils.cacheNativeAdsIfNeed(this.props.typeAds);
+            if (!this.props.skipCacheNative) // noinspection JSIgnoredPromiseFromCall
+                RNAdsUtils.cacheNativeAdsIfNeed(this.props.typeAds);
         }
         this.setState({isLoading: false});
     }
