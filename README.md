@@ -20,15 +20,33 @@ Copy project AppShareLibs:  react-native-my-libs\Template\AppShareLibs vào thư
 
 Trong file setting của android project thêm nội dung sau:
 ```
+gradle.ext.ads = "mopub" // upltv, epom, mopub, small
+def addAdsProject() {
+    include ':my-rn-ads-base'
+    project(':my-rn-ads-base').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_base')
+    if (gradle.ext.ads == "upltv") {
+        include ':my-rn-ads'
+        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_upltv')
+    } else if (gradle.ext.ads == "epom") {
+        include ':my-rn-ads'
+        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_epom')
+    } else if (gradle.ext.ads == "small") {
+        include ':my-rn-ads'
+        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_small')
+    } else {
+        include ':MopubFacebookAudienceNetworkMediation'
+        project(':MopubFacebookAudienceNetworkMediation').projectDir = new File('S:/Codes/react-native-my-libs/MopubFacebookAudienceNetworkMediation')
+        include ':my-rn-ads'
+        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android')
+    }
+}
+
+
 include ':BaseLibs'
 project(':BaseLibs').projectDir = new File('S:/Codes/libs/ReactNativeLibs/BaseLibs')
 include ':AppShareLibs'
 
-include ':MopubFacebookAudienceNetworkMediation'
-project(':MopubFacebookAudienceNetworkMediation').projectDir = new File('S:/Codes/react-native-my-libs/MopubFacebookAudienceNetworkMediation')
-include ':my-rn-ads'
-project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android') // mopub
-
+addAdsProject()
 ```
 
 ##### làm cho mọi Application đang sử dụng phải kế thừa ApplicationContainAds

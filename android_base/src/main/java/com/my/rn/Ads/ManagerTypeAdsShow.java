@@ -29,6 +29,7 @@ public class ManagerTypeAdsShow {
     private static final int FB_Mopub_Admob_ADX = 1;
     private static final int Admob_ADX_FB_Mopub = 2;
     private static final int Mopub_ADX_FB_Admob = 3;
+    private static final int FB_Admob_Mopub_ADX = 4;
 
     /**
      * Thứ tự show theo thứ tự của mảng. 0 sẽ là đầu tiên
@@ -43,6 +44,8 @@ public class ManagerTypeAdsShow {
                 return new int[]{TYPE_FB, TYPE_MOPUB, TYPE_ADMOB, TYPE_ADX};
             case Mopub_ADX_FB_Admob:
                 return new int[]{TYPE_MOPUB, TYPE_ADX, TYPE_FB, TYPE_ADMOB};
+            case FB_Admob_Mopub_ADX:
+                return new int[]{TYPE_FB, TYPE_ADMOB, TYPE_MOPUB, TYPE_ADX};
             default:
                 return new int[]{TYPE_MOPUB, TYPE_ADMOB, TYPE_ADX, TYPE_FB};
         }
@@ -177,7 +180,7 @@ public class ManagerTypeAdsShow {
 
     public static int getTypeShowFullStart(int index) {
         int typeOrderShowInSetting = PreferenceUtils.getIntSetting(full_start, KeysAds.ORDER_DEFALT_FULL_START);
-//        typeOrderShowInSetting = Mopub_ADX_FB_Admob;
+//        typeOrderShowInSetting = Mopub_FB_Admob_ADX; //TOD
         return getTypeShow(index, typeOrderShowInSetting);
     }
 
