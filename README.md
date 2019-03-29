@@ -91,6 +91,15 @@ Native sẽ luôn là Mopub. Các setting large_native, small_native là để c
 key_start: Có thể có hoặc không. Setting giá trị key cho ads start 
 
 ### Cập nhật từ ứng dụng cũ
+- ở ứng dụng cũ vẫn cần thêm: my-rn-base-utils. nhưng không cần tham chiếu đến native project vì đã có sẵn ở ứng dụng cũ
+```javascript
+Thêm code sau trong RNCommonUtilsModule.java là được
+
+    @ReactMethod
+    public void isVIPUser(Promise promise) {
+        promise.resolve(PreferenceUtils.getBooleanSetting("IS_VIP", false));
+    }
+```
 - tìm kiếm import RNAdsUtils ==> import RNAdsUtils from "my-rn-ads/RNAdsUtils"  
 - import NativeAdsView => import NativeAdsView from "my-rn-ads/NativeAdsView"
 import BannerAdsView => import BannerAdsView from "my-rn-ads/BannerAdsView"
