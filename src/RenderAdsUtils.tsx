@@ -2,7 +2,7 @@ import * as React from "react";
 import {NativeAdsView} from "./NativeAdsView";
 import {View} from "react-native";
 import {BannerAdsView} from "./BannerAdsView";
-import {AdsObj} from "./Type";
+import {AdsObj} from "my-rn-base-utils";
 
 export class RenderAdsUtils {
 
