@@ -56,7 +56,8 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
             this.isCachedNativeAds = await RNAdsUtils.canShowNativeAds(this.props.typeAds);
             if (!this.props.skipCacheNative) // noinspection JSIgnoredPromiseFromCall
                 RNAdsUtils.cacheNativeAdsIfNeed(this.props.typeAds);
-        } else if (this.props.allowBannerBackup === false) {
+        }
+        if (!this.isCachedNativeAds && this.props.allowBannerBackup === false) {
             this.offlineAds = await OfflineAdsSetting.getPreferAds(true);
         }
         this.setState({isLoading: false});
@@ -75,9 +76,11 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
             return this._renderNativeView();
 
         if (this.props.allowBannerBackup === false) {
-            return <RowOfflineAds style={{height: this.state.height}}
-                                  myAdsObj={this.offlineAds}/>;
-            // return null;
+            if (this.offlineAds != null)
+                return <RowOfflineAds style={{height: this.state.height}}
+                                      myAdsObj={this.offlineAds}/>;
+            else
+                return null;
         }
 
         if (this.state.height > 200)
