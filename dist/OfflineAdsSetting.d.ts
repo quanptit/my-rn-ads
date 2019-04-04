@@ -5,7 +5,7 @@ export declare class OfflineAdsSetting {
      * Thêm cái Prefer Ads vào danh sách
      */
     static addMyAdsToList(listItem: any[]): Promise<boolean>;
-    /**isOfflineAds để xác định ads này là show nếu user offline, chứ ko phải cái preffer ads*/
+    /**isOfflineAds = true ==>  lấy cả trong json.preferApp + json.tieng_anh*/
     static getPreferAds(isOfflineAds: boolean): Promise<any>;
     private static _getPreferAdsFromList;
     static showMyAds(packageName: string): Promise<void>;

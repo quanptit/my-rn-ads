@@ -21,6 +21,7 @@ export declare class NativeAdsView extends Component<Props, {
     static TYPE_DETAIL_CUSTOM: number;
     static TYPE_DETAIL_VOCA: number;
     private isCachedNativeAds;
+    private offlineAds?;
     private isPreferShowBanner;
     static defaultProps: {
         typeAds: number;

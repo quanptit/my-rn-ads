@@ -4,6 +4,8 @@ import {BannerAdsView} from "./BannerAdsView";
 import {RNAdsUtils} from "./RNAdsUtils";
 import {isEqual} from "lodash"
 import {Col} from "my-rn-base-component";
+import {OfflineAdsSetting} from "./OfflineAdsSetting";
+import {RowOfflineAds} from "./RowOfflineAds";
 
 let NativeAdsViewRef: any = requireNativeComponent('NativeAdsView');
 
@@ -26,6 +28,7 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
     public static TYPE_DETAIL_VOCA = 12;
 
     private isCachedNativeAds: boolean;
+    private offlineAds?: any;
     private isPreferShowBanner: boolean;
     static defaultProps = {
         typeAds: 3,
@@ -53,6 +56,8 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
             this.isCachedNativeAds = await RNAdsUtils.canShowNativeAds(this.props.typeAds);
             if (!this.props.skipCacheNative) // noinspection JSIgnoredPromiseFromCall
                 RNAdsUtils.cacheNativeAdsIfNeed(this.props.typeAds);
+        } else if (this.props.allowBannerBackup === false) {
+            this.offlineAds = await OfflineAdsSetting.getPreferAds(true);
         }
         this.setState({isLoading: false});
     }
@@ -69,8 +74,11 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
         if (this.isCachedNativeAds)
             return this._renderNativeView();
 
-        if (this.props.allowBannerBackup === false)
-            return null;
+        if (this.props.allowBannerBackup === false) {
+            return <RowOfflineAds style={{height: this.state.height}}
+                                  myAdsObj={this.offlineAds}/>;
+            // return null;
+        }
 
         if (this.state.height > 200)
             return this._renderRectBannerAds();

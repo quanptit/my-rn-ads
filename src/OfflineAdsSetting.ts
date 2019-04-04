@@ -25,7 +25,7 @@ export class OfflineAdsSetting {
         return false
     }
 
-    /**isOfflineAds để xác định ads này là show nếu user offline, chứ ko phải cái preffer ads*/
+    /**isOfflineAds = true ==>  lấy cả trong json.preferApp + json.tieng_anh*/
     public static async getPreferAds(isOfflineAds: boolean) {
         let filePath = RNFetchBlob.fs.dirs.CacheDir + "/ads";
         if (await FileUtils.exists(filePath)) {
