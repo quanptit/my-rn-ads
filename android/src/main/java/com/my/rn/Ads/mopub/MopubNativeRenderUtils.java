@@ -28,6 +28,7 @@ class MopubNativeRenderUtils {
                 .privacyInformationIconImageId(R.id.native_privacy_information_icon_image)
                 .build()));
 
+
         moPubNative.registerAdRenderer(new FacebookAdRenderer(
                 new FacebookAdRenderer.FacebookViewBinder.Builder(R.layout.v_fb_native_ads_banner_large)
                         .textId(R.id.native_ad_body)
@@ -55,10 +56,6 @@ class MopubNativeRenderUtils {
         }else{
             adView = nativeAd.createAdView(context, parent);
         }
-//        else if (render instanceof MoPubVideoNativeAdRenderer) {
-//            adView = inflater.inflate(R.layout.v_native_video_mopub_ads, parent, false);
-//        } else
-//            adView = inflater.inflate(R.layout.v_native_static_mopub_ads, parent, false);
 
         parent.removeAllViews();
         if (adView != null) {

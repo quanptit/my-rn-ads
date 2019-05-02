@@ -24,6 +24,7 @@ import javax.annotation.Nullable;
 import java.util.Map;
 
 class MOPUBBannerUI extends MoPubView implements MoPubView.BannerAdListener, LifecycleEventListener {
+    private static final String TAG = "MOPUBBannerUI";
     private ReactContext mContext;
     private RCTEventEmitter mEventEmitter;
     private String typeAds;
@@ -40,9 +41,10 @@ class MOPUBBannerUI extends MoPubView implements MoPubView.BannerAdListener, Lif
     public void setTypeAds(String typeAds) {
         if (!TextUtils.isEmpty(this.typeAds)) return;
         this.typeAds = typeAds;
-        if (typeAds.equals("RECTANGLE_HEIGHT_250"))
+        if (typeAds.equals("RECTANGLE_HEIGHT_250")) {
             this.setAdUnitId(KeysAds.getMOPUB_BANNER_LARGE());
-        else
+            this.setAutorefreshEnabled(false);
+        } else
             this.setAdUnitId(KeysAds.getMOPUB_BANNER());
         Log.d("MOPUBBannerUI", "setTypeAds and load ads");
         this.loadAd();
@@ -72,11 +74,15 @@ class MOPUBBannerUI extends MoPubView implements MoPubView.BannerAdListener, Lif
     @Override
     public void onBannerLoaded(MoPubView banner) {
         int withDpi = banner.getAdWidth();
+        if (withDpi < 320)
+            withDpi = 320;
         int heightDpi = banner.getAdHeight();
         int width = Dips.asIntPixels(withDpi, this.getContext());
         int height = Dips.asIntPixels(heightDpi, this.getContext());
         int left = banner.getLeft();
         int top = banner.getTop();
+//        Log.d(TAG, "left: " + left + ", top: " + top);
+//        left = 0;
         banner.measure(width, height);
         banner.layout(left, top, left + width, top + height);
         if (isAddAds)

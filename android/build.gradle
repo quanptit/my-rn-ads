@@ -18,6 +18,7 @@ android {
 dependencies {
     api project(':my-rn-ads-base')
     api project(':MopubFacebookAudienceNetworkMediation')
+    // Admob
     implementation 'com.mopub.mediation:admob:17.1.2.4'
 
 }

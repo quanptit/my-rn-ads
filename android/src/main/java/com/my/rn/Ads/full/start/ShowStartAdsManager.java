@@ -36,7 +36,7 @@ public class ShowStartAdsManager extends BaseShowStartAdsManager {
     }
 
     private synchronized void showMopubStart(final Activity activity, final IAdLoaderCallback iAdLoaderCallback) {
-        if (TextUtils.isEmpty(KeysAds.getMOPUB_FULL_CENTER())) {
+        if (TextUtils.isEmpty(KeysAds.getMOPUB_FULL_START())) {
             UiThreadUtil.runOnUiThread(new Runnable() {
                 @Override public void run() {
                     iAdLoaderCallback.onAdsFailedToLoad();
