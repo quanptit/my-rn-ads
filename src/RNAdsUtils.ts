@@ -80,10 +80,7 @@ export class RNAdsUtils {
         console.log("Call showFullCenterAds");
         if (await RNCommonUtils.isVIPUser())
             return false;
-        if (Platform.OS === "ios")
-            return NativeModules.RNCommonUtilsIOS.showFullCenterAds();
-        else
-            return NativeModules.RNAdsUtils.showFullCenterAds();
+        return NativeModules.RNAdsUtils.showFullCenterAds();
     }
 
     static async showFullCenterAdsAndBackPress(showRateDialogIfNoAds: {
@@ -111,22 +108,14 @@ export class RNAdsUtils {
 
     // Reward Ads
     static loadRewardVideoAds() {
-        if (Platform.OS === "ios")
-            NativeModules.RNCommonUtilsIOS.loadRewardVideoAds();
-        else
-            NativeModules.RNAdsUtils.loadRewardVideoAds();
+        NativeModules.RNAdsUtils.loadRewardVideoAds();
     }
 
     static showRewardVideoAds() {
-        if (Platform.OS === "ios")
-            NativeModules.RNCommonUtilsIOS.showRewardVideoAds();
-        else
-            NativeModules.RNAdsUtils.showRewardVideoAds();
+        NativeModules.RNAdsUtils.showRewardVideoAds();
     }
 
     static canShowRewardVideoAds(): Promise<boolean> {
-        if (Platform.OS === "ios")
-            return NativeModules.RNCommonUtilsIOS.canShowRewardVideoAds();
         return NativeModules.RNAdsUtils.canShowRewardVideoAds();
     }
 
