@@ -12,7 +12,6 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
-import com.baseLibs.utils.PreferenceUtils;
 import com.my.rn.Ads.base.R;
 
 public class SplashActivity extends FragmentActivity {
@@ -49,10 +48,6 @@ public class SplashActivity extends FragmentActivity {
             tvAppName.setText(appTitle);
         }
 
-//        boolean containSetting = PreferenceUtils.contains(ManagerTypeAdsShow.full_start);
-//        int time = PreferenceUtils.contains(ManagerTypeAdsShow.full_start) ? 9000 : 12000;
-//        startIncreasePercent(containSetting ? 5000 : 8000);
-
         int time = KeysAds.SPLASH_MAX_TIME;
         startIncreasePercent(time);
         Log.d(TAG, "onCreate Start delay finish time = " + time);
@@ -79,13 +74,16 @@ public class SplashActivity extends FragmentActivity {
         try {
             if (instance != null) {
                 Log.d(TAG, "finishActivity");
-                instance.finish();
-                instance = null;
+                instance.killActivity();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         instance = null;
+    }
+
+    private void killActivity() {
+        this.finish();
     }
 
     public static boolean isRunning() {
@@ -94,7 +92,6 @@ public class SplashActivity extends FragmentActivity {
 
     @Override public void onBackPressed() {
     }
-
 
     @Override
     protected void onDestroy() {

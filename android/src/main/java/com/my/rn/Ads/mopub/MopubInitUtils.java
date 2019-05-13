@@ -33,7 +33,8 @@ public class MopubInitUtils {
                 Log.d("MopubInitUtils", "MoPub onInitializationFinished");
                 if (listMopubInitializationListener != null) {
                     for (SdkInitializationListener initializationListener : listMopubInitializationListener) {
-                        initializationListener.onInitializationFinished();
+                        if (initializationListener != null)
+                            initializationListener.onInitializationFinished();
                     }
                     listMopubInitializationListener.clear();
                 }

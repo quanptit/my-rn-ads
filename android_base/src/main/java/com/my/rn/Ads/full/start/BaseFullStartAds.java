@@ -82,6 +82,7 @@ abstract class BaseFullStartAds {
     }
 
     protected void onAdClosed() {
+        Log.d(getLogTAG(), "onAdClosed");
         destroy();
     }
     //endregion

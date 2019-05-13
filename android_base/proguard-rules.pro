@@ -42,6 +42,17 @@
 
 -dontwarn com.mopub.**
 
+#========== Smaato =========
+-assumenosideeffects class android.util.Log {
+    public static *** d(...);
+    public static *** v(...);
+    public static *** i(...);
+}
+
+-dontwarn com.smaato.soma.SomaUnityPlugin*
+-keep class com.smaato.soma.** { *; }
+-dontwarn com.millennialmedia**
+
 #================ Ironsource =========
 -keepclassmembers class com.ironsource.sdk.controller.IronSourceWebView$JSInterface {
     public *;

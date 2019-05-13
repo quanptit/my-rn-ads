@@ -17,8 +17,13 @@ android {
 
 dependencies {
     api project(':my-rn-ads-base')
+    implementation project(':mopub_smaato')
     api project(':MopubFacebookAudienceNetworkMediation')
     // Admob
     implementation 'com.mopub.mediation:admob:17.1.2.4'
+
+    // ironSource
+    implementation 'com.ironsource.sdk:mediationsdk:6.8.4@jar'
+    implementation 'com.mopub.mediation:ironsource:6.8.4.0'
 
 }

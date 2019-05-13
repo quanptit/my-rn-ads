@@ -7,6 +7,7 @@ import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
 import com.baseLibs.utils.BaseUtils;
 import com.facebook.react.bridge.UiThreadUtil;
+import com.ironsource.mediationsdk.integration.IntegrationHelper;
 import com.mopub.common.SdkInitializationListener;
 import com.my.rn.Ads.*;
 import com.my.rn.Ads.full.center.AdsFullManager;
