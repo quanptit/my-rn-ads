@@ -47,7 +47,8 @@ public class ShowStartAdsManager extends BaseShowStartAdsManager {
         }
         ApplicationContainAds.getMopubInitUtils().initMopub(new SdkInitializationListener() {
             @Override public void onInitializationFinished() {
-                mopubStart.showStartAds(activity, iAdLoaderCallback);
+                if (mopubStart != null)
+                    mopubStart.showStartAds(activity, iAdLoaderCallback);
             }
         });
     }
