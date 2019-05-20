@@ -31,7 +31,7 @@ public class AdxStart extends BaseFullStartAds {
         interstitialAdsStart.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
-                AdxStart.this.onAdLoaded();
+                AdxStart.this.onAdLoaded(iAdLoaderCallback);
             }
 
             @Override
@@ -56,12 +56,16 @@ public class AdxStart extends BaseFullStartAds {
         interstitialAdsStart.loadAd(adRequest.build());
     }
 
-    @Override protected void adsShow() throws Exception {
+    @Override protected boolean isCached() {
+        return interstitialAdsStart != null && interstitialAdsStart.isLoaded();
+    }
+
+    @Override protected void showAds() throws Exception {
         if (interstitialAdsStart != null)
             interstitialAdsStart.show();
     }
 
-    @Override public void destroy() {
+    @Override public void destroyAds() {
         interstitialAdsStart = null;
     }
 }

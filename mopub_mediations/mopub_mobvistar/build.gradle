@@ -1,0 +1,26 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+}
+dependencies {
+    api project(':AppShareLibs')
+    api project(':MopubFacebookAudienceNetworkMediation')
+    implementation files('libs/mintegral_alphab.aar')
+    implementation files('libs/mintegral_common.aar')
+    implementation files('libs/mintegral_interstitialvideo.aar')
+    implementation files('libs/mintegral_videocommon.aar')
+    implementation files('libs/mintegral_videojs.aar')
+    implementation files('libs/mintegral_playercommon.aar')
+    implementation files('libs/mintegral_reward.aar')
+    implementation files('libs/mintegral_mtgjscommon.aar')
+    implementation files('libs/mintegral_mtgdownloads.aar')
+}

@@ -4,18 +4,22 @@ import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
 import com.appsharelib.KeysAds;
-import com.baseLibs.BaseApplication;
 import com.baseLibs.utils.PreferenceUtils;
 import com.facebook.react.bridge.UiThreadUtil;
+import com.my.rn.Ads.BaseApplicationContainAds;
 import com.my.rn.Ads.IAdLoaderCallback;
-import com.my.rn.Ads.SplashActivity;
+import com.my.rn.Ads.full.center.PromiseSaveObj;
 
 abstract class BaseFullStartAds {
+    private PromiseSaveObj promise;
+
     protected abstract void adsInitAndLoad(Activity activity, IAdLoaderCallback iAdLoaderCallback) throws Exception;
 
-    protected abstract void adsShow() throws Exception;
+    protected abstract void showAds() throws Exception;
 
-    public abstract void destroy();
+    protected abstract boolean isCached();
+
+    protected abstract void destroyAds();
 
     public abstract String getKeyAds();
 
@@ -25,7 +29,7 @@ abstract class BaseFullStartAds {
         return TextUtils.isEmpty(getKeyAds());
     }
 
-    public void showStartAds(Activity activity, final IAdLoaderCallback iAdLoaderCallback) {
+    public void loadStartAds(Activity activity, final IAdLoaderCallback iAdLoaderCallback) {
         if (isSkipThisAds()) {
             if (iAdLoaderCallback != null)
                 iAdLoaderCallback.onAdsFailedToLoad();
@@ -33,59 +37,75 @@ abstract class BaseFullStartAds {
         }
         try {
             adsInitAndLoad(activity, iAdLoaderCallback);
-            Log.d(getLogTAG(), "Show start: start load Ads");
+            Log.d(getLogTAG(), "loadStartAds: start load Ads");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    //region =========== ads  Event ==========
-    protected void onAdLoaded() {
-        Log.d(getLogTAG(), "onAdLoaded");
-        if (SplashActivity.isRunning()) {
+    public boolean showAdsIfCache(PromiseSaveObj promise) {
+        if (isCached()) {
             try {
-                adsShow();
+                this.promise = promise;
+                showAds();
+                return true;
             } catch (Exception e) {
                 e.printStackTrace();
+                return false;
             }
-        } else {
-            Log.d(getLogTAG(), "Time out: ==> Not show. time load = "
-                    + (System.currentTimeMillis() - BaseShowStartAdsManager.timeCallShowStart));
-            destroy();
         }
+        return false;
+    }
+
+
+    //region =========== ads  Event ==========
+    protected void onAdLoaded(final IAdLoaderCallback iAdLoaderCallback) {
+        Log.d(getLogTAG(), "onAdLoaded");
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override public void run() {
+                try {
+                    if (iAdLoaderCallback != null)
+                        iAdLoaderCallback.onAdsLoaded();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     protected void onAdFailedToLoad(String errorMsg, final IAdLoaderCallback iAdLoaderCallback) {
         Log.d(getLogTAG(), "onAdFailedToLoad: " + errorMsg);
-        if (SplashActivity.isRunning()) {
-            if (System.currentTimeMillis() - BaseShowStartAdsManager.timeCallShowStart < 3000) {
-                BaseApplication.getHandler().post(new Runnable() {
-                    @Override public void run() {
-                        if (iAdLoaderCallback != null)
-                            iAdLoaderCallback.onAdsFailedToLoad();
-                    }
-                });
-            } else
-                SplashActivity.finishActivity();
-        }
-        destroy();
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override public void run() {
+                try {
+                    if (iAdLoaderCallback != null)
+                        iAdLoaderCallback.onAdsFailedToLoad();
+                    destroy();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     protected void onAdOpened() {
         Log.d(getLogTAG(), "onAdOpened");
-        UiThreadUtil.runOnUiThread(new Runnable() {
-            @Override public void run() {
-                SplashActivity.finishActivity();
-            }
-        });
         PreferenceUtils.saveLongSetting(KeysAds.LAST_TIME_SHOW_ADS, System.currentTimeMillis());
+        if (this.promise != null) {
+            this.promise.resolve(true);
+            this.promise = null;
+        }
     }
 
     protected void onAdClosed() {
         Log.d(getLogTAG(), "onAdClosed");
-        destroy();
+        BaseApplicationContainAds.getInstance().destroyBaseShowStartAdsManager();
     }
     //endregion
 
+    public void destroy() {
+        this.promise = null;
+        destroyAds();
+    }
 
 }

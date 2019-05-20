@@ -48,23 +48,27 @@ public abstract class BaseAdsFullManager {
      * if (!isShowed)
      * isShowed = fbFullAdsManager.showAdsCenterIfCache(promiseSaveObj);
      */
-    protected abstract boolean showAdsCenterIfCache(PromiseSaveObj promiseSaveObj);
+    protected abstract boolean showAdsCenterIfCache(final Activity activity, PromiseSaveObj promiseSaveObj) throws Exception;
 
-    protected abstract void cacheAdsCenterExtend(Activity activity, int typeAds, @Nullable IAdLoaderCallback iAdLoaderCallback);
+    protected abstract void cacheAdsCenterExtend(Activity activity, int typeAds, @Nullable IAdLoaderCallback iAdLoaderCallback) throws Exception;
 
     // region center =============
     private void cacheAdsCenter(Activity activity, int index, @Nullable IAdLoaderCallback iAdLoaderCallback) {
         int typeAds = ManagerTypeAdsShow.getTypeShowFullCenter(index);
-        switch (typeAds) {
-            case ManagerTypeAdsShow.TYPE_ADMOB:
-                getAdmobCenter().loadCenterAds(activity, iAdLoaderCallback);
-                break;
-            case ManagerTypeAdsShow.TYPE_ADX:
-                getADXCenter().loadCenterAds(activity, iAdLoaderCallback);
-                break;
-            default:
-                cacheAdsCenterExtend(activity, typeAds, iAdLoaderCallback);
-                break;
+        try {
+            switch (typeAds) {
+                case ManagerTypeAdsShow.TYPE_ADMOB:
+                    getAdmobCenter().loadCenterAds(activity, iAdLoaderCallback);
+                    break;
+                case ManagerTypeAdsShow.TYPE_ADX:
+                    getADXCenter().loadCenterAds(activity, iAdLoaderCallback);
+                    break;
+                default:
+                    cacheAdsCenterExtend(activity, typeAds, iAdLoaderCallback);
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -78,11 +82,16 @@ public abstract class BaseAdsFullManager {
             return;
         }
         try {
-            if (!skipCheck && (AdsUtils.isDoNotShowAds() || !canShowAdsCenter()))
+            if (!skipCheck && (AdsUtils.isDoNotShowAds() || !canShowAdsCenter(true)))
                 return;
+            final IAdLoaderCallback iAdLoaderCallback4 = new IAdLoaderCallback() {
+                @Override public void onAdsFailedToLoad() {
+                    cacheAdsCenter(activity, 4, null);
+                }
+            };
             final IAdLoaderCallback iAdLoaderCallback3 = new IAdLoaderCallback() {
                 @Override public void onAdsFailedToLoad() {
-                    cacheAdsCenter(activity, 3, null);
+                    cacheAdsCenter(activity, 3, iAdLoaderCallback4);
                 }
             };
             final IAdLoaderCallback iAdLoaderCallback2 = new IAdLoaderCallback() {
@@ -108,13 +117,13 @@ public abstract class BaseAdsFullManager {
 
     public boolean showAdsCenter(final Activity activity, final boolean skipCheck, final Promise promise) {
         PromiseSaveObj promiseSaveObj = new PromiseSaveObj(promise);
-        if (!skipCheck && (AdsUtils.isDoNotShowAds() || !canShowAdsCenter())) {
+        if (!skipCheck && (AdsUtils.isDoNotShowAds() || !canShowAdsCenter(false))) {
             promiseSaveObj.resolve(false);
             return false;
         }
         boolean isShowed;
         try {
-            isShowed = showAdsCenterIfCache(promiseSaveObj);
+            isShowed = showAdsCenterIfCache(activity, promiseSaveObj);
             if (!isShowed && admobCenter != null)
                 isShowed = admobCenter.showAdsCenterIfCache(promiseSaveObj);
             if (!isShowed && adxCenter != null)
@@ -145,14 +154,16 @@ public abstract class BaseAdsFullManager {
         }
         destroyExtend();
     }
+
     protected abstract void destroyExtend();
 
-    private static boolean canShowAdsCenter() {
+    private static boolean canShowAdsCenter(boolean checkForCache) {
 //        if (true)
 //            return true; //TODOs
 
         long lastTimeShowAds = PreferenceUtils.getLongSetting(KeysAds.LAST_TIME_SHOW_ADS, 0);
-        if (System.currentTimeMillis() - lastTimeShowAds > 5 * 60 * 1000)  // 1.5phut
+        long time = checkForCache ? 3 * 60 * 1000 : 5 * 60 * 1000;
+        if (System.currentTimeMillis() - lastTimeShowAds > time)
             return true;
         return false;
     }

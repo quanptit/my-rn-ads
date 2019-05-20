@@ -9,6 +9,7 @@ import com.my.rn.Ads.AdsUtils;
 import com.my.rn.Ads.BaseApplicationContainAds;
 import com.my.rn.Ads.ManagerTypeAdsShow;
 import com.my.rn.Ads.full.center.BaseAdsFullManager;
+import com.my.rn.Ads.full.start.BaseShowStartAdsManager;
 
 public abstract class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
     private static final String TAG = "BaseRNAdsModule";
@@ -17,6 +18,38 @@ public abstract class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule im
 
     @ReactMethod
     public abstract void initAds(final String urlAdsSetting, final Promise promise);
+
+    @ReactMethod
+    public void loadStartAds(final Promise promise) {
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override public void run() {
+                try {
+                    BaseShowStartAdsManager baseShowStartAdsManager = BaseShowStartAdsManager.getInstance();
+                    if (baseShowStartAdsManager != null)
+                        baseShowStartAdsManager.loadStartAds(getSafeActivity(), promise);
+                    else
+                        promise.resolve(false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    promise.resolve(false);
+                }
+            }
+        });
+    }
+
+    @ReactMethod
+    public void showStartAdsIfCache(final Promise promise) {
+        BaseShowStartAdsManager baseShowStartAdsManager = BaseShowStartAdsManager.getInstance();
+        try {
+            if (baseShowStartAdsManager != null)
+                baseShowStartAdsManager.showStartIfCache(getSafeActivity(), promise);
+            else
+                promise.resolve(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            promise.resolve(false);
+        }
+    }
 
     // region Full screen and Reward Ads
     @ReactMethod
@@ -44,6 +77,7 @@ public abstract class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule im
         final Activity activity = getSafeActivity();
         if (activity == null) {
             L.e("showFullCenterAds Fail: getSafeActivity NULL ===================");
+            promise.resolve(false);
             return;
         }
         BaseApplicationContainAds.getHandler().post(new Runnable() {

@@ -1,7 +1,6 @@
 package com.my.rn.Ads.full.start;
 
 import android.app.Activity;
-import android.text.TextUtils;
 import com.appsharelib.KeysAds;
 import com.mopub.mobileads.MoPubErrorCode;
 import com.mopub.mobileads.MoPubInterstitial;
@@ -23,7 +22,7 @@ public class MopubStart extends BaseFullStartAds {
         interstitialAdsStart.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
 
             @Override public void onInterstitialLoaded(MoPubInterstitial interstitial) {
-                MopubStart.this.onAdLoaded();
+                MopubStart.this.onAdLoaded(iAdLoaderCallback);
             }
 
             @Override public void onInterstitialFailed(MoPubInterstitial interstitial, MoPubErrorCode errorCode) {
@@ -48,12 +47,17 @@ public class MopubStart extends BaseFullStartAds {
         interstitialAdsStart.load();
     }
 
-    @Override protected void adsShow() throws Exception {
+    @Override protected boolean isCached() {
+        return interstitialAdsStart != null && interstitialAdsStart.isReady();
+    }
+
+
+    @Override protected void showAds() throws Exception {
         if (interstitialAdsStart != null)
             interstitialAdsStart.show();
     }
 
-    @Override public void destroy() {
+    @Override public void destroyAds() {
         try {
             if (interstitialAdsStart != null) {
                 interstitialAdsStart.destroy();

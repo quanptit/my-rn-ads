@@ -315,14 +315,23 @@ public *;
 -dontwarn com.appnext.**
 
 # Inmobi
+-keepattributes SourceFile,LineNumberTable
 -keep class com.inmobi.** { *; }
 -dontwarn com.inmobi.**
+-keep public class com.google.android.gms.**
+-dontwarn com.google.android.gms.**
 -dontwarn com.squareup.picasso.**
+-keep class com.google.android.gms.ads.identifier.AdvertisingIdClient{public *;}
+-keep class com.google.android.gms.ads.identifier.AdvertisingIdClient$Info{public *;}
+#skip the Picasso library classes
 -keep class com.squareup.picasso.** {*;}
 -dontwarn com.squareup.picasso.**
 -dontwarn com.squareup.okhttp.**
+#skip Moat classes
 -keep class com.moat.** {*;}
 -dontwarn com.moat.**
+#skip AVID classes
+-keep class com.integralads.avid.library.** {*;}
 
 # MMdeia
 -keepclassmembers class com.millennialmedia** {public *;}
@@ -608,3 +617,30 @@ public *;
 # amazon
 -keep class com.amazon.device.ads.** { *; }
 # amazon end
+
+# Mobfox
+-keep class com.mobfox. {*;}
+-keep class com.mobfox.adapter. {*;}
+-keep class com.mobfox.sdk. {*;}
+
+# Movistar
+ -keepattributes Signature
+    -keepattributes *Annotation*
+    -keep class com.mintegral.** {*; }
+    -keep interface com.mintegral.** {*; }
+    -keep class android.support.v4.** { *; }
+    -dontwarn com.mintegral.**
+    -keep class **.R$* { public static final int mintegral*; }
+    -keep class com.alphab.** {*; }
+    -keep interface com.alphab.** {*; }
+
+# Fairbid
+-keep class com.heyzap.** {*;}
+-keepclassmembers class com.heyzap.** {*;}
+-keepclasseswithmembernames class com.heyzap.** {*;}
+
+-keep class com.fyber.inneractive.** {*;}
+-keepclassmembers class com.fyber.inneractive.** {*;}
+-keepclasseswithmembernames class com.fyber.inneractive.** {*;}
+
+-dontwarn com.heyzap.**

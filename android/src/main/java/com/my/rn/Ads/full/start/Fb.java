@@ -30,7 +30,7 @@ public class Fb extends BaseFullStartAds {
         interstitialAdsStart = new InterstitialAd(BaseApplication.getAppContext(), getKeyAds());
         interstitialAdsStart.setAdListener(new InterstitialAdListener() {
             @Override public void onAdLoaded(Ad ad) {
-                Fb.this.onAdLoaded();
+                Fb.this.onAdLoaded(iAdLoaderCallback);
             }
 
             @Override public void onInterstitialDisplayed(Ad ad) {
@@ -56,12 +56,16 @@ public class Fb extends BaseFullStartAds {
         interstitialAdsStart.loadAd();
     }
 
-    @Override protected void adsShow() throws Exception {
+    @Override protected boolean isCached() {
+        return interstitialAdsStart != null && interstitialAdsStart.isAdLoaded();
+    }
+
+    @Override protected void showAds() throws Exception {
         if (interstitialAdsStart != null)
             interstitialAdsStart.show();
     }
 
-    @Override public void destroy() {
+    @Override protected void destroyAds() {
         try {
             if (interstitialAdsStart != null) {
                 interstitialAdsStart.destroy();
@@ -71,5 +75,4 @@ public class Fb extends BaseFullStartAds {
             e.printStackTrace();
         } catch (Error error) {error.printStackTrace();}
     }
-
 }

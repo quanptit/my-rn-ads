@@ -79,7 +79,6 @@ public class SplashActivity extends FragmentActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        instance = null;
     }
 
     private void killActivity() {

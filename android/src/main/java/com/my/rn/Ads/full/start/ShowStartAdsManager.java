@@ -2,15 +2,11 @@ package com.my.rn.Ads.full.start;
 
 import android.app.Activity;
 import android.text.TextUtils;
-import android.util.Log;
 import com.appsharelib.KeysAds;
-import com.baseLibs.BaseApplication;
-import com.baseLibs.utils.BaseUtils;
 import com.facebook.react.bridge.UiThreadUtil;
-import com.ironsource.mediationsdk.integration.IntegrationHelper;
 import com.mopub.common.SdkInitializationListener;
 import com.my.rn.Ads.*;
-import com.my.rn.Ads.full.center.AdsFullManager;
+import com.my.rn.Ads.full.center.PromiseSaveObj;
 
 public class ShowStartAdsManager extends BaseShowStartAdsManager {
     private Fb fb;
@@ -21,13 +17,13 @@ public class ShowStartAdsManager extends BaseShowStartAdsManager {
         mopubStart = new MopubStart();
     }
 
-    @Override protected void showStartAdsExtend(Activity activity, int type, IAdLoaderCallback iAdLoaderCallback) {
+    @Override protected void loadStartAdssExtend(Activity activity, int type, IAdLoaderCallback iAdLoaderCallback) {
         switch (type) {
             case ManagerTypeAdsShow.TYPE_MOPUB:
-                showMopubStart(activity, iAdLoaderCallback);
+                loadMopubStart(activity, iAdLoaderCallback);
                 break;
             case ManagerTypeAdsShow.TYPE_FB:
-                fb.showStartAds(activity, iAdLoaderCallback);
+                fb.loadStartAds(activity, iAdLoaderCallback);
                 break;
             default:
                 if (iAdLoaderCallback != null)
@@ -36,7 +32,7 @@ public class ShowStartAdsManager extends BaseShowStartAdsManager {
         }
     }
 
-    private synchronized void showMopubStart(final Activity activity, final IAdLoaderCallback iAdLoaderCallback) {
+    private synchronized void loadMopubStart(final Activity activity, final IAdLoaderCallback iAdLoaderCallback) {
         if (TextUtils.isEmpty(KeysAds.getMOPUB_FULL_START())) {
             UiThreadUtil.runOnUiThread(new Runnable() {
                 @Override public void run() {
@@ -48,9 +44,25 @@ public class ShowStartAdsManager extends BaseShowStartAdsManager {
         ApplicationContainAds.getMopubInitUtils().initMopub(new SdkInitializationListener() {
             @Override public void onInitializationFinished() {
                 if (mopubStart != null)
-                    mopubStart.showStartAds(activity, iAdLoaderCallback);
+                    mopubStart.loadStartAds(activity, iAdLoaderCallback);
             }
         });
+    }
+
+    @Override protected boolean showStartAdsExtend(Activity activity, PromiseSaveObj promiseSaveObj) {
+        boolean isShowed;
+        if (mopubStart != null) {
+            isShowed = mopubStart.showAdsIfCache(promiseSaveObj);
+            if (isShowed) return true;
+        }
+        if (fb != null)
+            return fb.showAdsIfCache(promiseSaveObj);
+        return false;
+    }
+
+    @Override protected boolean isCachedExtend() {
+        return (mopubStart != null && mopubStart.isCached()) ||
+                (fb != null && fb.isCached());
     }
 
     @Override protected void destroyExtends() {

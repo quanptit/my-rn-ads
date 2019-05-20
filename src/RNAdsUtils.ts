@@ -18,6 +18,14 @@ export class RNAdsUtils {
         }
     }
 
+    static loadStartAds(): Promise<boolean> {
+        return NativeModules.RNAdsUtils.loadStartAds();
+    }
+
+    static showStartAdsIfCache(): Promise<boolean> {
+        return NativeModules.RNAdsUtils.showStartAdsIfCache();
+    }
+
     //region ========== Native ads ======
     /**Nếu setting cái quảng cáo banner ưu tiên hiển thị, thay vì cái native thì sẽ bỏ qua ko tải quảng cáo native*/
     static async loadNativeAdsWhenStartAppIfNeed(typeAds: number): Promise<boolean> {

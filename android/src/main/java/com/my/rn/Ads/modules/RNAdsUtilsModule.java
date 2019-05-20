@@ -104,11 +104,19 @@ public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
 
     //region not change. but need override with @ReactMethod
 
+    @ReactMethod @Override public void loadStartAds(Promise promise) {
+        super.loadStartAds(promise);
+    }
+
+    @ReactMethod @Override public void showStartAdsIfCache(Promise promise) {
+        super.showStartAdsIfCache(promise);
+    }
+
     @ReactMethod @Override public void isPreferShowBanner(int typeAds, Promise promise) {
         super.isPreferShowBanner(typeAds, promise);
     }
 
-    @ReactMethod  @Override public void canShowFullCenterAds(Promise promise) {
+    @ReactMethod @Override public void canShowFullCenterAds(Promise promise) {
         super.canShowFullCenterAds(promise);
     }
 

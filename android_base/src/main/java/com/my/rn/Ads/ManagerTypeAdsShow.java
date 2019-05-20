@@ -23,6 +23,7 @@ public class ManagerTypeAdsShow {
     //    public static final int TYPE_START_APP = 3;
     //    public static final int TYPE_INMOBI = 4;
     public static final int TYPE_ADX = 5;
+    public static final int TYPE_FAIRBID = 6;
 
     //region type ads setting order ======
     private static final int Mopub_FB_Admob_ADX = 0;
@@ -30,6 +31,7 @@ public class ManagerTypeAdsShow {
     private static final int Admob_ADX_FB_Mopub = 2;
     private static final int Mopub_ADX_FB_Admob = 3;
     private static final int FB_Admob_Mopub_ADX = 4;
+    private static final int Fairbid_Mopub_FB_Admob_ADX = 5;
 
     /**
      * Thứ tự show theo thứ tự của mảng. 0 sẽ là đầu tiên
@@ -37,17 +39,19 @@ public class ManagerTypeAdsShow {
     private static int[] getOrderShow(int typeOrderShowInSetting) {
         switch (typeOrderShowInSetting) {
             case Mopub_FB_Admob_ADX:
-                return new int[]{TYPE_MOPUB, TYPE_FB, TYPE_ADMOB, TYPE_ADX};
+                return new int[]{TYPE_MOPUB, TYPE_FB, TYPE_ADMOB, TYPE_ADX, TYPE_FAIRBID};
             case Admob_ADX_FB_Mopub:
-                return new int[]{TYPE_ADMOB, TYPE_ADX, TYPE_FB, TYPE_MOPUB};
+                return new int[]{TYPE_ADMOB, TYPE_ADX, TYPE_FB, TYPE_MOPUB, TYPE_FAIRBID};
             case FB_Mopub_Admob_ADX:
-                return new int[]{TYPE_FB, TYPE_MOPUB, TYPE_ADMOB, TYPE_ADX};
+                return new int[]{TYPE_FB, TYPE_MOPUB, TYPE_ADMOB, TYPE_ADX, TYPE_FAIRBID};
             case Mopub_ADX_FB_Admob:
-                return new int[]{TYPE_MOPUB, TYPE_ADX, TYPE_FB, TYPE_ADMOB};
+                return new int[]{TYPE_MOPUB, TYPE_ADX, TYPE_FB, TYPE_ADMOB, TYPE_FAIRBID};
             case FB_Admob_Mopub_ADX:
-                return new int[]{TYPE_FB, TYPE_ADMOB, TYPE_MOPUB, TYPE_ADX};
+                return new int[]{TYPE_FB, TYPE_ADMOB, TYPE_MOPUB, TYPE_ADX, TYPE_FAIRBID};
+            case Fairbid_Mopub_FB_Admob_ADX:
+                return new int[]{TYPE_FAIRBID, TYPE_MOPUB, TYPE_FB, TYPE_ADMOB, TYPE_ADX};
             default:
-                return new int[]{TYPE_MOPUB, TYPE_ADMOB, TYPE_ADX, TYPE_FB};
+                return new int[]{TYPE_MOPUB, TYPE_ADMOB, TYPE_ADX, TYPE_FB, TYPE_FAIRBID};
         }
     }
     //endregion
@@ -174,6 +178,9 @@ public class ManagerTypeAdsShow {
                 return !TextUtils.isEmpty(KeysAds.FB_BANNER_RECT);
             return !TextUtils.isEmpty(KeysAds.FB_BANNER);
         }
+        if (type == TYPE_FAIRBID) {
+            return !TextUtils.isEmpty(KeysAds.FAIR_BID);
+        }
         return true;
     }
     //endregion
@@ -186,7 +193,7 @@ public class ManagerTypeAdsShow {
 
     public static int getTypeShowFullCenter(int index) {
         int typeOrderShowInSetting = PreferenceUtils.getIntSetting(full_center, KeysAds.ORDER_DEFALT_FULL);
-//        typeOrderShowInSetting = FB_Mopub_Admob_ADX;// TOD
+//        typeOrderShowInSetting = Fairbid_Mopub_FB_Admob_ADX;// TOD
         return getTypeShow(index, typeOrderShowInSetting);
     }
 

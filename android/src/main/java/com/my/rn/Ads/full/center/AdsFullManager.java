@@ -25,7 +25,7 @@ public class AdsFullManager extends BaseAdsFullManager {
         mopubInterstitialManager = new MopubFullCenter();
     }
 
-    @Override protected boolean showAdsCenterIfCache(PromiseSaveObj promiseSaveObj) {
+    @Override protected boolean showAdsCenterIfCache(Activity activity, PromiseSaveObj promiseSaveObj) {
         boolean isShowed = mopubInterstitialManager.showAdsCenterIfCache(promiseSaveObj);
         if (!isShowed)
             isShowed = fbFullAdsManager.showAdsCenterIfCache(promiseSaveObj);

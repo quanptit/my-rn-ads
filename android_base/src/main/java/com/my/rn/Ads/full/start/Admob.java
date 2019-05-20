@@ -18,8 +18,12 @@ public class Admob extends BaseFullStartAds {
         return "ADMOB_START";
     }
 
+    @Override protected boolean isCached() {
+        return interstitialAds != null && interstitialAds.isLoaded();
+    }
+
     @Override
-    public void destroy() {
+    public void destroyAds() {
         interstitialAds = null;
     }
 
@@ -31,7 +35,7 @@ public class Admob extends BaseFullStartAds {
     }
 
 
-    @Override protected void adsShow() throws Exception {
+    @Override protected void showAds() throws Exception {
         if (interstitialAds != null)
             interstitialAds.show();
     }
@@ -42,7 +46,7 @@ public class Admob extends BaseFullStartAds {
         interstitialAds.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
-                Admob.this.onAdLoaded();
+                Admob.this.onAdLoaded(iAdLoaderCallback);
             }
 
             @Override
