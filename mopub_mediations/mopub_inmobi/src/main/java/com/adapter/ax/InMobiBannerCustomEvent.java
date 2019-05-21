@@ -27,7 +27,6 @@ import java.util.Map;
 import static com.inmobi.sdk.InMobiSdk.IM_GDPR_CONSENT_AVAILABLE;
 
 
-
 public class InMobiBannerCustomEvent extends CustomEventBanner {
 
 
@@ -41,14 +40,14 @@ public class InMobiBannerCustomEvent extends CustomEventBanner {
 
     private final AdSize BANNER = new AdSize(320, 50);
     private final AdSize MEDIUM_RECTANGLE = new AdSize(300, 250);
-    private final AdSize LEADER_BOARD = new AdSize(728,90);
+    private final AdSize LEADER_BOARD = new AdSize(728, 90);
     private InMobiBanner imbanner;
 
     @Override
     protected void loadBanner(Context context, CustomEventBannerListener customEventBannerListener,
-            Map<String, Object> localExtras, Map<String, String> serverExtras) {
+                              Map<String, Object> localExtras, Map<String, String> serverExtras) {
         mBannerListener = customEventBannerListener;
-        InMobiSdk.setLogLevel(InMobiSdk.LogLevel.DEBUG);
+        InMobiSdk.setLogLevel(InMobiSdk.LogLevel.ERROR);
 
         try {
             final JSONObject serverParams = new JSONObject(serverExtras);
@@ -67,7 +66,7 @@ public class InMobiBannerCustomEvent extends CustomEventBanner {
         }
 
         final JSONObject gdprJson = new JSONObject();
-        if( InMobiGDPR.isConsentUpdated() ){
+        if (InMobiGDPR.isConsentUpdated()) {
             try {
                 gdprJson.put(IM_GDPR_CONSENT_AVAILABLE, InMobiGDPR.getConsent());
                 gdprJson.put("gdpr", InMobiGDPR.isGDPR());
@@ -120,7 +119,7 @@ public class InMobiBannerCustomEvent extends CustomEventBanner {
 
             @Override
             public void onAdLoadFailed(final InMobiBanner inMobiBanner,
-                    final InMobiAdRequestStatus inMobiAdRequestStatus) {
+                                       final InMobiAdRequestStatus inMobiAdRequestStatus) {
                 super.onAdLoadFailed(inMobiBanner, inMobiAdRequestStatus);
                 Log.v(TAG, "Ad failed to load");
 
@@ -176,7 +175,7 @@ public class InMobiBannerCustomEvent extends CustomEventBanner {
 
             @Override
             public void onRewardsUnlocked(InMobiBanner ad, Map<Object, Object> rewards) {
-                super.onRewardsUnlocked(ad,rewards);
+                super.onRewardsUnlocked(ad, rewards);
                 Log.v(TAG, "Ad rewarded");
             }
         });
@@ -210,7 +209,7 @@ public class InMobiBannerCustomEvent extends CustomEventBanner {
             return BANNER;
         } else if (width <= 300 && height <= 250) {
             return MEDIUM_RECTANGLE;
-        } else if (width <= 728 && height <= 90){
+        } else if (width <= 728 && height <= 90) {
             return LEADER_BOARD;
         } else {
             return null;

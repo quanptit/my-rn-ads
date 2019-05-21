@@ -40,7 +40,7 @@ public class InMobiInterstitialCustomEvent extends CustomEventInterstitial {
                                     Map<String, Object> localExtras, Map<String, String> serverExtras) {
 
         mInterstitialListener = interstitialListener;
-        InMobiSdk.setLogLevel(InMobiSdk.LogLevel.DEBUG);
+        InMobiSdk.setLogLevel(InMobiSdk.LogLevel.ERROR);
         Activity activity;
         if (context != null && context instanceof Activity) {
             activity = (Activity) context;
@@ -167,6 +167,9 @@ public class InMobiInterstitialCustomEvent extends CustomEventInterstitial {
             @Override
             public void onAdDismissed(InMobiInterstitial inMobiInterstitial) {
                 super.onAdDismissed(inMobiInterstitial);
+                if (mInterstitialListener != null) {
+                    mInterstitialListener.onInterstitialDismissed();
+                }
             }
 
             @Override
@@ -218,6 +221,7 @@ public class InMobiInterstitialCustomEvent extends CustomEventInterstitial {
 
     @Override
     public void showInterstitial() {
+        Log.d(TAG, "showInterstitial: " + (iMInterstitial != null && iMInterstitial.isReady()));
         if (iMInterstitial != null && iMInterstitial.isReady()) {
             iMInterstitial.show();
         }

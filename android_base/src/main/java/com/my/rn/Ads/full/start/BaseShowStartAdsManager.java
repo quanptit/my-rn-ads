@@ -131,23 +131,35 @@ public abstract class BaseShowStartAdsManager {
     //endregion
 
     // Sử dụng cho trường hợp gọi ở center app
+    public boolean showStartIfCacheAsCenter(final Activity activity, PromiseSaveObj promiseOpenObj) {
+        if (!isCached()) return false;
+        Log.d(TAG, "showStartIfCacheAsCenter");
+        return showAds(activity, promiseOpenObj);
+    }
+
     public void showStartIfCache(final Activity activity, Promise promise) {
-        PromiseSaveObj promiseSaveObj = new PromiseSaveObj(promise);
+        PromiseSaveObj promiseOpenObj = new PromiseSaveObj(promise);
         if (AdsUtils.isDoNotShowAds() || !isCached()) {
-            promiseSaveObj.resolve(false);
+            promiseOpenObj.resolve(false);
             return;
         }
-        boolean isShowed = showStartAdsExtend(activity, promiseSaveObj);
-        if (isShowed) return;
+        if (showAds(activity, promiseOpenObj)) return;
+
+        promiseOpenObj.resolve(false);
+    }
+
+    private boolean showAds(final Activity activity, PromiseSaveObj promiseOpenObj) {
+        boolean isShowed = showStartAdsExtend(activity, promiseOpenObj);
+        if (isShowed) return true;
         if (admobStart != null) {
-            isShowed = admobStart.showAdsIfCache(promiseSaveObj);
-            if (isShowed) return;
+            isShowed = admobStart.showAdsIfCache(promiseOpenObj);
+            if (isShowed) return true;
         }
         if (adxStart != null) {
-            isShowed = adxStart.showAdsIfCache(promiseSaveObj);
-            if (isShowed) return;
+            isShowed = adxStart.showAdsIfCache(promiseOpenObj);
+            if (isShowed) return true;
         }
-        promiseSaveObj.resolve(false);
+        return false;
     }
 
     public void destroy() {

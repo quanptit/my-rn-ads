@@ -111,7 +111,7 @@ public class InMobiRewardedCustomEvent extends CustomEventRewardedVideo
          * You may also pass the Placement ID by
          * specifying Custom Event Data in MoPub's web interface.
          */
-        InMobiSdk.setLogLevel(InMobiSdk.LogLevel.DEBUG);
+        InMobiSdk.setLogLevel(InMobiSdk.LogLevel.ERROR);
 
         inmobiInterstitial = new InMobiInterstitial(activity, Long.parseLong(getAdNetworkId()), new InterstitialAdEventListener() {
 
