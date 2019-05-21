@@ -34,7 +34,11 @@ public abstract class BaseShowStartAdsManager {
     }
 
     public @Nullable static BaseShowStartAdsManager getInstance() {
-        return BaseApplicationContainAds.getInstance().getShowStartAdsManager();
+        return BaseApplicationContainAds.getInstance().getShowStartAdsManager(false);
+    }
+
+    public static BaseShowStartAdsManager getInstanceNotNull() {
+        return BaseApplicationContainAds.getInstance().getShowStartAdsManager(true);
     }
     //endregion
 

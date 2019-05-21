@@ -35,7 +35,7 @@ import org.json.JSONObject;
 
 public class InMobiNativeCustomEvent extends CustomEventNative {
 
-    public static final String TAG = InMobiNativeCustomEvent.class.getSimpleName();
+    public static final String TAG = "INMOBI_NATIVE";
 
     private static final String SERVER_EXTRA_ACCOUNT_ID = "accountid";
 

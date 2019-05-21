@@ -24,11 +24,8 @@ public abstract class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule im
         UiThreadUtil.runOnUiThread(new Runnable() {
             @Override public void run() {
                 try {
-                    BaseShowStartAdsManager baseShowStartAdsManager = BaseShowStartAdsManager.getInstance();
-                    if (baseShowStartAdsManager != null)
-                        baseShowStartAdsManager.loadStartAds(getSafeActivity(), promise);
-                    else
-                        promise.resolve(false);
+                    BaseShowStartAdsManager baseShowStartAdsManager = BaseShowStartAdsManager.getInstanceNotNull();
+                    baseShowStartAdsManager.loadStartAds(getSafeActivity(), promise);
                 } catch (Exception e) {
                     e.printStackTrace();
                     promise.resolve(false);
@@ -39,16 +36,20 @@ public abstract class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule im
 
     @ReactMethod
     public void showStartAdsIfCache(final Promise promise) {
-        BaseShowStartAdsManager baseShowStartAdsManager = BaseShowStartAdsManager.getInstance();
-        try {
-            if (baseShowStartAdsManager != null)
-                baseShowStartAdsManager.showStartIfCache(getSafeActivity(), promise);
-            else
-                promise.resolve(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            promise.resolve(false);
-        }
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override public void run() {
+                BaseShowStartAdsManager baseShowStartAdsManager = BaseShowStartAdsManager.getInstance();
+                try {
+                    if (baseShowStartAdsManager != null)
+                        baseShowStartAdsManager.showStartIfCache(getSafeActivity(), promise);
+                    else
+                        promise.resolve(false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    promise.resolve(false);
+                }
+            }
+        });
     }
 
     // region Full screen and Reward Ads

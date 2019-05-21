@@ -1,6 +1,6 @@
 import {NativeModules, Platform} from 'react-native'
 import {Actions} from 'react-native-router-flux'
-import {RNCommonUtils, sendError} from "my-rn-base-utils";
+import {CommonUtils, DataTypeUtils, RNCommonUtils, sendError} from "my-rn-base-utils";
 import {DialogUtils} from "my-rn-base-component";
 
 export class RNAdsUtils {
@@ -18,6 +18,7 @@ export class RNAdsUtils {
         }
     }
 
+    //region start Ads =========
     static loadStartAds(): Promise<boolean> {
         return NativeModules.RNAdsUtils.loadStartAds();
     }
@@ -25,6 +26,24 @@ export class RNAdsUtils {
     static showStartAdsIfCache(): Promise<boolean> {
         return NativeModules.RNAdsUtils.showStartAdsIfCache();
     }
+
+    static async showStartAds(maxTimeMilisecond: number, callbackOpenAds: VoidFunction) {
+        let currentTime = DataTypeUtils.getCurrentTimeMiliseconds();
+        try {
+            await CommonUtils.excuteFuncWithTimeOut(async () => {
+                let isCache = await RNAdsUtils.loadStartAds();
+                if (isCache) {
+                    if (DataTypeUtils.getCurrentTimeMiliseconds() - currentTime > maxTimeMilisecond) {
+                        console.log("TIME OUT FOR SHOW ASD");
+                        return;
+                    }
+                    await RNAdsUtils.showStartAdsIfCache();
+                    callbackOpenAds && callbackOpenAds();
+                }
+            }, maxTimeMilisecond);
+        } catch (e) { }
+    }
+    //endregion
 
     //region ========== Native ads ======
     /**Nếu setting cái quảng cáo banner ưu tiên hiển thị, thay vì cái native thì sẽ bỏ qua ko tải quảng cáo native*/
