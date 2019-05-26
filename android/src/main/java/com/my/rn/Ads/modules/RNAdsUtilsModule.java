@@ -1,5 +1,6 @@
 package com.my.rn.Ads.modules;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import com.appsharelib.KeysAds;
@@ -8,11 +9,17 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.UiThreadUtil;
+import com.mopub.common.MoPubReward;
 import com.mopub.common.SdkInitializationListener;
+import com.mopub.mobileads.MoPubErrorCode;
+import com.mopub.mobileads.MoPubRewardedVideoListener;
+import com.mopub.mobileads.MoPubRewardedVideos;
 import com.my.rn.Ads.ApplicationContainAds;
 import com.my.rn.Ads.ManagerTypeAdsShow;
 import com.my.rn.Ads.full.center.AdsFullManager;
 import com.my.rn.Ads.mopub.MopubNativeManager;
+
+import java.util.Set;
 
 public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
     private static final String TAG = "RN_ADS_MODULE";
@@ -37,7 +44,7 @@ public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
                                         ManagerTypeAdsShow.updateAdsSetting(urlAdsSetting);
                                     AdsFullManager.getInstance().cacheAdsCenter(getSafeActivity());
                                 }
-                            }, KeysAds.IS_SKIP_START_ADS ? 3000 : 20000);
+                            }, 12000);
                         }
                     });
                 } catch (Exception e) {
@@ -102,6 +109,46 @@ public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
         }
     }
 
+    //region RewardVideoAds
+    @ReactMethod @Override public void showRewardVideoAds() {
+        if (TextUtils.isEmpty(KeysAds.MOPUB_REWARDED_VIDEOS)) {
+            super.showRewardVideoAds();
+            return;
+        }
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override public void run() {
+                Log.d(TAG, "MoPubRewardedVideos.showRewardedVideo ");
+                MoPubRewardedVideos.showRewardedVideo(KeysAds.MOPUB_REWARDED_VIDEOS);
+            }
+        });
+    }
+
+    @ReactMethod @Override public void loadRewardVideoAds() {
+        if (TextUtils.isEmpty(KeysAds.MOPUB_REWARDED_VIDEOS)) {
+            super.loadRewardVideoAds();
+            return;
+        }
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override public void run() {
+                Log.d(TAG, "MoPubRewardedVideos.loadRewardedVideo ");
+                MoPubRewardedVideos.loadRewardedVideo(KeysAds.MOPUB_REWARDED_VIDEOS);
+            }
+        });
+    }
+
+    @ReactMethod @Override public void canShowRewardVideoAds(final Promise promise) {
+        if (TextUtils.isEmpty(KeysAds.MOPUB_REWARDED_VIDEOS)) {
+            super.canShowRewardVideoAds(promise);
+            return;
+        }
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override public void run() {
+                promise.resolve(MoPubRewardedVideos.hasRewardedVideo(KeysAds.MOPUB_REWARDED_VIDEOS));
+            }
+        });
+    }
+    //endregion
+
     //region not change. but need override with @ReactMethod
 
     @ReactMethod @Override public void loadStartAds(Promise promise) {
@@ -126,18 +173,6 @@ public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
 
     @ReactMethod @Override public void showFullCenterAds(Promise promise) {
         super.showFullCenterAds(promise);
-    }
-
-    @ReactMethod @Override public void showRewardVideoAds() {
-        super.showRewardVideoAds();
-    }
-
-    @ReactMethod @Override public void loadRewardVideoAds() {
-        super.loadRewardVideoAds();
-    }
-
-    @ReactMethod @Override public void canShowRewardVideoAds(Promise promise) {
-        super.canShowRewardVideoAds(promise);
     }
     //endregion
 }

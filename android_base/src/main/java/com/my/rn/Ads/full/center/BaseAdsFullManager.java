@@ -158,8 +158,8 @@ public abstract class BaseAdsFullManager {
     protected abstract void destroyExtend();
 
     private static boolean canShowAdsCenter(boolean checkForCache) {
-        if (true)
-            return true; //TODO
+//        if (true)
+//            return true; //TODOs
 
         long lastTimeShowAds = PreferenceUtils.getLongSetting(KeysAds.LAST_TIME_SHOW_ADS, 0);
         long time = checkForCache ? 3 * 60 * 1000 : 5 * 60 * 1000;

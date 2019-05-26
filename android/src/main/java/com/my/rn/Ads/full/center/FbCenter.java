@@ -10,8 +10,6 @@ import com.facebook.ads.InterstitialAdListener;
 
 import com.my.rn.Ads.IAdLoaderCallback;
 import com.my.rn.Ads.ManagerTypeAdsShow;
-import com.my.rn.Ads.SplashActivity;
-import com.baseLibs.utils.L;
 import com.baseLibs.utils.PreferenceUtils;
 import com.baseLibs.BaseApplication;
 

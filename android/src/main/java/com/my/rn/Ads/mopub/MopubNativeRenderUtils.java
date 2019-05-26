@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.adapter.ax.InMobiNativeAdRenderer;
+//import com.adapter.ax.InMobiNativeAdRenderer;
 import com.mopub.nativeads.*;
 import com.my.rn.Ads.ManagerTypeAdsShow;
 import com.my.rn.Ads.R;
@@ -29,15 +29,15 @@ class MopubNativeRenderUtils {
                 .privacyInformationIconImageId(R.id.native_privacy_information_icon_image)
                 .build()));
 
-        moPubNative.registerAdRenderer(new InMobiNativeAdRenderer(new com.adapter.ax.inmobiNativeAd.ViewBinder
-                .Builder(R.layout.v_native_inmobi_mopub_ads)
-                .mainImageId(R.id.native_main_image)
-                .iconImageId(R.id.native_icon_image)
-                .titleId(R.id.native_title)
-                .textId(R.id.native_text)
-                .callToActionId(R.id.native_cta)
-                .addExtra("primary_ad_view_layout",R.id.primary_ad_view_layout)
-                .build()));
+//        moPubNative.registerAdRenderer(new InMobiNativeAdRenderer(new com.adapter.ax.inmobiNativeAd.ViewBinder
+//                .Builder(R.layout.v_native_inmobi_mopub_ads)
+//                .mainImageId(R.id.native_main_image)
+//                .iconImageId(R.id.native_icon_image)
+//                .titleId(R.id.native_title)
+//                .textId(R.id.native_text)
+//                .callToActionId(R.id.native_cta)
+//                .addExtra("primary_ad_view_layout",R.id.primary_ad_view_layout)
+//                .build()));
 
         moPubNative.registerAdRenderer(new FacebookAdRenderer(
                 new FacebookAdRenderer.FacebookViewBinder.Builder(R.layout.v_fb_native_ads_banner_large)

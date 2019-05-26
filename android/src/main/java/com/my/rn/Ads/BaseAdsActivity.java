@@ -22,14 +22,30 @@ public class BaseAdsActivity extends BasicAdsActivity {
 
     @Override
     protected void onPause() {
-        super.onPause();
-        MoPub.onPause(this);
+        try {
+            super.onPause();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            MoPub.onPause(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
-        MoPub.onResume(this);
+        try {
+            super.onResume();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            MoPub.onResume(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

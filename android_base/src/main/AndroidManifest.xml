@@ -10,8 +10,6 @@
         android:hardwareAccelerated="true"
         android:usesCleartextTraffic="true">
 
-        <activity android:name="com.my.rn.Ads.SplashActivity"/>
-
         <!-- AdMob -->
         <activity
             android:name="com.google.android.gms.ads.AdActivity"

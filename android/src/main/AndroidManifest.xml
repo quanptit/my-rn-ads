@@ -17,8 +17,6 @@
             android:name="org.apache.http.legacy"
             android:required="false"/>
 
-        <activity android:name=".SplashActivity"/>
-
         <!-- MoPub's consent dialog -->
         <activity
             android:name="com.mopub.common.privacy.ConsentDialogActivity"
