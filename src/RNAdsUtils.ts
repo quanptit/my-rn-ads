@@ -105,9 +105,9 @@ export class RNAdsUtils {
         if (canShowFullCenterAds) {
             await CommonUtils.waitAfterInteractions();
             await CommonUtils.wait(100);
-            console.log("showCenterAdsAndOpenScreen openScreen: ", screenName);
-            CommonUtils.openScreen(screenName, screenProps);
         }
+        console.log("showCenterAdsAndOpenScreen openScreen: ", screenName);
+        CommonUtils.openScreen(screenName, screenProps);
     }
 
     static async canShowFullCenterAds(): Promise<boolean> {
