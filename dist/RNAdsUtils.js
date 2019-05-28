@@ -2,6 +2,7 @@ import { NativeModules, Platform } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { CommonUtils, DataTypeUtils, RNCommonUtils, sendError } from "my-rn-base-utils";
 import { DialogUtils } from "my-rn-base-component";
+let firstTimeCallShowCenter = true;
 export class RNAdsUtils {
     static async initAds(settingAdsUrl) {
         if (await RNCommonUtils.isVIPUser())
@@ -88,21 +89,29 @@ export class RNAdsUtils {
     //endregion
     //region full center & exit ads
     /**Hiển thị quảng cáo xong, mới mở screen mới*/
-    static async showCenterAdsAndOpenScreen(screenName, screenProps) {
-        let canShowFullCenterAds;
-        try {
-            canShowFullCenterAds = await RNAdsUtils.canShowFullCenterAds();
-            if (canShowFullCenterAds)
-                await CommonUtils.excuteFuncWithTimeOut(() => RNAdsUtils.showFullCenterAds(), 1000);
-            else
-                setTimeout(RNAdsUtils.cacheAdsCenter, 3000);
+    static async showCenterAdsAndOpenScreen(screenName, screenProps, skipFirstTime) {
+        let isShowAds = !firstTimeCallShowCenter || !skipFirstTime;
+        firstTimeCallShowCenter = false;
+        if (isShowAds) {
+            let canShowFullCenterAds;
+            try {
+                canShowFullCenterAds = await RNAdsUtils.canShowFullCenterAds();
+                if (canShowFullCenterAds)
+                    await CommonUtils.excuteFuncWithTimeOut(() => RNAdsUtils.showFullCenterAds(), 1000);
+                else
+                    setTimeout(RNAdsUtils.cacheAdsCenter, 3000);
+            }
+            catch (e) {
+                sendError(e);
+            }
+            if (canShowFullCenterAds) {
+                await CommonUtils.waitAfterInteractions();
+                await CommonUtils.wait(100);
+            }
         }
-        catch (e) {
-            sendError(e);
-        }
-        if (canShowFullCenterAds) {
-            await CommonUtils.waitAfterInteractions();
-            await CommonUtils.wait(100);
+        else {
+            console.log("showCenterAdsAndOpenScreen Skip at first time call ");
+            setTimeout(RNAdsUtils.cacheAdsCenter, 3000);
         }
         console.log("showCenterAdsAndOpenScreen openScreen: ", screenName);
         CommonUtils.openScreen(screenName, screenProps);

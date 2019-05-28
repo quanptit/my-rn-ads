@@ -3,6 +3,8 @@ import {Actions} from 'react-native-router-flux'
 import {CommonUtils, DataTypeUtils, RNCommonUtils, sendError} from "my-rn-base-utils";
 import {DialogUtils} from "my-rn-base-component";
 
+let firstTimeCallShowCenter: boolean = true;
+
 export class RNAdsUtils {
     static async initAds(settingAdsUrl: string): Promise<boolean> {
         if (await RNCommonUtils.isVIPUser())
@@ -93,18 +95,25 @@ export class RNAdsUtils {
 
     //region full center & exit ads
     /**Hiển thị quảng cáo xong, mới mở screen mới*/
-    static async showCenterAdsAndOpenScreen<P>(screenName: string, screenProps: P) {
-        let canShowFullCenterAds: boolean;
-        try {
-            canShowFullCenterAds = await RNAdsUtils.canShowFullCenterAds();
-            if (canShowFullCenterAds)
-                await CommonUtils.excuteFuncWithTimeOut(() => RNAdsUtils.showFullCenterAds(), 1000);
-            else
-                setTimeout(RNAdsUtils.cacheAdsCenter, 3000);
-        } catch (e) {sendError(e) }
-        if (canShowFullCenterAds) {
-            await CommonUtils.waitAfterInteractions();
-            await CommonUtils.wait(100);
+    static async showCenterAdsAndOpenScreen<P>(screenName: string, screenProps: P, skipFirstTime: boolean) {
+        let isShowAds = !firstTimeCallShowCenter || !skipFirstTime;
+        firstTimeCallShowCenter = false;
+        if (isShowAds) {
+            let canShowFullCenterAds: boolean;
+            try {
+                canShowFullCenterAds = await RNAdsUtils.canShowFullCenterAds();
+                if (canShowFullCenterAds)
+                    await CommonUtils.excuteFuncWithTimeOut(() => RNAdsUtils.showFullCenterAds(), 1000);
+                else
+                    setTimeout(RNAdsUtils.cacheAdsCenter, 3000);
+            } catch (e) {sendError(e) }
+            if (canShowFullCenterAds) {
+                await CommonUtils.waitAfterInteractions();
+                await CommonUtils.wait(100);
+            }
+        } else {
+            console.log("showCenterAdsAndOpenScreen Skip at first time call ");
+            setTimeout(RNAdsUtils.cacheAdsCenter, 3000);
         }
         console.log("showCenterAdsAndOpenScreen openScreen: ", screenName);
         CommonUtils.openScreen(screenName, screenProps);
