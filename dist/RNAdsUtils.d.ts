@@ -9,6 +9,8 @@ export declare class RNAdsUtils {
     static isPreferShowBanner(typeAds: number): Promise<boolean>;
     static canShowNativeAds(typeAds: number): Promise<boolean>;
     static cacheNativeAdsIfNeed(typeAds: number): Promise<any>;
+    /**Hiển thị quảng cáo xong, mới mở screen mới*/
+    static showCenterAdsAndOpenScreen<P>(screenName: string, screenProps: P): Promise<void>;
     static canShowFullCenterAds(): Promise<boolean>;
     static cacheAdsCenter(): Promise<any>;
     static showFullCenterAds(): Promise<boolean>;

@@ -43,6 +43,7 @@ export class RNAdsUtils {
             }, maxTimeMilisecond);
         } catch (e) { }
     }
+
     //endregion
 
     //region ========== Native ads ======
@@ -91,6 +92,24 @@ export class RNAdsUtils {
     //endregion
 
     //region full center & exit ads
+    /**Hiển thị quảng cáo xong, mới mở screen mới*/
+    static async showCenterAdsAndOpenScreen<P>(screenName: string, screenProps: P) {
+        let canShowFullCenterAds: boolean;
+        try {
+            canShowFullCenterAds = await RNAdsUtils.canShowFullCenterAds();
+            if (canShowFullCenterAds)
+                await CommonUtils.excuteFuncWithTimeOut(() => RNAdsUtils.showFullCenterAds(), 1000);
+            else
+                setTimeout(RNAdsUtils.cacheAdsCenter, 3000);
+        } catch (e) {sendError(e) }
+        if (canShowFullCenterAds) {
+            await CommonUtils.waitAfterInteractions();
+            await CommonUtils.wait(100);
+            console.log("showCenterAdsAndOpenScreen openScreen: ", screenName);
+            CommonUtils.openScreen(screenName, screenProps);
+        }
+    }
+
     static async canShowFullCenterAds(): Promise<boolean> {
         if (await RNCommonUtils.isVIPUser())
             return false;
