@@ -1,10 +1,12 @@
 package com.my.rn.Ads.full.center;
 
 import android.app.Activity;
-import android.text.TextUtils;
+import android.util.Log;
 import com.appsharelib.KeysAds;
+import com.mopub.common.SdkInitializationListener;
 import com.mopub.mobileads.MoPubErrorCode;
 import com.mopub.mobileads.MoPubInterstitial;
+import com.my.rn.Ads.ApplicationContainAds;
 import com.my.rn.Ads.IAdLoaderCallback;
 
 public class MopubFullCenter extends BaseFullCenterAds {
@@ -14,7 +16,10 @@ public class MopubFullCenter extends BaseFullCenterAds {
         return "MOPUB_CENTER";
     }
 
-    @Override public String getKeyAds() {
+    @Override public String getKeyAds(boolean isFromStart) {
+        Log.d(getLogTAG(), "getKeyAds isFromStart: " + isFromStart);
+        if (isFromStart)
+            return KeysAds.getMOPUB_FULL_START();
         return KeysAds.getMOPUB_FULL_CENTER();
     }
 
@@ -37,32 +42,35 @@ public class MopubFullCenter extends BaseFullCenterAds {
         }
     }
 
-    @Override protected void adsInitAndLoad(Activity activity, final IAdLoaderCallback iAdLoaderCallback) throws Exception {
-        interstitialCenter = new MoPubInterstitial(activity, KeysAds.getMOPUB_FULL_CENTER());
-        interstitialCenter.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
-            @Override public void onInterstitialLoaded(MoPubInterstitial interstitial) {
-                onAdLoaded(iAdLoaderCallback);
+    @Override protected void adsInitAndLoad(final Activity activity, final String keyAds, final IAdLoaderCallback iAdLoaderCallback) throws Exception {
+        ApplicationContainAds.getMopubInitUtils().initMopub(new SdkInitializationListener() {
+            @Override public void onInitializationFinished() {
+                interstitialCenter = new MoPubInterstitial(activity, keyAds);
+                interstitialCenter.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
+                    @Override public void onInterstitialLoaded(MoPubInterstitial interstitial) {
+                        onAdLoaded(iAdLoaderCallback);
+                    }
+
+                    @Override public void onInterstitialFailed(MoPubInterstitial interstitial, MoPubErrorCode errorCode) {
+                        onAdFailedToLoad(errorCode.toString(), iAdLoaderCallback);
+                    }
+
+                    @Override public void onInterstitialShown(MoPubInterstitial interstitial) {
+                        onAdOpened();
+                    }
+
+                    @Override public void onInterstitialDismissed(MoPubInterstitial interstitial) {
+                        onAdClosed();
+                    }
+
+                    //region hide
+                    @Override public void onInterstitialClicked(MoPubInterstitial interstitial) {
+
+                    }
+                    //endregion
+                });
+                interstitialCenter.load();
             }
-
-            @Override public void onInterstitialFailed(MoPubInterstitial interstitial, MoPubErrorCode errorCode) {
-                onAdFailedToLoad(errorCode.toString(), iAdLoaderCallback);
-            }
-
-            @Override public void onInterstitialShown(MoPubInterstitial interstitial) {
-                onAdOpened();
-            }
-
-            @Override public void onInterstitialDismissed(MoPubInterstitial interstitial) {
-                onAdClosed();
-            }
-
-            //region hide
-
-            @Override public void onInterstitialClicked(MoPubInterstitial interstitial) {
-
-            }
-            //endregion
         });
-        interstitialCenter.load();
     }
 }

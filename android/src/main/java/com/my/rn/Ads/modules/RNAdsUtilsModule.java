@@ -1,6 +1,5 @@
 package com.my.rn.Ads.modules;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import com.appsharelib.KeysAds;
@@ -9,17 +8,12 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.UiThreadUtil;
-import com.mopub.common.MoPubReward;
 import com.mopub.common.SdkInitializationListener;
-import com.mopub.mobileads.MoPubErrorCode;
-import com.mopub.mobileads.MoPubRewardedVideoListener;
 import com.mopub.mobileads.MoPubRewardedVideos;
 import com.my.rn.Ads.ApplicationContainAds;
 import com.my.rn.Ads.ManagerTypeAdsShow;
 import com.my.rn.Ads.full.center.AdsFullManager;
 import com.my.rn.Ads.mopub.MopubNativeManager;
-
-import java.util.Set;
 
 public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
     private static final String TAG = "RN_ADS_MODULE";

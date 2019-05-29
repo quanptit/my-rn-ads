@@ -9,7 +9,6 @@ import com.my.rn.Ads.AdsUtils;
 import com.my.rn.Ads.BaseApplicationContainAds;
 import com.my.rn.Ads.ManagerTypeAdsShow;
 import com.my.rn.Ads.full.center.BaseAdsFullManager;
-import com.my.rn.Ads.full.start.BaseShowStartAdsManager;
 
 public abstract class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
     private static final String TAG = "BaseRNAdsModule";
@@ -21,33 +20,26 @@ public abstract class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule im
 
     @ReactMethod
     public void loadStartAds(final Promise promise) {
+        Log.d(TAG, "Call loadStartAds");
         UiThreadUtil.runOnUiThread(new Runnable() {
             @Override public void run() {
-                try {
-                    BaseShowStartAdsManager baseShowStartAdsManager = BaseShowStartAdsManager.getInstanceNotNull();
-                    baseShowStartAdsManager.loadStartAds(getSafeActivity(), promise);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    promise.resolve(false);
-                }
+                BaseAdsFullManager.getInstance().cacheAdsCenterFromStart(getSafeActivity(), promise);
             }
         });
     }
 
     @ReactMethod
     public void showStartAdsIfCache(final Promise promise) {
-        UiThreadUtil.runOnUiThread(new Runnable() {
+        Log.d(TAG, "Call showStartAdsIfCache");
+        final Activity activity = getSafeActivity();
+        if (activity == null) {
+            L.e("showFullCenterAds Fail: getSafeActivity NULL ===================");
+            promise.resolve(false);
+            return;
+        }
+        BaseApplicationContainAds.getHandler().post(new Runnable() {
             @Override public void run() {
-                BaseShowStartAdsManager baseShowStartAdsManager = BaseShowStartAdsManager.getInstance();
-                try {
-                    if (baseShowStartAdsManager != null)
-                        baseShowStartAdsManager.showStartIfCache(getSafeActivity(), promise);
-                    else
-                        promise.resolve(false);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    promise.resolve(false);
-                }
+                BaseAdsFullManager.getInstance().showStartAds(activity, promise);
             }
         });
     }
@@ -60,7 +52,6 @@ public abstract class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule im
                 promise.resolve(!AdsUtils.isDoNotShowAds() && BaseAdsFullManager.getInstance().isCachedCenter());
             }
         });
-
     }
 
     @ReactMethod
@@ -111,7 +102,7 @@ public abstract class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule im
         }
         UiThreadUtil.runOnUiThread(new Runnable() {
             @Override public void run() {
-                BaseAdsFullManager.getInstance().cacheAdsCenter(activity, true);
+                BaseAdsFullManager.getInstance().cacheAdsCenterSkipCheck(activity);
             }
         });
     }

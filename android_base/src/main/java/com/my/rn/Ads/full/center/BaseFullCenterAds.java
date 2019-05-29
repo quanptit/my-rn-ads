@@ -15,21 +15,19 @@ abstract class BaseFullCenterAds {
 
     protected abstract String getLogTAG();
 
-    public abstract String getKeyAds();
-    private boolean isSkipThisAds() {
-        return TextUtils.isEmpty(getKeyAds());
-    }
+    public abstract String getKeyAds(boolean isFromStart);
 
     protected abstract boolean isCachedCenter();
 
     protected abstract void showAds();
 
-    protected abstract void adsInitAndLoad(Activity activity, IAdLoaderCallback iAdLoaderCallback) throws Exception;
+    protected abstract void adsInitAndLoad(Activity activity, String keyAds, IAdLoaderCallback iAdLoaderCallback) throws Exception;
 
     protected abstract void destroyAds();
 
-    public void loadCenterAds(Activity activity, final IAdLoaderCallback iAdLoaderCallback) {
-        if (isSkipThisAds()) {
+    public void loadCenterAds(Activity activity, boolean isFromStart, final IAdLoaderCallback iAdLoaderCallback) {
+        String keyAds = getKeyAds(isFromStart);
+        if (TextUtils.isEmpty(keyAds)) {
             if (iAdLoaderCallback != null)
                 iAdLoaderCallback.onAdsFailedToLoad();
             return;
@@ -40,7 +38,7 @@ abstract class BaseFullCenterAds {
         Log.d(getLogTAG(), "loadCenterAds");
         isCaching = true;
         try {
-            adsInitAndLoad(activity, iAdLoaderCallback);
+            adsInitAndLoad(activity, keyAds, iAdLoaderCallback);
         } catch (Exception e) {
             e.printStackTrace();
         }

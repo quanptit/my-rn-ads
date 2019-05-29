@@ -4,7 +4,7 @@ chung cho tất cả các loại quảng cáo
 
 ##### Thêm Vào package.json
 ```
-"my-rn-ads": "git+https://gitlab.com/react-native-my-libs/my-rn-ads.git",
+"my-rn-ads": "git+https://quanptit@bitbucket.org/reactnativelibs/my-rn-ads.git",
 ```
 
 Chạy 2 lệnh sau

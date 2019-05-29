@@ -28,15 +28,23 @@ public class FbCenter extends BaseFullCenterAds {
         interstitialCenter.show();
     }
 
-    @Override public String getKeyAds() {
-        String keySave = PreferenceUtils.getStringSetting(ManagerTypeAdsShow.KEY_FB_CENTER, null);
-        if (!TextUtils.isEmpty(keySave))
-            return keySave;
-        return KeysAds.FB_FULL_ADS;
+    @Override public String getKeyAds(boolean isFromStart) {
+        String keySave;
+        if (isFromStart) {
+            keySave = PreferenceUtils.getStringSetting(ManagerTypeAdsShow.KEY_FB_START, null);
+            if (!TextUtils.isEmpty(keySave))
+                return keySave;
+            return KeysAds.FB_FULL_START;
+        } else {
+            keySave = PreferenceUtils.getStringSetting(ManagerTypeAdsShow.KEY_FB_CENTER, null);
+            if (!TextUtils.isEmpty(keySave))
+                return keySave;
+            return KeysAds.FB_FULL_ADS;
+        }
     }
 
-    @Override protected void adsInitAndLoad(Activity activity, final IAdLoaderCallback iAdLoaderCallback) throws Exception {
-        interstitialCenter = new InterstitialAd(BaseApplication.getAppContext(), getKeyAds());
+    @Override protected void adsInitAndLoad(Activity activity, String keyAds, final IAdLoaderCallback iAdLoaderCallback) throws Exception {
+        interstitialCenter = new InterstitialAd(BaseApplication.getAppContext(), keyAds);
         interstitialCenter.setAdListener(new InterstitialAdListener() {
             @Override public void onAdLoaded(Ad ad) {
                 FbCenter.this.onAdLoaded(iAdLoaderCallback);

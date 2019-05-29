@@ -26,18 +26,23 @@ public class AdmobCenter extends BaseFullCenterAds {
         interstitialCenter.show();
     }
 
-    @Override public String getKeyAds() {
-        String keySave = PreferenceUtils.getStringSetting(ManagerTypeAdsShow.KEY_ADMOB_CENTER, null);
-        if (!TextUtils.isEmpty(keySave))
-            return keySave;
-
-        return KeysAds.getAdmod_FULL();
+    @Override public String getKeyAds(boolean isFromStart) {
+        String keySave;
+        if (isFromStart) {
+            keySave = PreferenceUtils.getStringSetting(ManagerTypeAdsShow.KEY_ADMOB_START, null);
+            if (!TextUtils.isEmpty(keySave)) return keySave;
+            return KeysAds.getAdmod_START();
+        } else {
+            keySave = PreferenceUtils.getStringSetting(ManagerTypeAdsShow.KEY_ADMOB_CENTER, null);
+            if (!TextUtils.isEmpty(keySave)) return keySave;
+            return KeysAds.getAdmod_FULL();
+        }
     }
 
-    @Override protected void adsInitAndLoad(Activity activity, final IAdLoaderCallback iAdLoaderCallback) throws Exception {
+    @Override protected void adsInitAndLoad(Activity activity, String keyAds, final IAdLoaderCallback iAdLoaderCallback) throws Exception {
         if (interstitialCenter != null && interstitialCenter.isLoading()) return;
         interstitialCenter = new InterstitialAd(BaseApplication.getAppContext());
-        interstitialCenter.setAdUnitId(getKeyAds());
+        interstitialCenter.setAdUnitId(keyAds);
         interstitialCenter.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {

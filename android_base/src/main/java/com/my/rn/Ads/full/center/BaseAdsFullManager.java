@@ -50,21 +50,22 @@ public abstract class BaseAdsFullManager {
      */
     protected abstract boolean showAdsCenterIfCache(final Activity activity, PromiseSaveObj promiseSaveObj) throws Exception;
 
-    protected abstract void cacheAdsCenterExtend(Activity activity, int typeAds, @Nullable IAdLoaderCallback iAdLoaderCallback) throws Exception;
+    protected abstract void cacheAdsCenterExtend(Activity activity, boolean isFromStart, int typeAds, @Nullable IAdLoaderCallback iAdLoaderCallback) throws Exception;
 
     // region center =============
-    private void cacheAdsCenter(Activity activity, int index, @Nullable IAdLoaderCallback iAdLoaderCallback) {
-        int typeAds = ManagerTypeAdsShow.getTypeShowFullCenter(index);
+    private void cacheAdsCenter(Activity activity, boolean isFromStart, int index, @Nullable IAdLoaderCallback iAdLoaderCallback) {
+        int typeAds = isFromStart ? ManagerTypeAdsShow.getTypeShowFullStart(index)
+                : ManagerTypeAdsShow.getTypeShowFullCenter(index);
         try {
             switch (typeAds) {
                 case ManagerTypeAdsShow.TYPE_ADMOB:
-                    getAdmobCenter().loadCenterAds(activity, iAdLoaderCallback);
+                    getAdmobCenter().loadCenterAds(activity, isFromStart, iAdLoaderCallback);
                     break;
                 case ManagerTypeAdsShow.TYPE_ADX:
-                    getADXCenter().loadCenterAds(activity, iAdLoaderCallback);
+                    getADXCenter().loadCenterAds(activity, isFromStart, iAdLoaderCallback);
                     break;
                 default:
-                    cacheAdsCenterExtend(activity, typeAds, iAdLoaderCallback);
+                    cacheAdsCenterExtend(activity, isFromStart, typeAds, iAdLoaderCallback);
                     break;
             }
         } catch (Exception e) {
@@ -72,43 +73,94 @@ public abstract class BaseAdsFullManager {
         }
     }
 
-    public void cacheAdsCenter(Activity activity) {
-        cacheAdsCenter(activity, false);
+    public void cacheAdsCenterFromStart(Activity activity, final Promise promise) {
+        cacheAdsCenter(activity, true, false, promise);
     }
 
-    public void cacheAdsCenter(final Activity activity, boolean skipCheck) {
+    public void cacheAdsCenter(Activity activity) {
+        cacheAdsCenter(activity, false, false, null);
+    }
+
+    public void cacheAdsCenterSkipCheck(Activity activity) {
+        cacheAdsCenter(activity, false, true, null);
+    }
+
+    public void cacheAdsCenter(final Activity activity, final boolean isFromStart, boolean skipCheck, @Nullable Promise promise) {
+        final PromiseSaveObj promiseSaveObj = new PromiseSaveObj(promise);
         if (activity == null) {
             L.e("cacheAdsCenter Error: activity NULL");
+            promiseSaveObj.resolve(false);
             return;
         }
+        boolean isShowAds;
+        if (skipCheck)
+            isShowAds = true;
+        else
+            isShowAds = !AdsUtils.isDoNotShowAds() && (canShowAdsCenter(true) || isFromStart);
+        if (!isShowAds) {
+            promiseSaveObj.resolve(false);
+            return;
+        }
+
         try {
-            if (!skipCheck && (AdsUtils.isDoNotShowAds() || !canShowAdsCenter(true)))
-                return;
+            final IAdLoaderCallback iAdLoaderCallback5 = new IAdLoaderCallback() {
+                @Override public void onAdsFailedToLoad() {
+                    promiseSaveObj.resolve(false);
+                }
+
+                @Override public void onAdsLoaded() {
+                    promiseSaveObj.resolve(true);
+                }
+            };
             final IAdLoaderCallback iAdLoaderCallback4 = new IAdLoaderCallback() {
                 @Override public void onAdsFailedToLoad() {
-                    cacheAdsCenter(activity, 4, null);
+                    cacheAdsCenter(activity, isFromStart, 4, iAdLoaderCallback5);
+                }
+
+                @Override public void onAdsLoaded() {
+                    promiseSaveObj.resolve(true);
                 }
             };
             final IAdLoaderCallback iAdLoaderCallback3 = new IAdLoaderCallback() {
                 @Override public void onAdsFailedToLoad() {
-                    cacheAdsCenter(activity, 3, iAdLoaderCallback4);
+                    cacheAdsCenter(activity, isFromStart, 3, iAdLoaderCallback4);
+                }
+
+                @Override public void onAdsLoaded() {
+                    promiseSaveObj.resolve(true);
                 }
             };
             final IAdLoaderCallback iAdLoaderCallback2 = new IAdLoaderCallback() {
                 @Override public void onAdsFailedToLoad() {
-                    cacheAdsCenter(activity, 2, iAdLoaderCallback3);
+                    cacheAdsCenter(activity, isFromStart, 2, iAdLoaderCallback3);
+                }
+
+                @Override public void onAdsLoaded() {
+                    promiseSaveObj.resolve(true);
                 }
             };
             IAdLoaderCallback iAdLoaderCallback1 = new IAdLoaderCallback() {
                 @Override public void onAdsFailedToLoad() {
-                    cacheAdsCenter(activity, 1, iAdLoaderCallback2);
+                    cacheAdsCenter(activity, isFromStart, 1, iAdLoaderCallback2);
+                }
+
+                @Override public void onAdsLoaded() {
+                    promiseSaveObj.resolve(true);
                 }
             };
 
-            cacheAdsCenter(activity, 0, iAdLoaderCallback1);
+            cacheAdsCenter(activity, isFromStart, 0, iAdLoaderCallback1);
         } catch (Exception e) {
             e.printStackTrace();
-        } catch (Error error) {error.printStackTrace();}
+            promiseSaveObj.resolve(false);
+        } catch (Error error) {
+            error.printStackTrace();
+            promiseSaveObj.resolve(false);
+        }
+    }
+
+    public boolean showStartAds(Activity activity, final Promise promise) {
+        return showAdsCenter(activity, true, false, promise);
     }
 
     public boolean showAdsCenter(Activity activity, final Promise promise) {
@@ -116,11 +168,22 @@ public abstract class BaseAdsFullManager {
     }
 
     public boolean showAdsCenter(final Activity activity, final boolean skipCheck, final Promise promise) {
+        return showAdsCenter(activity, false, skipCheck, promise);
+    }
+
+    public boolean showAdsCenter(final Activity activity, final boolean isFromStart, final boolean skipCheck, final Promise promise) {
         PromiseSaveObj promiseSaveObj = new PromiseSaveObj(promise);
-        if (!skipCheck && (AdsUtils.isDoNotShowAds() || !canShowAdsCenter(false))) {
+
+        boolean isShowAds;
+        if (skipCheck)
+            isShowAds = true;
+        else
+            isShowAds = !AdsUtils.isDoNotShowAds() && (canShowAdsCenter(false) || isFromStart);
+        if (!isShowAds) {
             promiseSaveObj.resolve(false);
             return false;
         }
+
         boolean isShowed;
         try {
             isShowed = showAdsCenterIfCache(activity, promiseSaveObj);
@@ -131,7 +194,7 @@ public abstract class BaseAdsFullManager {
 
             if (!isShowed) { // Không có quảng cáo để show
                 promiseSaveObj.resolve(false);
-                cacheAdsCenter(activity, skipCheck);
+                cacheAdsCenter(activity, false, skipCheck, null);
             }
             return isShowed;
         } catch (Exception e) {
