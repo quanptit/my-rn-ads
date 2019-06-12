@@ -11,6 +11,7 @@ export declare class RNAdsUtils {
     static cacheNativeAdsIfNeed(typeAds: number): Promise<any>;
     /**Hiển thị quảng cáo xong, mới mở screen mới*/
     static showCenterAdsAndOpenScreen<P>(screenName: string, screenProps: P, skipFirstTime: boolean): Promise<void>;
+    static canShowFullCenterOnBackBtn(): Promise<boolean>;
     static canShowFullCenterAds(): Promise<boolean>;
     static cacheAdsCenter(): Promise<any>;
     static showFullCenterAds(): Promise<boolean>;

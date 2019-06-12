@@ -113,6 +113,15 @@ public class ManagerTypeAdsShow {
                         saveStringSettingIfExit(key_center, KEY_FB_CENTER, "FB");
                     }
 
+                    try {
+                        if (settingsJsonObj.has(not_s_b_btn))
+                            PreferenceUtils.saveBooleanSetting(not_s_b_btn, settingsJsonObj.get(not_s_b_btn).getAsBoolean());
+                        if (settingsJsonObj.has(native_click_only_acbtn))
+                            PreferenceUtils.saveBooleanSetting(native_click_only_acbtn, settingsJsonObj.get(native_click_only_acbtn).getAsBoolean());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                     PreferenceUtils.saveLongSetting(UPDATE_ADS_TIME, System.currentTimeMillis());
                     Log.d(TAG, "updateSetting Complete: " + jsonSettingStr);
                 } catch (JsonSyntaxException e) {
@@ -227,6 +236,8 @@ public class ManagerTypeAdsShow {
     private static final String banner = "banner";
     private static final String large_native = "large_native";
     private static final String small_native = "small_native";
+    public static final String not_s_b_btn = "not_s_b_btn"; //not show from back button
+    public static final String native_click_only_acbtn = "native_click_only_acbtn";
 
     public static boolean isPreferShowBanner(int typeAds) {
         if (typeAds == TYPE_SUMMARY_LIST1 || typeAds == TYPE_SUMMARY_LIST2)

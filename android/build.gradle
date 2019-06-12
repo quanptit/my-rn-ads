@@ -21,14 +21,13 @@ dependencies {
     if (gradle.ext.ads.contains("mobvistar")) implementation project(':mopub_mobvistar')
     if (gradle.ext.ads.contains("fairbid")) api project(':FairBid')
     if (gradle.ext.ads.contains("inmobi")) implementation project(':mopub_inmobi')
-
     if (gradle.ext.ads.contains("adcolony")) {
         implementation 'com.adcolony:sdk:3.3.10'
         implementation 'com.mopub.mediation:adcolony:3.3.10.0'
     }
     if (gradle.ext.ads.contains("applovin")) {
-        api 'com.applovin:applovin-sdk:9.6.2'
-        implementation 'com.mopub.mediation:applovin:9.6.2.0'
+        api 'com.applovin:applovin-sdk:9.7.1'
+        implementation 'com.mopub.mediation:applovin:9.7.1.0'
     }
     if (gradle.ext.ads.contains("mobfox")) {
         implementation 'com.github.mobfox.MobFox-Android-SDK-Core:MobFox-Android-SDK-Core:3.6.9'
@@ -48,18 +47,18 @@ dependencies {
     }
     if (gradle.ext.ads.contains("vungle")) {
         implementation 'com.github.vungle:vungle-android-sdk:6.3.24'
-        implementation 'com.mopub.mediation:vungle:6.3.24.2'
+        implementation 'com.mopub.mediation:vungle:6.3.24.3'
     }
     if (gradle.ext.ads.contains("ironsource")) {
         implementation 'com.ironsource.sdk:mediationsdk:6.8.4@jar'
         implementation 'com.mopub.mediation:ironsource:6.8.4.0'
     }
-//    // App next =========
-//    implementation 'com.appnext.sdk.adapters:mopub-ads:2.+'
-//    // Mandatory for interstitial and fullscreen/rewarded video ad units
-//    implementation 'com.appnext.sdk.adapters:mopub-native-ads:2.+'
-//    // Mandatory for native ads ad unit
-//    implementation 'com.appnext.sdk.adapters:mopub-banners:2.+'
-//    // Mandatory for banners ad unit
-//    implementation 'com.google.android.gms:play-services-location:16.0.0'
+    //    // App next =========
+    //    implementation 'com.appnext.sdk.adapters:mopub-ads:2.+'
+    //    // Mandatory for interstitial and fullscreen/rewarded video ad units
+    //    implementation 'com.appnext.sdk.adapters:mopub-native-ads:2.+'
+    //    // Mandatory for native ads ad unit
+    //    implementation 'com.appnext.sdk.adapters:mopub-banners:2.+'
+    //    // Mandatory for banners ad unit
+    //    implementation 'com.google.android.gms:play-services-location:16.0.0'
 }

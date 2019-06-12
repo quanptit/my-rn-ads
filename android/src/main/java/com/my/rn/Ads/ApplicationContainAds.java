@@ -35,8 +35,8 @@ public class ApplicationContainAds extends BaseApplicationContainAds {
     public void onCreate() {
         super.onCreate();
         // Initialize the Audience Network SDK
-        AudienceNetworkAds.initialize(this);
-        AdInternalSettings.addTestDevice("192e0d1d-2f06-4eaf-89f1-b8b27cfdc69b");
+//        AudienceNetworkAds.initialize(this);
+//        AdInternalSettings.addTestDevice("192e0d1d-2f06-4eaf-89f1-b8b27cfdc69b");
 
 
     }

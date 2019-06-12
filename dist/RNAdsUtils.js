@@ -116,6 +116,9 @@ export class RNAdsUtils {
         console.log("showCenterAdsAndOpenScreen openScreen: ", screenName);
         CommonUtils.openScreen(screenName, screenProps);
     }
+    static async canShowFullCenterOnBackBtn() {
+        return NativeModules.RNAdsUtils.canShowFullCenterOnBackBtn();
+    }
     static async canShowFullCenterAds() {
         if (await RNCommonUtils.isVIPUser())
             return false;

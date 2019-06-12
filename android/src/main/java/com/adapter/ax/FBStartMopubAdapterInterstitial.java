@@ -3,12 +3,10 @@ package com.adapter.ax;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
-import com.facebook.ads.Ad;
-import com.facebook.ads.AdError;
-import com.facebook.ads.InterstitialAd;
-import com.facebook.ads.InterstitialAdListener;
+import com.facebook.ads.*;
 import com.mopub.common.logging.MoPubLog;
 import com.mopub.mobileads.CustomEventInterstitial;
+import com.mopub.mobileads.FacebookInterstitial;
 import com.mopub.mobileads.MoPubErrorCode;
 
 import java.util.Map;
@@ -21,6 +19,7 @@ import static com.mopub.common.logging.MoPubLog.AdapterLogEvent.*;
  * CUSTOM EVENT CLASS DATA: {"AdUnitId": "This is AD_UNIT_ID for full screen"};  ex test: {"AdUnitId": "/21617015150/47909961/21720491886"}
  */
 public class FBStartMopubAdapterInterstitial extends CustomEventInterstitial implements InterstitialAdListener {
+    public static boolean IS_LOADER = false;
     private static final String TAG = "FB_START";
     private static final String ADAPTER_NAME = "FB_START";
 
@@ -28,6 +27,7 @@ public class FBStartMopubAdapterInterstitial extends CustomEventInterstitial imp
     private CustomEventInterstitialListener mInterstitialListener;
 
     public void destroy() {
+        IS_LOADER = false;
         try {
             interstitial.destroy();
             interstitial = null;
@@ -41,6 +41,13 @@ public class FBStartMopubAdapterInterstitial extends CustomEventInterstitial imp
                                     final CustomEventInterstitialListener customEventInterstitialListener, Map<String, Object> localExtras,
                                     final Map<String, String> serverExtras) {
         Log.d(TAG, "loadInterstitial");
+        IS_LOADER = false;
+
+        boolean isInitialized = AudienceNetworkAds.isInitialized(context)
+                || FacebookInterstitial.sIsInitialized !=null && FacebookInterstitial.sIsInitialized.getAndSet(true);
+        if (!isInitialized)
+            AudienceNetworkAds.initialize(context);
+
         setAutomaticImpressionAndClickTracking(false);
         mInterstitialListener = customEventInterstitialListener;
 
@@ -63,6 +70,7 @@ public class FBStartMopubAdapterInterstitial extends CustomEventInterstitial imp
     //region Ads listenner
     @Override
     public void onAdLoaded(final Ad ad) {
+        IS_LOADER = true;
         Log.d(TAG, "onAdLoaded");
         if (mInterstitialListener != null) {
             mInterstitialListener.onInterstitialLoaded();
@@ -71,6 +79,7 @@ public class FBStartMopubAdapterInterstitial extends CustomEventInterstitial imp
 
     @Override
     public void onError(final Ad ad, final AdError error) {
+        IS_LOADER = false;
         Log.d(TAG, "onError " + error.getErrorMessage());
         if (mInterstitialListener != null) {
             if (error == AdError.NO_FILL) {
@@ -88,6 +97,7 @@ public class FBStartMopubAdapterInterstitial extends CustomEventInterstitial imp
 
     @Override
     public void onInterstitialDisplayed(final Ad ad) {
+        IS_LOADER = false;
         Log.d(TAG, "onInterstitialDisplayed " );
         MoPubLog.log(SHOW_SUCCESS, ADAPTER_NAME);
         if (mInterstitialListener != null) {
@@ -126,6 +136,7 @@ public class FBStartMopubAdapterInterstitial extends CustomEventInterstitial imp
 
     @Override
     protected void showInterstitial() {
+        IS_LOADER = false;
         try {
             MoPubLog.log(SHOW_ATTEMPTED, ADAPTER_NAME);
             if (interstitial != null && interstitial.isAdLoaded()) {
