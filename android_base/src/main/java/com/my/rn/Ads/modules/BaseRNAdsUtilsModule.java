@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.util.Log;
 import com.baseLibs.BaseApplication;
 import com.baseLibs.utils.L;
+import com.baseLibs.utils.PreferenceUtils;
 import com.facebook.react.bridge.*;
 import com.my.rn.Ads.AdsUtils;
 import com.my.rn.Ads.BaseApplicationContainAds;

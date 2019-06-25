@@ -2,17 +2,21 @@ package com.my.rn.Ads.modules;
 
 import android.text.TextUtils;
 import android.util.Log;
+import com.adapter.ax.FBStartMopubAdapterInterstitial;
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
+import com.baseLibs.utils.PreferenceUtils;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.UiThreadUtil;
 import com.mopub.common.SdkInitializationListener;
+import com.mopub.mobileads.FacebookInterstitial;
 import com.mopub.mobileads.MoPubRewardedVideos;
 import com.my.rn.Ads.ApplicationContainAds;
 import com.my.rn.Ads.ManagerTypeAdsShow;
 import com.my.rn.Ads.full.center.AdsFullManager;
+import com.my.rn.Ads.full.center.FbCenter;
 import com.my.rn.Ads.mopub.MopubNativeManager;
 
 public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
@@ -45,6 +49,20 @@ public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
                     e.printStackTrace();
                     promise.reject("0", e.getMessage(), e);
                 }
+            }
+        });
+    }
+
+    /**
+     * Chỉ trả về false khi Facebook loaded và setting là not show from back button
+     */
+    @ReactMethod
+    public void canShowFullCenterOnBackBtn(final Promise promise) {
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override public void run() {
+                boolean isNotShow = (FBStartMopubAdapterInterstitial.IS_LOADER || FacebookInterstitial.IS_LOADER || FbCenter.IS_LOADER)
+                        && PreferenceUtils.getBooleanSetting(ManagerTypeAdsShow.not_s_b_btn);
+                promise.resolve(!isNotShow);
             }
         });
     }
@@ -160,6 +178,7 @@ public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
     @ReactMethod @Override public void canShowFullCenterAds(Promise promise) {
         super.canShowFullCenterAds(promise);
     }
+
 
     @ReactMethod @Override public void cacheAdsCenter() {
         super.cacheAdsCenter();
