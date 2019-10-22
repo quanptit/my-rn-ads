@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, StyleProp, ViewStyle, View, Text, Linking} from "react-native";
-import {CachedImage} from 'react-native-cached-image'
+import {CachedImage} from 'my-rn-cached-image'
 import {Col, ComponentNoUpdate, Row, Touchable} from "my-rn-base-component";
 import {OfflineAdsSetting} from "./OfflineAdsSetting";
 import {isIOS} from "my-rn-base-utils";

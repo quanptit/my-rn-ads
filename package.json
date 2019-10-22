@@ -15,9 +15,9 @@
   "author": "Quan Trinh Van",
   "license": "Quan Trinh Van",
   "nativePackage": true,
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
+    "my-rn-cached-image": "^1.4.5"
   },
-  "peerDependencies": {
-  }
+  "devDependencies": {},
+  "peerDependencies": {}
 }
