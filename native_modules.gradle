@@ -1,0 +1,46 @@
+ext.addAdsProjectSetting = { ->
+    include ':AppShareLibs'
+    include ':my-rn-ads-base'
+    project(':my-rn-ads-base').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_base')
+    if (gradle.ext.ads == "upltv") {
+        include ':my-rn-ads'
+        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_upltv')
+    } else if (gradle.ext.ads == "epom") {
+        include ':my-rn-ads'
+        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_epom')
+    } else if (gradle.ext.ads == "small") {
+        include ':my-rn-ads'
+        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_small')
+    } else {
+        include ':MopubFacebookAudienceNetworkMediation'
+        project(':MopubFacebookAudienceNetworkMediation').projectDir = new File('S:/Codes/react-native-my-libs/MopubFacebookAudienceNetworkMediation')
+        if (gradle.ext.ads.contains("fairbid")) {
+            include ':my-rn-ads'
+            project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_fairbid')
+        } else {
+            include ':my-rn-ads'
+            project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_mopub')
+        }
+
+        if (gradle.ext.ads.contains("inmobi")) {
+            include ':mopub_inmobi'
+            project(':mopub_inmobi').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mopub_inmobi')
+        }
+        if (gradle.ext.ads.contains("smaato")) {
+            include ':mopub_smaato'
+            project(':mopub_smaato').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mopub_smaato')
+        }
+        if (gradle.ext.ads.contains("mobvistar")) {
+            include ':mopub_mobvistar'
+            project(':mopub_mobvistar').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mopub_mobvistar')
+        }
+        if (gradle.ext.ads.contains("fairbid")) {
+            include ':FairBid'
+            project(':FairBid').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/FairBid')
+        }
+    }
+}
+
+ext.addAdsProjectAppGradle = { ->
+    implementation project(':my-rn-ads')
+}

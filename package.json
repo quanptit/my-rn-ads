@@ -5,16 +5,20 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "link_global": "yarn link react-native-cached-image rn-fetch-blob lodash @types/lodash @types/react @types/react-native react react-native my-rn-base-component my-rn-base-utils my-rn-common-resource react-native-router-flux",
-    "install_pk": "yarn install"
+    "install_npm": "yarn install",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "ads"
+    "react-native"
   ],
   "author": "Quan Trinh Van",
-  "license": "Quan Trinh Van",
-  "nativePackage": true,
+  "license": "ISC",
+  "homepage": "https://github.com/quanptit/my-rn-ads",
+  "bugs": "https://github.com/quanptit/my-rn-ads/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quanptit/my-rn-ads.git"
+  },
   "dependencies": {
     "my-rn-cached-image": "^1.4.5"
   },
