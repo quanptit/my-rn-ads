@@ -1,12 +1,13 @@
 {
   "name": "my-rn-ads",
-  "version": "1.0.0",
+  "version": "2.0.1",
   "description": "my-rn-ads",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "install_npm": "yarn install",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "npm_publish": "npm publish",
+    "link_d": "yarn link rn-fetch-blob react-native-router-flux @types/react @types/react-native @types/lodash react react-native lodash my-rn-base-component my-rn-base-utils my-rn-common-resource"
   },
   "keywords": [
     "react-native"

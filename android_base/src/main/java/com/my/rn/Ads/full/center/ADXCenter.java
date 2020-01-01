@@ -4,12 +4,11 @@ import android.app.Activity;
 import android.text.TextUtils;
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
-import com.baseLibs.utils.PreferenceUtils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
 import com.my.rn.Ads.IAdLoaderCallback;
-import com.my.rn.Ads.ManagerTypeAdsShow;
+import com.my.rn.Ads.settings.AdsSetting;
 
 public class ADXCenter extends BaseFullCenterAds {
     private PublisherInterstitialAd interstitialCenter;
@@ -18,22 +17,22 @@ public class ADXCenter extends BaseFullCenterAds {
         return "ADX_CENTER";
     }
 
-    public boolean isCachedCenter() {
+    @Override protected boolean isCachedCenter(Activity activity) {
         return (interstitialCenter != null && interstitialCenter.isLoaded());
     }
 
-    @Override protected void showAds() {
+    @Override protected void showAds(Activity activity) {
         interstitialCenter.show();
     }
 
     @Override public String getKeyAds(boolean isFromStart) {
         String keySave;
         if (isFromStart) {
-            keySave = PreferenceUtils.getStringSetting(ManagerTypeAdsShow.KEY_ADX_START, null);
+            keySave = AdsSetting.getStartKey(AdsSetting.ID_ADX);
             if (!TextUtils.isEmpty(keySave)) return keySave;
             return KeysAds.getAdxFullStart();
         } else {
-            keySave = PreferenceUtils.getStringSetting(ManagerTypeAdsShow.KEY_ADX_CENTER, null);
+            keySave = AdsSetting.getCenterKey(AdsSetting.ID_ADX);
             if (!TextUtils.isEmpty(keySave)) return keySave;
             return KeysAds.getAdxFullCenter();
         }

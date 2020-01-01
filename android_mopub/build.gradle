@@ -16,7 +16,7 @@ dependencies {
     api project(':my-rn-ads-base')
     api project(':MopubFacebookAudienceNetworkMediation')
     // Admob
-    implementation 'com.mopub.mediation:admob:17.1.2.4'
+    implementation 'com.mopub.mediation:admob:18.2.0.3'
     if (gradle.ext.ads.contains("smaato")) implementation project(':mopub_smaato')
     if (gradle.ext.ads.contains("mobvistar")) implementation project(':mopub_mobvistar')
     if (gradle.ext.ads.contains("fairbid")) api project(':FairBid')

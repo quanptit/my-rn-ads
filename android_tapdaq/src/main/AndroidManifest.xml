@@ -1,0 +1,20 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.my.rn.Ads">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-sdk tools:overrideLibrary="sdk.mobfox.com.mobfoxandroidadaptermopub,sdk.mobfox.com.mobfoxandroidadapteradmob,com.mobfox.sdk,com.mobfox.sdk.all" />
+
+    <application
+        android:hardwareAccelerated="true"
+        android:usesCleartextTraffic="true">
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+    </application>
+</manifest>

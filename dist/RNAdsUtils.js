@@ -35,12 +35,15 @@ export class RNAdsUtils {
                         console.log("TIME OUT FOR SHOW ASD");
                         return;
                     }
-                    await RNAdsUtils.showStartAdsIfCache();
-                    callbackOpenAds && callbackOpenAds();
+                    if (await RNAdsUtils.showStartAdsIfCache())
+                        callbackOpenAds && callbackOpenAds();
                 }
             }, maxTimeMilisecond);
         }
-        catch (e) { }
+        catch (e) {
+            console.log("TIME OUT FOR SHOW ASD, not cache image in start time");
+            NativeModules.RNAdsUtils.destroyStartAdsIfNeed();
+        }
     }
     //endregion
     //region ========== Native ads ======
@@ -148,6 +151,8 @@ export class RNAdsUtils {
             sendError(e);
         }
         Actions.pop();
+        if (canShowFullCenterAds)
+            return;
         if (showRateDialogIfNoAds != null) {
             // noinspection JSIgnoredPromiseFromCall
             DialogUtils.showRateDialogIfNeed(showRateDialogIfNoAds.review_title, showRateDialogIfNoAds.review_description, showRateDialogIfNoAds.yes_sure, showRateDialogIfNoAds.remind_me_late, showRateDialogIfNoAds.androidID, showRateDialogIfNoAds.iosId);

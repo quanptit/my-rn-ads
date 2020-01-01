@@ -3,23 +3,24 @@ package com.my.rn.Ads.full.center;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
+
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
 import com.baseLibs.utils.PreferenceUtils;
-import com.facebook.react.bridge.Promise;
 import com.my.rn.Ads.IAdLoaderCallback;
+import com.my.rn.Ads.IAdsCalbackOpen;
 
-abstract class BaseFullCenterAds {
+public abstract class BaseFullCenterAds {
     private boolean isCaching = false;
-    private PromiseSaveObj promise;
+    private IAdsCalbackOpen promise;
 
     protected abstract String getLogTAG();
 
     public abstract String getKeyAds(boolean isFromStart);
 
-    protected abstract boolean isCachedCenter();
+    protected abstract boolean isCachedCenter(Activity activity);
 
-    protected abstract void showAds();
+    protected abstract void showAds(Activity activity);
 
     protected abstract void adsInitAndLoad(Activity activity, String keyAds, IAdLoaderCallback iAdLoaderCallback) throws Exception;
 
@@ -32,7 +33,7 @@ abstract class BaseFullCenterAds {
                 iAdLoaderCallback.onAdsFailedToLoad();
             return;
         }
-        if (isCachedCenter() || isCaching) return;
+        if (isCachedCenter(activity) || isCaching) return;
 
         destroy();
         Log.d(getLogTAG(), "loadCenterAds");
@@ -44,21 +45,15 @@ abstract class BaseFullCenterAds {
         }
     }
 
-    public boolean showAdsCenterIfCache(PromiseSaveObj promise) {
-        if (isCachedCenter()) {
+    public boolean showAdsCenterIfCache(Activity activity, IAdsCalbackOpen promise) {
+        if (isCachedCenter(activity)) {
             this.promise = promise;
-            showAds();
+            showAds(activity);
             return true;
         }
         return false;
     }
 
-    private void reslovePromise(boolean result) {
-        if (this.promise != null) {
-            this.promise.resolve(result);
-            this.promise = null;
-        }
-    }
 
     public void destroy() {
         this.promise = null;
@@ -93,7 +88,10 @@ abstract class BaseFullCenterAds {
     protected void onAdOpened() {
         Log.d(getLogTAG(), "onAdOpened");
         PreferenceUtils.saveLongSetting(KeysAds.LAST_TIME_SHOW_ADS, System.currentTimeMillis());
-        reslovePromise(true);
+        if (this.promise != null) {
+            this.promise.onAdOpened();
+            this.promise = null;
+        }
     }
 
     protected void onAdClosed() {

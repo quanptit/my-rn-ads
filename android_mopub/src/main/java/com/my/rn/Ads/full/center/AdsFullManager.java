@@ -2,7 +2,7 @@ package com.my.rn.Ads.full.center;
 
 import android.app.Activity;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import com.my.rn.Ads.IAdLoaderCallback;
 import com.my.rn.Ads.ManagerTypeAdsShow;
 

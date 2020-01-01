@@ -2,7 +2,23 @@ ext.addAdsProjectSetting = { ->
     include ':AppShareLibs'
     include ':my-rn-ads-base'
     project(':my-rn-ads-base').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_base')
-    if (gradle.ext.ads == "upltv") {
+    include ':my-rn-ads-base-react-native'
+    project(':my-rn-ads-base-react-native').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-base-react-native')
+    if (gradle.ext.ads.contains("facebook")) {
+        include ':my-rn-ads-fb'
+        project(':my-rn-ads-fb').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-fb')
+        include ':my-rn-ads-fb-react-native'
+        project(':my-rn-ads-fb-react-native').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-fb-react-native')
+    }
+
+    if (gradle.ext.ads.contains("tapdaq")) {
+        include ':my-rn-ads'
+        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_tapdaq')
+        include ':my-rn-ads-tapdaq'
+        project(':my-rn-ads-tapdaq').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-tapdaq')
+        include ':my-rn-ads-tapdaq-react-native'
+        project(':my-rn-ads-tapdaq-react-native').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-tapdaq-react-native')
+    } else if (gradle.ext.ads == "upltv") {
         include ':my-rn-ads'
         project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_upltv')
     } else if (gradle.ext.ads == "epom") {

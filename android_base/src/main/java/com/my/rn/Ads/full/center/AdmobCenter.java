@@ -2,6 +2,9 @@ package com.my.rn.Ads.full.center;
 
 import android.app.Activity;
 import android.text.TextUtils;
+import android.util.Log;
+
+import com.baseLibs.utils.L;
 import com.baseLibs.utils.PreferenceUtils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -9,7 +12,7 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.my.rn.Ads.IAdLoaderCallback;
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
-import com.my.rn.Ads.ManagerTypeAdsShow;
+import com.my.rn.Ads.settings.AdsSetting;
 
 public class AdmobCenter extends BaseFullCenterAds {
     private InterstitialAd interstitialCenter;
@@ -18,29 +21,30 @@ public class AdmobCenter extends BaseFullCenterAds {
         return "ADMOB_CENTER";
     }
 
-    @Override public boolean isCachedCenter() {
+    @Override public boolean isCachedCenter(Activity activity) {
         return (interstitialCenter != null && interstitialCenter.isLoaded());
     }
 
-    @Override protected void showAds() {
+    @Override protected void showAds(Activity activity) {
         interstitialCenter.show();
     }
 
     @Override public String getKeyAds(boolean isFromStart) {
         String keySave;
         if (isFromStart) {
-            keySave = PreferenceUtils.getStringSetting(ManagerTypeAdsShow.KEY_ADMOB_START, null);
+            keySave = AdsSetting.getStartKey(AdsSetting.ID_ADMOB);
             if (!TextUtils.isEmpty(keySave)) return keySave;
-            return KeysAds.getAdmod_START();
+            return KeysAds.Admod_START;
         } else {
-            keySave = PreferenceUtils.getStringSetting(ManagerTypeAdsShow.KEY_ADMOB_CENTER, null);
+            keySave = AdsSetting.getCenterKey(AdsSetting.ID_ADMOB);
             if (!TextUtils.isEmpty(keySave)) return keySave;
-            return KeysAds.getAdmod_FULL();
+            return KeysAds.Admod_FULL;
         }
     }
 
     @Override protected void adsInitAndLoad(Activity activity, String keyAds, final IAdLoaderCallback iAdLoaderCallback) throws Exception {
         if (interstitialCenter != null && interstitialCenter.isLoading()) return;
+        Log.d(getLogTAG(), "adsInitAndLoad: " + keyAds);
         interstitialCenter = new InterstitialAd(BaseApplication.getAppContext());
         interstitialCenter.setAdUnitId(keyAds);
         interstitialCenter.setAdListener(new AdListener() {

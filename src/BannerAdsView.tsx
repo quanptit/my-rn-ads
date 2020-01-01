@@ -74,6 +74,7 @@ export class BannerAdsView extends Component<Props, { typeShow: string, offlineA
 
         switch (this.state.typeShow) {
             case "MOPUB":
+            case "TAPDAQ":
                 return <MOPUBBannerView style={this.props.style} typeAds={this.props.typeAds}
                                         onAdFailedToLoad={this.onAdFailedToLoad.bind(this)}/>;
             case "FB":
