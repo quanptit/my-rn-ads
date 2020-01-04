@@ -1,17 +1,17 @@
-package com.my.rn.Ads.full.center;
+package com.my.rn.ads.full.center;
 
 import android.app.Activity;
 
 import androidx.annotation.Nullable;
 
 import com.baseLibs.utils.L;
-import com.my.rn.Ads.AdsUtils;
-import com.my.rn.Ads.BaseApplicationContainAds;
-import com.my.rn.Ads.IAdLoaderCallback;
-import com.my.rn.Ads.IAdsCalbackOpen;
+import com.my.rn.ads.AdsUtils;
+import com.my.rn.ads.BaseApplicationContainAds;
+import com.my.rn.ads.IAdLoaderCallback;
+import com.my.rn.ads.IAdsCalbackOpen;
 import com.appsharelib.KeysAds;
 import com.baseLibs.utils.PreferenceUtils;
-import com.my.rn.Ads.settings.AdsSetting;
+import com.my.rn.ads.settings.AdsSetting;
 
 import java.lang.ref.WeakReference;
 

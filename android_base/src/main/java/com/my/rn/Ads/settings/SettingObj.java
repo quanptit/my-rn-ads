@@ -1,4 +1,4 @@
-package com.my.rn.Ads.settings;
+package com.my.rn.ads.settings;
 
 import androidx.annotation.Nullable;
 

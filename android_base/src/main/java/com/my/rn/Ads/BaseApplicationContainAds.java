@@ -1,8 +1,8 @@
-package com.my.rn.Ads;
+package com.my.rn.ads;
 
 import com.baseLibs.BaseApplication;
-import com.my.rn.Ads.full.center.BaseAdsFullManager;
-import com.my.rn.Ads.settings.AdsSetting;
+import com.my.rn.ads.full.center.BaseAdsFullManager;
+import com.my.rn.ads.settings.AdsSetting;
 
 public abstract class BaseApplicationContainAds extends BaseApplication {
     private AdsSetting adsSetting;

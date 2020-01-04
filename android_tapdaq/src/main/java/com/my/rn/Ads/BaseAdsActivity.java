@@ -1,4 +1,4 @@
-package com.my.rn.Ads;
+package com.my.rn.ads;
 
 import android.os.Bundle;
 

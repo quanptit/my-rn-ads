@@ -1,16 +1,9 @@
-package com.my.rn.Ads.modules;
+package com.my.rn.ads.modules;
 
-import android.app.Activity;
-import android.text.TextUtils;
-import android.util.Log;
-
-import com.appsharelib.KeysAds;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.UiThreadUtil;
-import com.my.rn.Ads.BaseApplicationContainAds;
-import com.my.rn.Ads.settings.AdsSetting;
+import com.my.rn.ads.BaseApplicationContainAds;
 
 public class RNAdsUtilsModule extends BaseRNAdsUtilsModule {
     private static final String TAG = "RN_ADS_MODULE";

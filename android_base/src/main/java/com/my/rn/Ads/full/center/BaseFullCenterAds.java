@@ -1,4 +1,4 @@
-package com.my.rn.Ads.full.center;
+package com.my.rn.ads.full.center;
 
 import android.app.Activity;
 import android.text.TextUtils;
@@ -7,8 +7,8 @@ import android.util.Log;
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
 import com.baseLibs.utils.PreferenceUtils;
-import com.my.rn.Ads.IAdLoaderCallback;
-import com.my.rn.Ads.IAdsCalbackOpen;
+import com.my.rn.ads.IAdLoaderCallback;
+import com.my.rn.ads.IAdsCalbackOpen;
 
 public abstract class BaseFullCenterAds {
     private boolean isCaching = false;
@@ -18,7 +18,7 @@ public abstract class BaseFullCenterAds {
 
     public abstract String getKeyAds(boolean isFromStart);
 
-    protected abstract boolean isCachedCenter(Activity activity);
+    public abstract boolean isCachedCenter(Activity activity);
 
     protected abstract void showAds(Activity activity);
 

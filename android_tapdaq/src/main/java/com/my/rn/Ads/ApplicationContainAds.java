@@ -1,8 +1,11 @@
-package com.my.rn.Ads;
+package com.my.rn.ads;
 
 import com.baseLibs.BaseApplication;
-import com.my.rn.Ads.full.center.AdsFullManager;
-import com.my.rn.Ads.full.center.BaseAdsFullManager;
+import com.facebook.ads.AdSettings;
+import com.facebook.ads.AudienceNetworkAds;
+import com.facebook.ads.internal.settings.AdInternalSettings;
+import com.my.rn.ads.full.center.AdsFullManager;
+import com.my.rn.ads.full.center.BaseAdsFullManager;
 import com.my.rn.ads.tapdaq.AdInitUtils;
 import com.my.rn.ads.tapdaq.ad_native.TabpadNativeManager;
 
@@ -40,7 +43,9 @@ public class ApplicationContainAds extends BaseApplicationContainAds {
     public void onCreate() {
         super.onCreate();
         // Initialize the Audience Network SDK
-//        AudienceNetworkAds.initialize(this);
+        AudienceNetworkAds.initialize(this);
+
+//        AdInternalSettings.addTestDevice("F8166641DCAD094966A377AA26A0F53C");
 //        AdInternalSettings.addTestDevice("192e0d1d-2f06-4eaf-89f1-b8b27cfdc69b");
 
 

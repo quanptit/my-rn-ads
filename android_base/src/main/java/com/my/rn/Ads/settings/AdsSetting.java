@@ -1,16 +1,15 @@
-package com.my.rn.Ads.settings;
+package com.my.rn.ads.settings;
 
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import com.appsharelib.KeysAds;
-import com.baseLibs.BuildConfig;
 import com.baseLibs.utils.BaseUtils;
 import com.baseLibs.utils.PreferenceUtils;
 import com.google.gson.JsonSyntaxException;
-import com.my.rn.Ads.BaseApplicationContainAds;
-import com.my.rn.Ads.IAdInitCallback;
+import com.my.rn.ads.BaseApplicationContainAds;
+import com.my.rn.ads.IAdInitCallback;
 
 import java.util.ArrayList;
 
@@ -52,13 +51,19 @@ public class AdsSetting {
 
     public @Nullable String getTypeShowFullStart(int index) {
         SettingObj settingObj = getSettingObj();
-        if (settingObj == null) return KeysAds.DEFAULT_START;
+        if (settingObj == null) {
+            if (index > 0) return null;
+            return KeysAds.DEFAULT_START;
+        }
         return getTypeShowAds(index, settingObj.start_ads);
     }
 
     public String getTypeShowFullCenter(int index) {
         SettingObj settingObj = getSettingObj();
-        if (settingObj == null) return KeysAds.DEFAULT_CENTER;
+        if (settingObj == null) {
+            if (index > 0) return null;
+            return KeysAds.DEFAULT_CENTER;
+        }
         return getTypeShowAds(index, settingObj.center_ads);
     }
 
@@ -75,13 +80,19 @@ public class AdsSetting {
     // region banner
     public String getTypeShowBanner(int index) {
         SettingObj settingObj = getSettingObj();
-        if (settingObj == null) return KeysAds.DEFAULT_BANNER;
+        if (settingObj == null) {
+            if (index > 0) return null;
+            return KeysAds.DEFAULT_BANNER;
+        }
         return getTypeShowAds(index, settingObj.banner_ads);
     }
 
     public String getTypeShowBannerRect(int index) {
         SettingObj settingObj = getSettingObj();
-        if (settingObj == null) return KeysAds.DEFAULT_MRECT;
+        if (settingObj == null) {
+            if (index > 0) return null;
+            return KeysAds.DEFAULT_MRECT;
+        }
         return getTypeShowAds(index, settingObj.banner_rect_ads);
     }
     //endregion
@@ -151,7 +162,7 @@ public class AdsSetting {
     }
 
     private void logTest() {
-        if (!BuildConfig.DEBUG) return;
+        if (!KeysAds.IS_DEVELOPMENT) return;
         Log.d(TAG, "====== getTypeShowFullStart ============");
         for (int i = 0; i <= 6; i++)
             Log.d(TAG, i + ": " + getTypeShowFullStart(i) + " - " + getStartKey(getTypeShowFullStart(i)));

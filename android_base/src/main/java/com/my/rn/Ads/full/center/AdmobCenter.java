@@ -1,18 +1,16 @@
-package com.my.rn.Ads.full.center;
+package com.my.rn.ads.full.center;
 
 import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.baseLibs.utils.L;
-import com.baseLibs.utils.PreferenceUtils;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.my.rn.Ads.IAdLoaderCallback;
+import com.my.rn.ads.IAdLoaderCallback;
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
-import com.my.rn.Ads.settings.AdsSetting;
+import com.my.rn.ads.settings.AdsSetting;
 
 public class AdmobCenter extends BaseFullCenterAds {
     private InterstitialAd interstitialCenter;
@@ -30,6 +28,8 @@ public class AdmobCenter extends BaseFullCenterAds {
     }
 
     @Override public String getKeyAds(boolean isFromStart) {
+        if (KeysAds.IS_DEVELOPMENT)
+            return "ca-app-pub-3940256099942544/1033173712";
         String keySave;
         if (isFromStart) {
             keySave = AdsSetting.getStartKey(AdsSetting.ID_ADMOB);

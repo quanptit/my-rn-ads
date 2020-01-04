@@ -1,6 +1,4 @@
-package com.my.rn.Ads;
-
-import androidx.annotation.Nullable;
+package com.my.rn.ads;
 
 public interface IAdsCalbackOpen {
     void onAdOpened();

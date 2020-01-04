@@ -1,4 +1,4 @@
-package com.my.rn.Ads.modules;
+package com.my.rn.ads.modules;
 
 import androidx.annotation.Nullable;
 
@@ -9,7 +9,7 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.my.rn.Ads.BaseApplicationContainAds;
+import com.my.rn.ads.BaseApplicationContainAds;
 
 import java.util.Map;
 

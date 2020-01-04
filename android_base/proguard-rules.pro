@@ -623,7 +623,7 @@ public *;
 -keep class com.mobfox.adapter. {*;}
 -keep class com.mobfox.sdk. {*;}
 
-# Movistar
+# Movistar , Mintegral
  -keepattributes Signature
     -keepattributes *Annotation*
     -keep class com.mintegral.** {*; }
@@ -631,6 +631,14 @@ public *;
     -keep class android.support.v4.** { *; }
     -dontwarn com.mintegral.**
     -keep class **.R$* { public static final int mintegral*; }
+    -keep class com.alphab.** {*; }
+    -keep interface com.alphab.** {*; }
+    -keepattributes Annotation
+    -keep class com.mintegral.** {*; }
+    -keep interface com.mintegral.** {*; }
+    -keep class android.support.v4.** { *; }
+    -dontwarn com.mintegral.**
+    -keep class **.R$ { public static final int mintegral; }
     -keep class com.alphab.** {*; }
     -keep interface com.alphab.** {*; }
 
@@ -644,3 +652,9 @@ public *;
 -keepclasseswithmembernames class com.fyber.inneractive.** {*;}
 
 -dontwarn com.heyzap.**
+
+#  Tapdaq
+-keep class com.tapdaq.sdk.** { *; }
+-keep class com.tapdaq.adapters.* { *; }
+-keep class com.tapdaq.unityplugin.* { *; }
+-keep class com.google.android.gms.ads.identifier.** { *; }

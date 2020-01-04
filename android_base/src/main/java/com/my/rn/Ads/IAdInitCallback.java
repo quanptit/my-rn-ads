@@ -1,4 +1,4 @@
-package com.my.rn.Ads;
+package com.my.rn.ads;
 
 public interface IAdInitCallback {
     void didInitialise();

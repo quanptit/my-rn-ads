@@ -1,4 +1,4 @@
-package com.my.rn.Ads;
+package com.my.rn.ads;
 
 import com.appsharelib.KeysAds;
 import com.baseLibs.utils.PreferenceUtils;
