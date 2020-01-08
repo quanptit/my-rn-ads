@@ -1,6 +1,6 @@
 {
   "name": "my-rn-ads",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "my-rn-ads",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,8 +21,9 @@
     "url": "https://github.com/quanptit/my-rn-ads.git"
   },
   "dependencies": {
-    "my-rn-cached-image": "^1.4.5"
   },
   "devDependencies": {},
-  "peerDependencies": {}
+  "peerDependencies": {
+    "my-rn-cached-image": "^1.4.5"
+  }
 }
