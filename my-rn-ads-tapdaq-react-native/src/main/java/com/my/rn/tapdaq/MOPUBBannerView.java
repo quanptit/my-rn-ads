@@ -60,6 +60,7 @@ class MOPUBBannerUI extends ReactViewGroup implements LifecycleEventListener {
                 }
 
                 @Override public void didFailToInitialise() {
+                    sendAdFailEvent(-999);
                 }
             });
         }
@@ -89,6 +90,12 @@ class MOPUBBannerUI extends ReactViewGroup implements LifecycleEventListener {
             myAdView.load(getSafeActivity(), TMBannerAdSizes.STANDARD, tmAdListener);
     }
 
+    private void sendAdFailEvent(int errorCode) {
+        WritableMap event = Arguments.createMap();
+        event.putInt("errorCode", errorCode);
+        mEventEmitter.receiveEvent(getId(), BaseRNAdsUtilsModule.EVENT_AD_FAILED_TO_LOAD, event);
+    }
+
     private TMAdListener tmAdListener = new TMAdListener() {
         @Override
         public void didLoad() {
@@ -101,9 +108,7 @@ class MOPUBBannerUI extends ReactViewGroup implements LifecycleEventListener {
         public void didFailToLoad(TMAdError error) {
             // No banners available. View will stop refreshing
             L.d("MOPUBBannerUI onBannerFailed errorCode: " + error.toString());
-            WritableMap event = Arguments.createMap();
-            event.putInt("errorCode", error.getErrorCode());
-            mEventEmitter.receiveEvent(getId(), BaseRNAdsUtilsModule.EVENT_AD_FAILED_TO_LOAD, event);
+            sendAdFailEvent(error.getErrorCode());
         }
 
         @Override
