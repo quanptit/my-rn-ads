@@ -12,8 +12,12 @@ public interface INativeManager {
     void cacheNativeAndWaitForComplete(final Activity activity) throws Exception;
 
     boolean canShowNativeAds(int typeAds);
+    boolean firstCacheAndCheckCanShowNativeAds(Activity activity, int typeAds) throws Exception;
 
     boolean isCached();
+
+    // chỉ ra rằng đã từng load native ads, và đã trả về kết quả là có ads hoặc không
+    boolean hasLoadAds();
 
     @Nullable View createNewAds(Context context, int typeAds, ViewGroup parent);
 }

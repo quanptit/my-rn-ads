@@ -1,0 +1,45 @@
+//project.version = '5.6.0.1'
+//project.ext.networkName = 'facebook'
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    defaultConfig {
+        versionCode 1
+        versionName "5.6.0.1"
+        minSdkVersion 16
+        buildConfigField("String", "NETWORK_NAME", "\"facebook\"")
+    }
+}
+
+dependencies {
+    api project(':BaseLibs')
+    //     For banners
+    api("com.mopub:mopub-sdk-banner:$rootProject.ext.mopub") { transitive = true }
+    // For interstitials
+    api("com.mopub:mopub-sdk-interstitial:$rootProject.ext.mopub") { transitive = true }
+    // For native static (images).
+    api("com.mopub:mopub-sdk-native-static:$rootProject.ext.mopub") { transitive = true }
+    //For native video. This will automatically also include native static
+    implementation("com.mopub:mopub-sdk-native-video:$rootProject.ext.mopub") { transitive = true }
+    api ("com.facebook.android:audience-network-sdk:$rootProject.ext.fan_lib") { transitive = true }
+    api "com.google.android.gms:play-services-ads:$rootProject.ext.play_services_ads"
+
+    implementation files('libs/mintegral_common.aar')
+    implementation files('libs/mintegral_interstitialvideo.aar')
+    implementation files('libs/mintegral_mtgjscommon.aar')
+    implementation files('libs/mintegral_playercommon.aar')
+    implementation files('libs/mintegral_videocommon.aar')
+    implementation files('libs/mintegral_videojs.aar')
+    implementation files('libs/mintegral_interstitial.aar')
+    implementation files('libs/mintegral_nativeex.aar')
+
+//    implementation 'com.mintegral.msdk:videojs:12.1.21'
+//    implementation 'com.mintegral.msdk:mtgjscommon:12.1.21'
+//    implementation 'com.mintegral.msdk:playercommon:12.1.21'
+//    implementation 'com.mintegral.msdk:videocommon:12.1.21'
+//    implementation 'com.mintegral.msdk:reward:12.1.21'
+//    implementation 'com.mintegral.msdk:interstitialvideo:12.1.21'
+//    implementation 'com.mintegral.msdk:common:12.1.21'
+}

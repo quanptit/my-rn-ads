@@ -56,7 +56,7 @@ public class TapdaqFullCenter extends BaseFullCenterAds {
 
     @Override protected void adsInitAndLoad(final Activity activity, final String keyAds, final IAdLoaderCallback iAdLoaderCallback) throws Exception {
         this.iAdLoaderCallback = iAdLoaderCallback;
-        BaseApplicationContainAds.getInstance().getIAdInitUtils()
+        AdInitTapdaqUtils.getInstance()
                 .initAds(activity, new IAdInitCallback() {
                     @Override public void didInitialise() {
                         if (!Tapdaq.getInstance().isInterstitialReady(activity, getKeyAds(false)))

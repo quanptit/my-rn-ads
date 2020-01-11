@@ -6,6 +6,7 @@ import { isEqual } from "lodash";
 import { Col } from "my-rn-base-component";
 import { OfflineAdsSetting } from "./OfflineAdsSetting";
 import { RowOfflineAds } from "./RowOfflineAds";
+import { CommonUtils } from "my-rn-base-utils";
 let NativeAdsViewRef = requireNativeComponent('NativeAdsView');
 export class NativeAdsView extends Component {
     constructor(props) {
@@ -13,6 +14,7 @@ export class NativeAdsView extends Component {
         this.state = { needRender: false, isLoading: true, height: getHeightAds(this.props.typeAds) };
     }
     async componentDidMount() {
+        await CommonUtils.waitAfterInteractions();
         if (this.props.delayTime != undefined && !this.state.needRender) {
             setTimeout(() => {
                 this.setState({ needRender: true });
@@ -23,14 +25,17 @@ export class NativeAdsView extends Component {
         else
             this.isPreferShowBanner = await RNAdsUtils.isPreferShowBanner(this.props.typeAds);
         if (!this.isPreferShowBanner) {
-            this.isCachedNativeAds = await RNAdsUtils.canShowNativeAds(this.props.typeAds);
-            if (!this.props.skipCacheNative) // noinspection JSIgnoredPromiseFromCall
+            if (!await RNAdsUtils.hasLoadNativeAds())
+                this.setState({ showLoading: true });
+            this.isCachedNativeAds = await RNAdsUtils.firstCacheAndCheckCanShowNativeAds(this.props.typeAds);
+            if (!this.props.skipCacheNative)
+                // noinspection JSIgnoredPromiseFromCall
                 RNAdsUtils.cacheNativeAdsIfNeed(this.props.typeAds);
         }
         if (!this.isCachedNativeAds && this.props.allowBannerBackup === false) {
             this.offlineAds = await OfflineAdsSetting.getPreferAds(true);
         }
-        this.setState({ isLoading: false });
+        this.setState({ isLoading: false, showLoading: false });
     }
     shouldComponentUpdate(nextProps, nextState) {
         return !isEqual(this.state, nextState);
@@ -71,8 +76,11 @@ export class NativeAdsView extends Component {
                 <NativeAdsViewRef style={{ height: this.state.height }} typeAds={this.props.typeAds}/>
             </View>);
     }
-    //region utils
     renderEmptyView() {
+        if (this.state.height > 200)
+            return (<Col dial={5} style={[this.props.style, { height: this.state.height }]}>
+                    {this.state.showLoading && <Text style={styles.tvSponsored}>Loading ... </Text>}
+                </Col>);
         return (<View style={[this.props.style, { height: this.state.height }]}/>);
     }
 }
@@ -87,6 +95,7 @@ NativeAdsView.defaultProps = {
     allowBannerBackup: true,
     skipCacheNative: false
 };
+//region styles
 const styles = StyleSheet.create({
     container: { flexDirection: "column", justifyContent: 'flex-start', alignItems: 'center' },
     tvSponsored: { color: "#757575", fontSize: 13, marginTop: 6, alignSelf: "center" },
@@ -99,3 +108,4 @@ function getHeightAds(typeAds) {
         return 250;
     return 300;
 }
+//endregion

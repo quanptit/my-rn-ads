@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 interface Props {
-    typeAds?: "RECTANGLE_HEIGHT_250" | "BANNER_50" | "SMART_BANNER";
+    typeAds?: "RECTANGLE_HEIGHT_250" | "BANNER_50";
     isNoRefresh?: boolean;
     onAdFailedToLoad?: (errorCode: number) => void;
     style?: StyleProp<ViewStyle>;

@@ -6,6 +6,7 @@ import {isEqual} from "lodash"
 import {Col} from "my-rn-base-component";
 import {OfflineAdsSetting} from "./OfflineAdsSetting";
 import {RowOfflineAds} from "./RowOfflineAds";
+import {CommonUtils} from "my-rn-base-utils";
 
 let NativeAdsViewRef: any = requireNativeComponent('NativeAdsView');
 
@@ -19,7 +20,7 @@ interface Props {
     style?: StyleProp<ViewStyle>
 }
 
-export class NativeAdsView extends Component<Props, { isLoading: boolean, needRender: boolean, height: number }> {
+export class NativeAdsView extends Component<Props, { isLoading: boolean, needRender: boolean, height: number, showLoading?: boolean }> {
     public static TYPE_SUMMARY_FB = 0;
     public static TYPE_SUMMARY_SMALL_CUSTOM = 1;
     public static TYPE_SUMMARY_LARGE = 3;
@@ -42,6 +43,7 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
     }
 
     async componentDidMount() {
+        await CommonUtils.waitAfterInteractions();
         if (this.props.delayTime != undefined && !this.state.needRender) {
             setTimeout(() => {
                 this.setState({needRender: true})
@@ -53,14 +55,17 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
             this.isPreferShowBanner = await RNAdsUtils.isPreferShowBanner(this.props.typeAds);
 
         if (!this.isPreferShowBanner) {
-            this.isCachedNativeAds = await RNAdsUtils.canShowNativeAds(this.props.typeAds);
-            if (!this.props.skipCacheNative) // noinspection JSIgnoredPromiseFromCall
+            if (!await RNAdsUtils.hasLoadNativeAds())
+                this.setState({showLoading: true});
+            this.isCachedNativeAds = await RNAdsUtils.firstCacheAndCheckCanShowNativeAds(this.props.typeAds);
+            if (!this.props.skipCacheNative)
+                // noinspection JSIgnoredPromiseFromCall
                 RNAdsUtils.cacheNativeAdsIfNeed(this.props.typeAds);
         }
         if (!this.isCachedNativeAds && this.props.allowBannerBackup === false) {
             this.offlineAds = await OfflineAdsSetting.getPreferAds(true);
         }
-        this.setState({isLoading: false});
+        this.setState({isLoading: false, showLoading: false});
     }
 
 
@@ -92,7 +97,7 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
     //region banner backup =============
     private _renderBanner50Ads() {
         return (
-            <View style={[styles.container, this.props.style]}>
+            <View style={[styles.container, this.props.style as any]}>
                 <BannerAdsView typeAds="BANNER_50"/>
             </View>
         );
@@ -121,16 +126,21 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
             </View>)
     }
 
-    //region utils
     renderEmptyView() {
+        if (this.state.height > 200)
+            return (
+                <Col dial={5} style={[this.props.style as any, {height: this.state.height}]}>
+                    {this.state.showLoading && <Text style={styles.tvSponsored}>Loading ... </Text>}
+                </Col>
+            );
+
         return (
-            <View style={[this.props.style, {height: this.state.height}]}/>
+            <View style={[this.props.style as any, {height: this.state.height}]}/>
         )
     }
-
-    //endregion
 }
 
+//region styles
 const styles = StyleSheet.create({
     container: {flexDirection: "column", justifyContent: 'flex-start', alignItems: 'center'},
     tvSponsored: {color: "#757575", fontSize: 13, marginTop: 6, alignSelf: "center"},
@@ -144,3 +154,5 @@ function getHeightAds(typeAds: number) {
         return 250;
     return 300;
 }
+
+//endregion

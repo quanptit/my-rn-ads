@@ -75,9 +75,21 @@ export class RNAdsUtils {
         }
     }
 
-    static async isPreferShowBanner(typeAds: number): Promise<boolean> {
-        if (Platform.OS === "ios") return true;
-        return NativeModules.RNAdsUtils.isPreferShowBanner(typeAds);
+    static async firstCacheAndCheckCanShowNativeAds(typeAds: number): Promise<boolean> {
+        try {
+            return await excuteFuncWithTimeOut(() => {
+                return NativeModules.RNAdsUtils.firstCacheAndCheckCanShowNativeAds(typeAds);
+            }, 8000);
+        } catch (e) {
+            console.log("firstCacheAndCheckCanShowNativeAds: TIMEOUT");
+            return false;
+        }
+
+    }
+
+    // chỉ ra native ads đã được cố load, dù là fail hay success
+    static async hasLoadNativeAds(): Promise<boolean> {
+        return NativeModules.RNAdsUtils.hasLoadNativeAds();
     }
 
     static async canShowNativeAds(typeAds: number): Promise<boolean> {
@@ -85,6 +97,11 @@ export class RNAdsUtils {
             return false;
         if (Platform.OS === "ios") return false;
         return NativeModules.RNAdsUtils.canShowNativeAds(typeAds);
+    }
+
+    static async isPreferShowBanner(typeAds: number): Promise<boolean> {
+        if (Platform.OS === "ios") return true;
+        return NativeModules.RNAdsUtils.isPreferShowBanner(typeAds);
     }
 
     static async cacheNativeAdsIfNeed(typeAds: number) {

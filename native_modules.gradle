@@ -1,62 +1,76 @@
+def ads = gradle.ext.ads
+def mediation = gradle.ext.mediation
+
 ext.addAdsProjectSetting = { ->
+    //region base
     include ':AppShareLibs'
     include ':my-rn-ads-base'
     project(':my-rn-ads-base').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_base')
     include ':my-rn-ads-base-react-native'
     project(':my-rn-ads-base-react-native').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-base-react-native')
-    if (gradle.ext.ads.contains("facebook")) {
+    if (ads.contains("facebook")) {
         include ':my-rn-ads-fb'
         project(':my-rn-ads-fb').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-fb')
         include ':my-rn-ads-fb-react-native'
         project(':my-rn-ads-fb-react-native').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-fb-react-native')
     }
+    //endregion
 
-    if (gradle.ext.ads.contains("tapdaq")) {
+    if (mediation == "tapdaq") {
         include ':my-rn-ads'
         project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_tapdaq')
+    } else { // mediation is mopub
+        //////////
+        include ':mintegral_mopub_adapter'
+        project(':mintegral_mopub_adapter').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mintegral_mopub_adapter')
+        //////////
+
+        include ':my-rn-ads'
+        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_mopub')
+        if (ads.contains("facebook")) {
+            include ':FacebookAudienceNetwork'
+            project(':FacebookAudienceNetwork').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/FacebookAudienceNetwork')
+        }
+//        if (gradle.ext.ads.contains("inmobi")) {
+//            include ':mopub_inmobi'
+//            project(':mopub_inmobi').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mopub_inmobi')
+//        }
+//        if (gradle.ext.ads.contains("smaato")) {
+//            include ':mopub_smaato'
+//            project(':mopub_smaato').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mopub_smaato')
+//        }
+//        if (gradle.ext.ads.contains("mobvistar")) {
+//            include ':mopub_mobvistar'
+//            project(':mopub_mobvistar').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mopub_mobvistar')
+//        }
+//        if (gradle.ext.ads.contains("fairbid")) {
+//            include ':FairBid'
+//            project(':FairBid').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/FairBid')
+//        }
+    }
+
+    if (ads.contains("mopub")) {
+        include ':my-rn-ads-mopub'
+        project(':my-rn-ads-mopub').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-mopub')
+        include ':my-rn-ads-mopub-react-native'
+        project(':my-rn-ads-mopub-react-native').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-mopub-react-native')
+    }
+    if (ads.contains("tapdaq")) {
         include ':my-rn-ads-tapdaq'
         project(':my-rn-ads-tapdaq').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-tapdaq')
         include ':my-rn-ads-tapdaq-react-native'
         project(':my-rn-ads-tapdaq-react-native').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-tapdaq-react-native')
-    } else if (gradle.ext.ads == "upltv") {
-        include ':my-rn-ads'
-        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_upltv')
-    } else if (gradle.ext.ads == "epom") {
-        include ':my-rn-ads'
-        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_epom')
-    } else if (gradle.ext.ads == "small") {
-        include ':my-rn-ads'
-        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_small')
-    } else {
-        include ':MopubFacebookAudienceNetworkMediation'
-        project(':MopubFacebookAudienceNetworkMediation').projectDir = new File('S:/Codes/react-native-my-libs/MopubFacebookAudienceNetworkMediation')
-        if (gradle.ext.ads.contains("fairbid")) {
-            include ':my-rn-ads'
-            project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_fairbid')
-        } else {
-            include ':my-rn-ads'
-            project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_mopub')
-        }
-
-        if (gradle.ext.ads.contains("inmobi")) {
-            include ':mopub_inmobi'
-            project(':mopub_inmobi').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mopub_inmobi')
-        }
-        if (gradle.ext.ads.contains("smaato")) {
-            include ':mopub_smaato'
-            project(':mopub_smaato').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mopub_smaato')
-        }
-        if (gradle.ext.ads.contains("mobvistar")) {
-            include ':mopub_mobvistar'
-            project(':mopub_mobvistar').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mopub_mobvistar')
-        }
-        if (gradle.ext.ads.contains("fairbid")) {
-            include ':FairBid'
-            project(':FairBid').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/FairBid')
-        }
     }
-}
 
-ext.addAdsProjectAppGradle = { ->
-    implementation project(':my-rn-ads')
+    //region old mediation // comment
+//    if (gradle.ext.ads == "upltv") {
+//        include ':my-rn-ads'
+//        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_upltv')
+//    } else if (gradle.ext.ads == "epom") {
+//        include ':my-rn-ads'
+//        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_epom')
+//    } else if (gradle.ext.ads == "small") {
+//        include ':my-rn-ads'
+//        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_small')
+//    }
 }

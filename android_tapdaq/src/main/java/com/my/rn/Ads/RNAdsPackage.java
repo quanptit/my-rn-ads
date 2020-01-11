@@ -6,7 +6,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.my.rn.ads.modules.*;
 import com.my.rn.ads.fb.rn.FbBannerView;
-import com.my.rn.tapdaq.MOPUBBannerView;
+import com.my.rn.tapdaq.TapdaqBannerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +17,7 @@ public class RNAdsPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext context) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new RNAdsUtilsModule(context));
+        modules.add(new BaseRNAdsUtilsModule(context));
         return modules;
     }
 
@@ -28,7 +28,8 @@ public class RNAdsPackage implements ReactPackage {
                 new FbBannerView(),
                 new AdmobBannerView(),
                 new AdxBannerView(),
-                new MOPUBBannerView()
+                new TapdaqBannerView(),
+                new MOPUBBannerViewEmpty()
         );
     }
 

@@ -105,8 +105,13 @@ class FbBannerUI extends ReactViewGroup implements AdListener, LifecycleEventLis
     }
 
     private void removeAllChild() {
+        try {
+            if (myAdView!=null)
+                myAdView.destroy();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         removeAllViews();
-        myAdView = null;
         frameLayoutAds = null;
     }
 

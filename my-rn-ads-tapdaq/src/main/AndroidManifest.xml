@@ -1,2 +1,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.my.rn.ads.tapdaq" />
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.my.rn.ads.tapdaq">
+    <!--    tools:node="remove"-->
+    <application>
+        <!--        Vốn Lib có, nhưng vì publish ko phải ở trung quốc + trên google play nên remove-->
+        <receiver
+            android:name="com.mintegral.msdk.click.AppReceiver"
+            tools:node="remove">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.mintegral.msdk.shell.MTGService"
+            tools:node="remove">
+            <intent-filter>
+                <action android:name="com.mintegral.msdk.download.action" />
+            </intent-filter>
+        </service>
+    </application>
+</manifest>

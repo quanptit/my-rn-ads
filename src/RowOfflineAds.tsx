@@ -43,7 +43,7 @@ export class RowOfflineAds extends ComponentNoUpdate<Props, any> {
             styleImage.push({borderRadius: 5});
         let imgUrl = "http://learnlanguage.xyz/icon/" + myAdsObj.package + ".png";
         return (
-            <Col style={[{alignItems: "stretch", alignSelf: "stretch"}, this.props.style]}>
+            <Col style={[{alignItems: "stretch", alignSelf: "stretch"}, this.props.style as any]}>
                 <View style={styles.row}>
                     <CachedImage
                         resizeMode="contain"

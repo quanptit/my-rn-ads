@@ -3,6 +3,8 @@ package com.my.rn.ads.modules;
 import android.app.Activity;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.baseLibs.utils.L;
 import com.baseLibs.utils.PreferenceUtils;
 import com.facebook.react.bridge.*;
@@ -15,10 +17,11 @@ import com.my.rn.ads.full.center.BaseAdsFullManager;
 import com.my.rn.ads.full.center.StartAdsManager;
 import com.my.rn.ads.settings.AdsSetting;
 
-public abstract class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
+public class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
     private static final String TAG = "BaseRNAdsModule";
     public static final String EVENT_AD_FAILED_TO_LOAD = "onAdFailedToLoad";
     public static final String EVENT_SIZE_CHANGE = "onSizeChange";
+
 
     //region start ads
     @ReactMethod
@@ -206,6 +209,32 @@ public abstract class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule im
         promise.resolve(BaseApplicationContainAds.getNativeManagerInstance().canShowNativeAds(typeAds));
     }
 
+    // Nếu chưa cache lần nào sẽ cache, true nếu xác định có ads để show
+    @ReactMethod
+    public void firstCacheAndCheckCanShowNativeAds(final int typeAds, final Promise promise) {
+        new Thread(new Runnable() {
+            @Override public void run() {
+                try {
+                    Activity activity = getSafeActivity();
+                    if (activity == null) {
+                        promise.reject("0", "activity null");
+                        return;
+                    }
+                    promise.resolve(BaseApplicationContainAds
+                            .getNativeManagerInstance().firstCacheAndCheckCanShowNativeAds(activity, typeAds));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    promise.reject("0", e.getMessage());
+                }
+            }
+        }).start();
+    }
+
+    @ReactMethod
+    public void hasLoadNativeAds(Promise promise) {
+        promise.resolve(BaseApplicationContainAds.getNativeManagerInstance().hasLoadAds());
+    }
+
     @ReactMethod
     public void cacheNativeAdsIfNeed(int typeAds) {
         BaseApplicationContainAds.getNativeManagerInstance().checkAndLoadAds(getSafeActivity());
@@ -240,7 +269,7 @@ public abstract class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule im
         reactContext.addLifecycleEventListener(this);
     }
 
-    @Override public String getName() {
+    @Override @NonNull public String getName() {
         return "RNAdsUtils";
     }
 

@@ -1,6 +1,7 @@
-package com.my.rn.Ads;
+package com.my.rn.ads;
 
 import android.os.Bundle;
+
 import com.mopub.common.MoPub;
 
 public class BaseAdsActivity extends BasicAdsActivity {

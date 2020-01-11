@@ -13,6 +13,7 @@ export declare class NativeAdsView extends Component<Props, {
     isLoading: boolean;
     needRender: boolean;
     height: number;
+    showLoading?: boolean;
 }> {
     static TYPE_SUMMARY_FB: number;
     static TYPE_SUMMARY_SMALL_CUSTOM: number;

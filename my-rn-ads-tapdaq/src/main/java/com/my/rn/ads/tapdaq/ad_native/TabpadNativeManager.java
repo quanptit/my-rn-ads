@@ -12,6 +12,7 @@ import com.my.rn.ads.BaseApplicationContainAds;
 import com.my.rn.ads.IAdInitCallback;
 import com.my.rn.ads.INativeManager;
 import com.my.rn.ads.full.center.BaseAdsFullManager;
+import com.my.rn.ads.tapdaq.AdInitTapdaqUtils;
 import com.tapdaq.sdk.Tapdaq;
 import com.tapdaq.sdk.adnetworks.TDMediatedNativeAd;
 import com.tapdaq.sdk.adnetworks.TDMediatedNativeAdOptions;
@@ -26,6 +27,8 @@ import java.util.Queue;
 public class TabpadNativeManager extends TMAdListener implements INativeManager {
     private boolean isLoading = false;
     private boolean isSkipWaitForComplete = false;
+    private boolean hasLoadAds;
+
     private Queue<TDMediatedNativeAd> nativeAds = new LinkedList<>(); // Sẽ chứa NO_ADS_LOAD Ads
 
     @Override
@@ -39,11 +42,20 @@ public class TabpadNativeManager extends TMAdListener implements INativeManager 
             if (isSkipWaitForComplete) return;
             Thread.sleep(100);
             if (!nativeAds.isEmpty()) return;
-            if (System.currentTimeMillis() - startTimeLoad > 3000) {
+            if (System.currentTimeMillis() - startTimeLoad > 6000) {
                 Log.d(TAG, "cacheAndWaitForComplete Fail Time out");
                 return;
             }
         }
+    }
+
+    @Override public boolean firstCacheAndCheckCanShowNativeAds(Activity activity, int typeAds) throws Exception{
+        boolean isCached = isCached();
+        if (isCached || hasLoadAds()) return isCached;
+        // chưa thực hiện load ads lần nào => load
+        cacheNativeAndWaitForComplete(activity);
+
+        return isCached();
     }
 
     @Override
@@ -69,18 +81,9 @@ public class TabpadNativeManager extends TMAdListener implements INativeManager 
         if (isLoading || nativeAds.size() >= NO_ADS_LOAD) return;
         if (!isNotResetCountError)
             countLoadError = 0;
-        BaseApplicationContainAds.getIAdInitUtilsInstance().initAds(activity, new IAdInitCallback() {
+        AdInitTapdaqUtils.getInstance().initAds(activity, new IAdInitCallback() {
             @Override public void didInitialise() {
-                try {
-                    TDMediatedNativeAdOptions options = new TDMediatedNativeAdOptions(); //optional param
-                    options.setAllowMultipleImages(false);
-                    options.setStartVideoMuted(true);
-                    Tapdaq.getInstance().loadMediatedNativeAd(activity, "default", options, TabpadNativeManager.this);
-                    isLoading = true;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    isLoading = false;
-                }
+                excuteLoadNativeAds(activity);
             }
 
             @Override public void didFailToInitialise() {
@@ -90,9 +93,28 @@ public class TabpadNativeManager extends TMAdListener implements INativeManager 
         });
     }
 
+    private void excuteLoadNativeAds(final Activity activity) {
+        isLoading = true;
+        new Thread(new Runnable() {
+            @Override public void run() {
+                try {
+                    TDMediatedNativeAdOptions options = new TDMediatedNativeAdOptions();
+                    options.setAllowMultipleImages(false);
+                    options.setStartVideoMuted(true);
+                    Tapdaq.getInstance().loadMediatedNativeAd(activity, "default", options, TabpadNativeManager.this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    isLoading = false;
+                    isSkipWaitForComplete = true;
+                }
+            }
+        }).start();
+    }
+
     // region Event callback load Ads
     @Override public void didLoad(TDMediatedNativeAd ad) {
         Log.d("MopubNativeManager", "onNativeLoad");
+        hasLoadAds = true;
         isLoading = false;
         nativeAds.add(ad);
         Activity activity = BaseAdsFullManager.getMainActivity();
@@ -101,6 +123,7 @@ public class TabpadNativeManager extends TMAdListener implements INativeManager 
     }
 
     @Override public void didFailToLoad(TMAdError error) {
+        hasLoadAds = true;
         String str = String.format(Locale.ENGLISH, "didFailToLoad: %d - %s", error.getErrorCode(), error.getErrorMessage());
         for (String key : error.getSubErrors().keySet()) {
             try {
@@ -134,6 +157,10 @@ public class TabpadNativeManager extends TMAdListener implements INativeManager 
     private static final int NO_ADS_LOAD = 2;
     private int countLoadError = 0;
     private static final String TAG = "TAPDAQ_NATIVE";
+
+    @Override public boolean hasLoadAds() {
+        return hasLoadAds;
+    }
 
     @Override
     public boolean isCached() {

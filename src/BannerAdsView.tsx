@@ -9,9 +9,10 @@ import {MOPUBBannerView} from "./bannerViews/MOPUBBannerView";
 import {RowOfflineAds} from "./RowOfflineAds";
 import {OfflineAdsSetting} from "./OfflineAdsSetting";
 import {RNCommonUtils} from "my-rn-base-utils";
+import {TapdaqBannerView} from "./bannerViews/TapdaqBannerView";
 
 interface Props {
-    typeAds?: "RECTANGLE_HEIGHT_250" | "BANNER_50" | "SMART_BANNER"
+    typeAds?: "RECTANGLE_HEIGHT_250" | "BANNER_50"
     isNoRefresh?: boolean
     onAdFailedToLoad?: (errorCode: number) => void
     style?: StyleProp<ViewStyle>
@@ -54,7 +55,7 @@ export class BannerAdsView extends Component<Props, { typeShow: string, offlineA
         if (typeShow == null) return typeShow;
         if (typeShow === this.state.typeShow) {
             this.noFail = this.noFail + 1;
-            return await this.getNewTypeShow();
+            return this.getNewTypeShow();
         }
         return typeShow;
     }
@@ -74,8 +75,10 @@ export class BannerAdsView extends Component<Props, { typeShow: string, offlineA
 
         switch (this.state.typeShow) {
             case "MOPUB":
-            case "TAPDAQ":
                 return <MOPUBBannerView style={this.props.style} typeAds={this.props.typeAds}
+                                        onAdFailedToLoad={this.onAdFailedToLoad.bind(this)}/>;
+            case "TAPDAQ":
+                return <TapdaqBannerView style={this.props.style} typeAds={this.props.typeAds}
                                         onAdFailedToLoad={this.onAdFailedToLoad.bind(this)}/>;
             case "FB":
                 return this._renderFbBanner();
@@ -97,8 +100,6 @@ export class BannerAdsView extends Component<Props, { typeShow: string, offlineA
 
     private _renderFbBanner() {
         let fbTypeAds = this.props.typeAds;
-        if (fbTypeAds === "SMART_BANNER")
-            fbTypeAds = "BANNER_50";
         return <FbBannerView style={this.props.style} typeAds={fbTypeAds}
                              onAdFailedToLoad={this.onAdFailedToLoad.bind(this)}/>
     }

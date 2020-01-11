@@ -68,6 +68,34 @@ public class AdsSetting {
     }
 
     //region native
+    //region type native ========
+    /**
+     * Trạng thái sử dụng cái Native Banner Default do bọn facebook cung câp
+     */
+    public static final int TYPE_SUMMARY_LIST1 = 0;
+    /**
+     * Sử dụng cái Native Small Do mình thiết kế có kiểu giống RowSummary
+     */
+    public static final int TYPE_SUMMARY_LIST2 = 1;
+    /**
+     * Sử dụng cái Native dạng lớn. Có icon giống như facebook messaenger
+     */
+    public static final int TYPE_SUMMARY_LIST3 = 3;
+
+    /**
+     * Trạng thái sử dụng cái Native Large Default do bọn facebook cung cấp
+     */
+    public static final int TYPE_DETAIL_LIST1 = 10;
+    /**
+     * Trạng thái sử dụng cái Native Large mà mình hay sử dụng trước giờ
+     */
+    public static final int TYPE_DETAIL_LIST2 = 11;
+    /**
+     * Gần giống cái row vocabulary
+     */
+    public static final int TYPE_DETAIL_LIST3 = 12;
+    //endregion
+    
     public String getTypeShowLargeNative(int index) {
         return null;
     }
@@ -78,6 +106,8 @@ public class AdsSetting {
     //endregion
 
     // region banner
+    public static final String RECTANGLE_HEIGHT_250 = "RECTANGLE_HEIGHT_250";
+
     public String getTypeShowBanner(int index) {
         SettingObj settingObj = getSettingObj();
         if (settingObj == null) {

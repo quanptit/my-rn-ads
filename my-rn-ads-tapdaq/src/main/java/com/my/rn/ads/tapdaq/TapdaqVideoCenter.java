@@ -56,16 +56,20 @@ public class TapdaqVideoCenter extends BaseFullCenterAds {
 
     @Override protected void adsInitAndLoad(final Activity activity, final String keyAds, final IAdLoaderCallback iAdLoaderCallback) throws Exception {
         this.iAdLoaderCallback = iAdLoaderCallback;
-        BaseApplicationContainAds.getInstance().getIAdInitUtils()
-                .initAds(activity, new IAdInitCallback() {
-                    @Override public void didInitialise() {
-                        if (!Tapdaq.getInstance().isVideoReady(activity, getKeyAds(false)))
-                            Tapdaq.getInstance().loadVideo(activity, tmAdListenerFinal);
-                    }
+        new Thread(new Runnable() {
+            @Override public void run() {
+                AdInitTapdaqUtils.getInstance()
+                        .initAds(activity, new IAdInitCallback() {
+                            @Override public void didInitialise() {
+                                if (!Tapdaq.getInstance().isVideoReady(activity, getKeyAds(false)))
+                                    Tapdaq.getInstance().loadVideo(activity, tmAdListenerFinal);
+                            }
 
-                    @Override public void didFailToInitialise() {
-                        onAdFailedToLoad("didFailToInitialise", iAdLoaderCallback);
-                    }
-                });
+                            @Override public void didFailToInitialise() {
+                                onAdFailedToLoad("didFailToInitialise", iAdLoaderCallback);
+                            }
+                        });
+            }
+        }).start();
     }
 }

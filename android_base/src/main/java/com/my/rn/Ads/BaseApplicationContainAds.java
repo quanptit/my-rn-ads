@@ -9,13 +9,11 @@ public abstract class BaseApplicationContainAds extends BaseApplication {
 
     public abstract BaseAdsFullManager getAdsFullManager();
 
-    public abstract IAdInitUtils getIAdInitUtils();
+    public abstract IAdInitUtils getIAdInitTapdaqUtils();
+
+    public abstract IAdInitUtils getIAdInitMopubUtils();
 
     public abstract INativeManager getNativeManager();
-
-    public static IAdInitUtils getIAdInitUtilsInstance() {
-        return getInstance().getIAdInitUtils();
-    }
 
     public static INativeManager getNativeManagerInstance() {
         return getInstance().getNativeManager();

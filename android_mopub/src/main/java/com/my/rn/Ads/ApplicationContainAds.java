@@ -1,30 +1,30 @@
-package com.my.rn.Ads;
+package com.my.rn.ads;
 
 import com.baseLibs.BaseApplication;
-import com.facebook.ads.AudienceNetworkAds;
-import com.facebook.ads.internal.settings.AdInternalSettings;
-import com.my.rn.Ads.full.center.AdsFullManager;
-import com.my.rn.Ads.full.center.BaseAdsFullManager;
-import com.my.rn.Ads.mopub.MopubInitUtils;
-import com.my.rn.Ads.mopub.MopubNativeManager;
+import com.my.rn.ads.full.center.BaseAdsFullManager;
+import com.my.rn.ads.mopub.MopubInitUtils;
+import com.my.rn.ads.mopub.ad_native.MopubNativeManager;
 
 public class ApplicationContainAds extends BaseApplicationContainAds {
     protected MopubInitUtils mopubInitUtils;
-    protected MopubNativeManager mopubNativeManager;
     protected AdsFullManager adsFullManager;
+    protected INativeManager nativeManager;
 
-    public static MopubInitUtils getMopubInitUtils() {
-        if (getInstance().mopubInitUtils == null)
-            getInstance().mopubInitUtils = new MopubInitUtils();
-        return getInstance().mopubInitUtils;
+    @Override public IAdInitUtils getIAdInitTapdaqUtils() {
+        return null;
     }
 
-    public static MopubNativeManager getMopubNativeManager() {
-        if (getInstance().mopubNativeManager == null)
-            getInstance().mopubNativeManager = new MopubNativeManager(getAppContext());
-        return getInstance().mopubNativeManager;
+    @Override public IAdInitUtils getIAdInitMopubUtils() {
+        if (mopubInitUtils == null)
+            mopubInitUtils = new MopubInitUtils();
+        return mopubInitUtils;
     }
 
+    @Override public INativeManager getNativeManager() {
+        if (nativeManager == null)
+            nativeManager = new MopubNativeManager(this);
+        return nativeManager;
+    }
     @Override public BaseAdsFullManager getAdsFullManager() {
         if (adsFullManager == null)
             adsFullManager = new AdsFullManager();
@@ -34,11 +34,6 @@ public class ApplicationContainAds extends BaseApplicationContainAds {
     @Override
     public void onCreate() {
         super.onCreate();
-        // Initialize the Audience Network SDK
-//        AudienceNetworkAds.initialize(this);
-//        AdInternalSettings.addTestDevice("192e0d1d-2f06-4eaf-89f1-b8b27cfdc69b");
-
-
     }
 
     public static ApplicationContainAds getInstance() {

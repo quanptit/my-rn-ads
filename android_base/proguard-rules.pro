@@ -633,6 +633,7 @@ public *;
     -keep class **.R$* { public static final int mintegral*; }
     -keep class com.alphab.** {*; }
     -keep interface com.alphab.** {*; }
+
     -keepattributes Annotation
     -keep class com.mintegral.** {*; }
     -keep interface com.mintegral.** {*; }
@@ -641,6 +642,19 @@ public *;
     -keep class **.R$ { public static final int mintegral; }
     -keep class com.alphab.** {*; }
     -keep interface com.alphab.** {*; }
+
+    -keepattributes Signature
+        -keepattributes *Annotation*
+        -keep class com.mintegral.** {*; }
+        -keep interface com.mintegral.** {*; }
+        -keep interface androidx.** { *; }
+        -keep class androidx.** { *; }
+        -keep public class * extends androidx.** { *; }
+        -dontwarn com.mintegral.**
+        -keep class **.R$* { public static final int mintegral*; }
+        -keep class com.alphab.** {*; }
+        -keep interface com.alphab.** {*; }
+
 
 # Fairbid
 -keep class com.heyzap.** {*;}

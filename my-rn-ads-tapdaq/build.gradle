@@ -12,29 +12,29 @@ android {
         versionName "1.0"
     }
 }
-
+def TapdaqVersion = "7.4.2"
 dependencies {
     api project(':my-rn-ads-base')
     //Tapdaq
-    api 'com.tapdaq.sdk:Tapdaq-BaseSDK:7.4.1'
-    api 'com.tapdaq.sdk:TapdaqFANAdapter:7.4.1'
-    api 'com.tapdaq.sdk:TapdaqAdMobAdapter:7.4.1'
+    api "com.tapdaq.sdk:Tapdaq-BaseSDK:$TapdaqVersion"
+    api "com.tapdaq.sdk:TapdaqFANAdapter:$TapdaqVersion"
+    api "com.tapdaq.sdk:TapdaqAdMobAdapter:$TapdaqVersion"
 
     if (gradle.ext.ads.contains("adcolony"))
-        implementation 'com.tapdaq.sdk:TapdaqAdColonyAdapter:7.4.1'
+        implementation "com.tapdaq.sdk:TapdaqAdColonyAdapter:$TapdaqVersion"
 
     if (gradle.ext.ads.contains("chartboost"))
-        implementation 'com.tapdaq.sdk:TapdaqChartboostAdapter:7.4.1'
+        implementation "com.tapdaq.sdk:TapdaqChartboostAdapter:$TapdaqVersion"
 
     if (gradle.ext.ads.contains("mintegral"))
-        implementation 'com.tapdaq.sdk:TapdaqMintegralAdapter:7.4.1'
+        implementation "com.tapdaq.sdk:TapdaqMintegralAdapter:$TapdaqVersion"
 
     if (gradle.ext.ads.contains("tapjoy"))
-        implementation 'com.tapdaq.sdk:TapdaqTapjoyAdapter:7.4.1'
+        implementation "com.tapdaq.sdk:TapdaqTapjoyAdapter:$TapdaqVersion"
 
     if (gradle.ext.ads.contains("unity"))
-        implementation 'com.tapdaq.sdk:TapdaqUnityAdsAdapter:7.4.1'
+        implementation "com.tapdaq.sdk:TapdaqUnityAdsAdapter:$TapdaqVersion"
 
     if (gradle.ext.ads.contains("applovin"))
-        implementation 'com.tapdaq.sdk:TapdaqAppLovinAdapter:7.4.1'
+        implementation "com.tapdaq.sdk:TapdaqAppLovinAdapter:$TapdaqVersion"
 }
