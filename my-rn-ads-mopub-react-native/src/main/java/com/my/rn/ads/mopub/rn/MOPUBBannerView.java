@@ -99,8 +99,7 @@ class MOPUBBannerUI extends MoPubView implements MoPubView.BannerAdListener, Lif
         //So we just size them manually
         //Width and Height must be set in RN style
         super.onViewAdded(child);
-        int withDpi = getAdWidth();
-        if (withDpi <= 0) withDpi = 320;
+        int withDpi = getWidthDpi(this);
         int heightDpi = getAdHeight();
         int width = Dips.asIntPixels(withDpi, getContext());
         int height = Dips.asIntPixels(heightDpi, getContext());
@@ -123,12 +122,12 @@ class MOPUBBannerUI extends MoPubView implements MoPubView.BannerAdListener, Lif
     @Override
     public void onBannerLoaded(MoPubView banner) {
         int widthDpi = getWidthDpi(banner);
-        Log.d(TAG, "onBannerLoaded widthDpi: " + widthDpi);
         int heightDpi = getHeightDpi(banner);
         int width = Dips.asIntPixels(widthDpi, this.getContext());
         int height = Dips.asIntPixels(heightDpi, this.getContext());
         int left = banner.getLeft();
         int top = banner.getTop();
+        Log.d(TAG, "onBannerLoaded widthDpi: " + widthDpi + ", left: " + left + ", top: " + top);
         banner.measure(width, height);
         banner.layout(left, top, left + width, top + height);
         if (isAddAds)

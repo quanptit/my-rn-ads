@@ -1,0 +1,70 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.my.rn.ads.fairbid">
+
+    <application>
+        <!-- mintegral -->
+        <activity
+            android:name="com.mintegral.msdk.activity.MTGCommonActivity"
+            android:configChanges="keyboard|orientation"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+        <activity
+            android:name="com.mintegral.msdk.reward.player.MTGRewardVideoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+
+        <!--        Vốn Lib có, nhưng vì publish ko phải ở trung quốc + trên google play nên remove-->
+        <receiver
+            android:name="com.mintegral.msdk.click.AppReceiver"
+            tools:node="remove">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.mintegral.msdk.shell.MTGService"
+            tools:node="remove">
+            <intent-filter>
+                <action android:name="com.mintegral.msdk.download.action" />
+            </intent-filter>
+        </service>
+
+
+        <!-- adcolony -->
+        <activity
+            android:name="com.adcolony.sdk.AdColonyInterstitialActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:hardwareAccelerated="true" />
+
+        <!-- ironsource -->
+        <activity
+            android:name='com.ironsource.sdk.controller.ControllerActivity'
+            android:configChanges='orientation|screenSize'
+            android:hardwareAccelerated='true' />
+        <activity
+            android:name='com.ironsource.sdk.controller.InterstitialActivity'
+            android:configChanges='orientation|screenSize'
+            android:hardwareAccelerated='true'
+            android:theme='@android:style/Theme.Translucent' />
+        <activity
+            android:name='com.ironsource.sdk.controller.OpenUrlActivity'
+            android:configChanges='orientation|screenSize'
+            android:hardwareAccelerated='true'
+            android:theme='@android:style/Theme.Translucent' />
+
+        <activity
+            android:name="com.tapjoy.TJAdUnitActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+        <activity
+            android:name="com.tapjoy.TJContentActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+    </application>
+</manifest>

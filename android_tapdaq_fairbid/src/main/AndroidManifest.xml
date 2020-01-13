@@ -7,6 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <uses-sdk tools:overrideLibrary="sdk.mobfox.com.mobfoxandroidadaptermopub,sdk.mobfox.com.mobfoxandroidadapteradmob,com.mobfox.sdk,com.mobfox.sdk.all" />
+
     <application
         android:hardwareAccelerated="true"
         android:usesCleartextTraffic="true">

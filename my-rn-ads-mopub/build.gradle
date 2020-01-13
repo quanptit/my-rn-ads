@@ -28,16 +28,32 @@ dependencies {
     implementation 'com.mopub.mediation:admob:18.3.0.2'
     if (ads.contains("facebook"))
         implementation project(':FacebookAudienceNetwork')
-    if (ads.contains("mintegral"))
-        implementation project(':mintegral_mopub_adapter')
+//    if (ads.contains("mintegral"))
+//        implementation project(':mintegral_mopub_adapter')
 
     if (gradle.ext.ads.contains("adcolony")) {
-        implementation 'com.adcolony:sdk:4.1.0'
+        implementation "com.adcolony:sdk:$rootProject.ext.adcolony_lib"
         implementation 'com.mopub.mediation:adcolony:4.1.0.2'
     }
     if (gradle.ext.ads.contains("applovin")) {
-        implementation 'com.applovin:applovin-sdk:9.11.1'
+        implementation "com.applovin:applovin-sdk:$rootProject.ext.applovin_lib"
         implementation 'com.mopub.mediation:applovin:9.11.1.0'
+    }
+    if (gradle.ext.ads.contains("unity")) {
+        implementation "com.unity3d.ads:unity-ads:$rootProject.ext.unity_lib"
+        implementation 'com.mopub.mediation:unityads:3.4.0.1'
+    }
+    if (gradle.ext.ads.contains("vungle")) {
+        implementation "com.vungle:publisher-sdk-android:$rootProject.ext.vungle_lib"
+        implementation 'com.mopub.mediation:vungle:6.4.11.5'
+    }
+    if (gradle.ext.ads.contains("tapjoy")) {
+        implementation "com.tapjoy:tapjoy-android-sdk:$rootProject.ext.tapjoy_lib"
+        implementation 'com.mopub.mediation:tapjoy:12.4.0.1'
+    }
+    if (gradle.ext.ads.contains("ironsource")) {
+        implementation "com.ironsource.sdk:mediationsdk:$rootProject.ext.ironsource_lib"
+        implementation 'com.mopub.mediation:ironsource:6.13.0.0'
     }
     if (gradle.ext.ads.contains("mobfox")) {
         implementation 'com.github.mobfox.MobFox-Android-SDK-Core:MobFox-Android-SDK-Core:3.6.9'
@@ -46,22 +62,6 @@ dependencies {
     if (gradle.ext.ads.contains("chartboost")) {
         implementation 'com.mopub.mediation:chartboost:7.5.0.3'
         implementation files('libs/chartboost-7.5.0.jar')
-    }
-    if (gradle.ext.ads.contains("unity")) {
-        implementation 'com.unity3d.ads:unity-ads:3.4.0'
-        implementation 'com.mopub.mediation:unityads:3.4.0.1'
-    }
-    if (gradle.ext.ads.contains("vungle")) {
-        implementation 'com.vungle:publisher-sdk-android:6.4.11'
-        implementation 'com.mopub.mediation:vungle:6.4.11.5'
-    }
-    if (gradle.ext.ads.contains("tapjoy")) {
-        implementation 'com.tapjoy:tapjoy-android-sdk:12.4.0@aar'
-        implementation 'com.mopub.mediation:tapjoy:12.4.0.1'
-    }
-    if (gradle.ext.ads.contains("ironsource")) {
-        implementation 'com.ironsource.sdk:mediationsdk:6.13.0@jar'
-        implementation 'com.mopub.mediation:ironsource:6.13.0.0'
     }
 
     //region old code ==> hide

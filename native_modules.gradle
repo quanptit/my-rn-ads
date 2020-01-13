@@ -16,9 +16,19 @@ ext.addAdsProjectSetting = { ->
     }
     //endregion
 
+/////////////////
+    /////////////
+
+
     if (mediation == "tapdaq") {
         include ':my-rn-ads'
         project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_tapdaq')
+    } else if (mediation == "mopub_fairbid") {
+        include ':my-rn-ads'
+        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_mopub_fairbid')
+    } else if (mediation == "tapdaq_fairbid") {
+        include ':my-rn-ads'
+        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_tapdaq_fairbid')
     } else { // mediation is mopub
         //////////
         include ':mintegral_mopub_adapter'
@@ -27,10 +37,6 @@ ext.addAdsProjectSetting = { ->
 
         include ':my-rn-ads'
         project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_mopub')
-        if (ads.contains("facebook")) {
-            include ':FacebookAudienceNetwork'
-            project(':FacebookAudienceNetwork').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/FacebookAudienceNetwork')
-        }
 //        if (gradle.ext.ads.contains("inmobi")) {
 //            include ':mopub_inmobi'
 //            project(':mopub_inmobi').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mopub_inmobi')
@@ -49,19 +55,26 @@ ext.addAdsProjectSetting = { ->
 //        }
     }
 
-    if (ads.contains("mopub")) {
+    if (ads.contains("mopub") || mediation.contains("mopub")) {
         include ':my-rn-ads-mopub'
         project(':my-rn-ads-mopub').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-mopub')
         include ':my-rn-ads-mopub-react-native'
         project(':my-rn-ads-mopub-react-native').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-mopub-react-native')
+        if (ads.contains("facebook")) {
+            include ':FacebookAudienceNetwork'
+            project(':FacebookAudienceNetwork').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/FacebookAudienceNetwork')
+        }
     }
-    if (ads.contains("tapdaq")) {
+    if (ads.contains("tapdaq") || mediation.contains("tapdaq")) {
         include ':my-rn-ads-tapdaq'
         project(':my-rn-ads-tapdaq').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-tapdaq')
         include ':my-rn-ads-tapdaq-react-native'
         project(':my-rn-ads-tapdaq-react-native').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-tapdaq-react-native')
     }
-
+    if (ads.contains("fairbid") || mediation.contains("fairbid")) {
+        include ':my-rn-ads-fairbid'
+        project(':my-rn-ads-fairbid').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-fairbid')
+    }
     //region old mediation // comment
 //    if (gradle.ext.ads == "upltv") {
 //        include ':my-rn-ads'

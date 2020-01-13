@@ -21,17 +21,17 @@ import java.util.Locale;
 
 public class AdInitTapdaqUtils implements IAdInitUtils {
     private boolean isIniting;
-    private boolean didInited, initButFail;
+    private boolean isDispatchingCallback, isInitedFail;
     private ArrayList<IAdInitCallback> listCallback = new ArrayList<>();
 
-    @Override public void initAds(Activity activity, IAdInitCallback callback) {
+    @Override public void initAds(final Activity activity, IAdInitCallback callback) {
         if (Tapdaq.getInstance().IsInitialised()) {
             if (callback != null)
                 callback.didInitialise();
             return;
         }
-        if (callback != null && didInited) {
-            if (initButFail)
+        if (callback != null && isDispatchingCallback) {
+            if (isInitedFail)
                 callback.didFailToInitialise();
             else
                 callback.didInitialise();
@@ -40,42 +40,48 @@ public class AdInitTapdaqUtils implements IAdInitUtils {
         if (callback != null) listCallback.add(callback);
         if (isIniting) return;
         isIniting = true;
+        isInitedFail = false;
         TapdaqConfig config = new TapdaqConfig();
         config.registerTestDevices(TMMediationNetworks.AD_MOB, Arrays.asList(KeysAds.DEVICE_TESTS));
         if (KeysAds.IS_DEVELOPMENT)
             TLog.setLoggingLevel(TLogLevel.DEBUG);
         else
             TLog.setLoggingLevel(TLogLevel.WARNING);
-
         config.setAutoReloadAds(false);
         Tapdaq.getInstance().initialize(activity, KeysAds.TAPDAQ_APP_ID, KeysAds.TAPDAQ_CLIENT_KEY, config, new TMInitListener() {
             @Override
             public void didInitialise() {
                 super.didInitialise();
-                didInited = true;
-                initButFail = false;
+                isInitedFail = false;
                 if (listCallback != null) {
+                    isDispatchingCallback = true;
                     for (IAdInitCallback initializationListener : listCallback) {
                         if (initializationListener != null)
                             initializationListener.didInitialise();
                     }
                     listCallback.clear();
+                    isDispatchingCallback = false;
                 }
                 isIniting = false;
+
+                if (true){//TODO return
+                    Tapdaq.getInstance().startTestActivity(activity);
+                }
             }
 
             @Override
             public void didFailToInitialise(TMAdError error) {
                 super.didFailToInitialise(error);
-                didInited = true;
-                initButFail = true;
+                isInitedFail = true;
                 logError(error);
                 if (listCallback != null) {
+                    isDispatchingCallback = true;
                     for (IAdInitCallback initializationListener : listCallback) {
                         if (initializationListener != null)
                             initializationListener.didFailToInitialise();
                     }
                     listCallback.clear();
+                    isDispatchingCallback = false;
                 }
                 isIniting = false;
             }

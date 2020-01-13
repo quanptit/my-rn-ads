@@ -61,8 +61,7 @@ public class AdsSetting {
     public String getTypeShowFullCenter(int index) {
         SettingObj settingObj = getSettingObj();
         if (settingObj == null) {
-            if (index > 0) return null;
-            return KeysAds.DEFAULT_CENTER;
+            return getStringValue(index, KeysAds.DEFAULT_CENTER);
         }
         return getTypeShowAds(index, settingObj.center_ads);
     }
@@ -95,7 +94,7 @@ public class AdsSetting {
      */
     public static final int TYPE_DETAIL_LIST3 = 12;
     //endregion
-    
+
     public String getTypeShowLargeNative(int index) {
         return null;
     }
@@ -111,8 +110,7 @@ public class AdsSetting {
     public String getTypeShowBanner(int index) {
         SettingObj settingObj = getSettingObj();
         if (settingObj == null) {
-            if (index > 0) return null;
-            return KeysAds.DEFAULT_BANNER;
+            return getStringValue(index, KeysAds.DEFAULT_BANNER);
         }
         return getTypeShowAds(index, settingObj.banner_ads);
     }
@@ -120,8 +118,7 @@ public class AdsSetting {
     public String getTypeShowBannerRect(int index) {
         SettingObj settingObj = getSettingObj();
         if (settingObj == null) {
-            if (index > 0) return null;
-            return KeysAds.DEFAULT_MRECT;
+            return getStringValue(index, KeysAds.DEFAULT_MRECT);
         }
         return getTypeShowAds(index, settingObj.banner_rect_ads);
     }
@@ -214,6 +211,12 @@ public class AdsSetting {
     //endregion
 
     //region get local save key
+    private static @Nullable String getStringValue(int index, String[] arrayValue) {
+        if (arrayValue == null || index >= arrayValue.length) return null;
+        if (index < 0) return null;
+        return arrayValue[index];
+    }
+
     private static @Nullable String getAdUnit(String id, AdPlacementSettingObject placementObj) {
         if (placementObj == null || id == null) return null;
         return placementObj.getAdUnitKey(id);
@@ -264,6 +267,7 @@ public class AdsSetting {
     public static final String ID_ADMOB = "ADMOB";
     public static final String ID_FB = "FB";
     public static final String ID_MOPUB = "MOPUB";
+    public static final String ID_FAIRBID = "FAIRBID";
     public static final String ID_ADX = "ADX";
     public static final String ID_TAPDAQ_VIDEO = "TAPDAQ_VIDEO";
     public static final String ID_TAPDAQ_FULL = "TAPDAQ_FULL";

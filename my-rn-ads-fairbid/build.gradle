@@ -1,0 +1,47 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+}
+def ads = gradle.ext.fairbidAds + gradle.ext.ads
+def mintegral_lib = rootProject.ext.mintegral_lib
+dependencies {
+    api project(':my-rn-ads-base')
+    api 'com.fyber:fairbid-sdk:2.5.0'
+
+    if (ads.contains("adcolony"))
+        implementation "com.adcolony:sdk:$rootProject.ext.adcolony_lib"
+    if (ads.contains("ironsource"))
+        implementation "com.ironsource.sdk:mediationsdk:$rootProject.ext.ironsource_lib"
+    if (ads.contains("tapjoy"))
+        implementation("com.tapjoy:tapjoy-android-sdk:$rootProject.ext.tapjoy_lib")
+    if (ads.contains("unity"))
+        implementation "com.unity3d.ads:unity-ads:$rootProject.ext.unity_lib"
+
+    if (ads.contains("mintegral")) {
+        implementation "com.mintegral.msdk:videojs:$mintegral_lib"
+        implementation "com.mintegral.msdk:common:$mintegral_lib"
+        implementation "com.mintegral.msdk:mtgjscommon:$mintegral_lib"
+        implementation "com.mintegral.msdk:playercommon:$mintegral_lib"
+        implementation "com.mintegral.msdk:reward:$mintegral_lib"
+        implementation "com.mintegral.msdk:videocommon:$mintegral_lib"
+        implementation "com.mintegral.msdk:interstitialvideo:$mintegral_lib"
+        implementation "com.mintegral.msdk:interactiveads:$mintegral_lib"
+        implementation "com.mintegral.msdk:mtgbid:$mintegral_lib"
+    }
+
+    if (ads.contains("applovin"))
+        implementation "com.applovin:applovin-sdk:$rootProject.ext.applovin_lib"
+
+    if (ads.contains("vungle"))
+        implementation "com.vungle:publisher-sdk-android:$rootProject.ext.vungle_lib"
+}
