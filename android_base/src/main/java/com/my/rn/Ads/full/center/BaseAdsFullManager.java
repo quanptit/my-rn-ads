@@ -224,9 +224,6 @@ public abstract class BaseAdsFullManager {
 
     //checkForCache: kiểm tra điều kiện để cache ads. nếu false => Kiểm tra điều kiện để show ads
     private static boolean canShowAdsCenter(boolean checkForCache) {
-//        if (true)
-//            return true; //TODOs
-
         long lastTimeShowAds = PreferenceUtils.getLongSetting(KeysAds.LAST_TIME_SHOW_ADS, 0);
         long time = checkForCache ? 3 * 60 * 1000 : 5 * 60 * 1000;
         if (System.currentTimeMillis() - lastTimeShowAds > time)

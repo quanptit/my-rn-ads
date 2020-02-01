@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/native_outer_view"
-              xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@android:color/white"
-              android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/native_outer_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:paddingBottom="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +17,7 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:background="@null"
-            android:contentDescription="@null"/>
+            android:contentDescription="@null" />
 
         <TextView
             android:id="@+id/native_title"
@@ -27,14 +28,14 @@
             android:text="native_title"
             android:textColor="@color/title"
             android:textSize="@dimen/fontSize_large"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/native_privacy_information_icon_image"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="top"
-            android:padding="10dp"/>
+            android:padding="10dp" />
     </LinearLayout>
 
     <com.mopub.nativeads.MediaLayout
@@ -42,14 +43,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="3dp"
-        android:layout_weight="1"
-        />
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
         android:layout_marginTop="6dp"
+        android:layout_marginBottom="1dp"
         android:gravity="center_vertical">
 
         <TextView
@@ -59,7 +59,7 @@
             android:layout_weight="1"
             android:maxLines="3"
             android:text="native_text"
-            android:textColor="@android:color/darker_gray"/>
+            android:textColor="@android:color/darker_gray" />
 
         <Button
             android:id="@+id/native_cta"
@@ -70,6 +70,6 @@
             android:text="native_cta"
             android:textColor="@android:color/black"
             android:textSize="12sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

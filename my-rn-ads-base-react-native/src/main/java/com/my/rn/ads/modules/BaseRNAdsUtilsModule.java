@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.baseLibs.BaseApplication;
 import com.baseLibs.utils.L;
 import com.baseLibs.utils.PreferenceUtils;
 import com.facebook.react.bridge.*;
@@ -139,44 +140,50 @@ public class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule implements 
     // region Reward ads
     @ReactMethod
     public void showRewardVideoAds() {
-        //TODOs cần làm đúng nghĩa là Reward ads. hiện chưa cần implement
-//        final Activity activity = getSafeActivity();
-//        if (activity == null) {
-//            L.e("showRewardVideoAds Fail: getSafeActivity NULL ===================");
-//            return;
-//        }
-//        BaseApplication.getHandler().post(new Runnable() {
-//            @Override public void run() {
-//                BaseAdsFullManager.getInstance().showAdsCenter(activity, true, null);
-//            }
-//        });
+        final Activity activity = getSafeActivity();
+        if (activity == null) {
+            L.e("showRewardVideoAds Fail: getSafeActivity NULL ===================");
+            return;
+        }
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override public void run() {
+                BaseApplicationContainAds.getInstance().getRewardedAdsManager()
+                        .showRewardedAds(activity);
+            }
+        });
     }
 
     @ReactMethod
     public void loadRewardVideoAds() {
-        //TODOs cần làm đúng nghĩa là Reward ads. hiện chưa cần implement
-//        final Activity activity = getSafeActivity();
-//        if (activity == null) {
-//            L.e("loadRewardVideoAds Fail: getSafeActivity NULL ===================");
-//            return;
-//        }
-//        UiThreadUtil.runOnUiThread(new Runnable() {
-//            @Override public void run() {
-//                BaseAdsFullManager.getInstance().cacheAdsCenterSkipCheck(activity);
-//            }
-//        });
+        final Activity activity = getSafeActivity();
+        if (activity == null) {
+            L.e("loadRewardVideoAds Fail: getSafeActivity NULL ===================");
+            return;
+        }
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override public void run() {
+                BaseApplicationContainAds.getInstance().getRewardedAdsManager()
+                        .cacheRewardedAds(activity);
+            }
+        });
     }
 
     @ReactMethod
     public void canShowRewardVideoAds(final Promise promise) {
-        //TODOs cần làm đúng nghĩa là Reward ads. hiện chưa cần implement
-//        BaseApplication.getHandler().post(new Runnable() {
-//            @Override public void run() {
-//                promise.resolve(BaseAdsFullManager.getInstance().isCachedCenter(getSafeActivity()));
-//            }
-//        });
-    }
+        final Activity activity = getSafeActivity();
+        if (activity == null) {
+            L.e("loadRewardVideoAds Fail: getSafeActivity NULL ===================");
+            promise.resolve(false);
+            return;
+        }
 
+        UiThreadUtil.runOnUiThread(new Runnable() {
+            @Override public void run() {
+                promise.resolve(BaseApplicationContainAds.getInstance().getRewardedAdsManager()
+                        .isCachedRewardedAds(activity));
+            }
+        });
+    }
     //endregion
 
     //region banner

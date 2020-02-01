@@ -1,16 +1,18 @@
 package com.my.rn.ads;
 
 import com.baseLibs.BaseApplication;
-import com.facebook.ads.AudienceNetworkAds;
+import com.mopub.common.SdkConfiguration;
 import com.my.rn.ads.full.center.BaseAdsFullManager;
+import com.my.rn.ads.mopub.MopubInitUtils;
+import com.my.rn.ads.mopub.ad_native.MopubNativeManager;
 import com.my.rn.ads.tapdaq.AdInitTapdaqUtils;
-import com.my.rn.ads.tapdaq.ad_native.TabpadNativeManager;
 
 public abstract class ApplicationContainAds extends BaseApplicationContainAds {
-    protected IAdInitUtils adInitTapdaqUtils;
     protected AdsFullManager adsFullManager;
-    protected RewardedAdsManager rewardedAdsManager;
     protected INativeManager nativeManager;
+    protected MopubInitUtils mopubInitUtils;
+    protected AdInitTapdaqUtils adInitTapdaqUtils;
+    protected RewardedAdsManager rewardedAdsManager;
 
     @Override public BaseRewardedAdsManager getRewardedAdsManager() {
         if (rewardedAdsManager == null)
@@ -18,10 +20,10 @@ public abstract class ApplicationContainAds extends BaseApplicationContainAds {
         return rewardedAdsManager;
     }
 
-    @Override public BaseAdsFullManager getAdsFullManager() {
-        if (adsFullManager == null)
-            adsFullManager = new AdsFullManager();
-        return adsFullManager;
+    @Override public IAdInitUtils getIAdInitMopubUtils() {
+        if (mopubInitUtils == null)
+            mopubInitUtils = new MopubInitUtils();
+        return mopubInitUtils;
     }
 
     @Override public IAdInitUtils getIAdInitTapdaqUtils() {
@@ -30,21 +32,21 @@ public abstract class ApplicationContainAds extends BaseApplicationContainAds {
         return adInitTapdaqUtils;
     }
 
-    @Override public IAdInitUtils getIAdInitMopubUtils() {
-        return null;
-    }
-
     @Override public INativeManager getNativeManager() {
         if (nativeManager == null)
-            nativeManager = new TabpadNativeManager();
+            nativeManager = new MopubNativeManager(this);
         return nativeManager;
+    }
+
+    @Override public BaseAdsFullManager getAdsFullManager() {
+        if (adsFullManager == null)
+            adsFullManager = new AdsFullManager();
+        return adsFullManager;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        // Initialize the Audience Network SDK
-        AudienceNetworkAds.initialize(this);
     }
 
     public static ApplicationContainAds getInstance() {

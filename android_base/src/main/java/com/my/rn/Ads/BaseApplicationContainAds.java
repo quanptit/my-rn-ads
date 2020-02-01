@@ -7,6 +7,8 @@ import com.my.rn.ads.settings.AdsSetting;
 public abstract class BaseApplicationContainAds extends BaseApplication {
     private AdsSetting adsSetting;
 
+    public abstract BaseRewardedAdsManager getRewardedAdsManager();
+
     public abstract BaseAdsFullManager getAdsFullManager();
 
     public abstract IAdInitUtils getIAdInitTapdaqUtils();

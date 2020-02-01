@@ -28,6 +28,8 @@ public class MopubInitUtils implements IAdInitUtils {
         return KeysAds.MOPUB_FULL_CENTER;
     }
 
+    public void customInit(SdkConfiguration.Builder configBuilder){}
+
     @Override public void initAds(Activity activity, IAdInitCallback callback) {
         if (MoPub.isSdkInitialized() || isInited) {
             if (callback != null)
@@ -44,7 +46,9 @@ public class MopubInitUtils implements IAdInitUtils {
             listCallback.add(callback);
         if (isIniting) return;
         isIniting = true;
+
         SdkConfiguration.Builder configBuilder = new SdkConfiguration.Builder(key);
+        customInit(configBuilder);
         if (BuildConfig.DEBUG)
             configBuilder.withLogLevel(MoPubLog.LogLevel.DEBUG);
         else

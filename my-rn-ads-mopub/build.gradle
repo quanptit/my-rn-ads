@@ -14,6 +14,7 @@ android {
 }
 
 def ads = gradle.ext.ads
+def isContainTapdaq = gradle.ext.mediation.contains("tapdaq")
 dependencies {
     //     For banners
     api("com.mopub:mopub-sdk-banner:$rootProject.ext.mopub") { transitive = true }
@@ -23,14 +24,36 @@ dependencies {
     api("com.mopub:mopub-sdk-native-static:$rootProject.ext.mopub") { transitive = true }
     //For native video. This will automatically also include native static
     api("com.mopub:mopub-sdk-native-video:$rootProject.ext.mopub") { transitive = true }
+//    api("com.mopub:mopub-sdk-rewardedvideo:$rootProject.ext.mopub") { transitive = true }
     implementation project(':my-rn-ads-base')
 
-    implementation 'com.mopub.mediation:admob:18.3.0.2'
+    if (ads.contains("admob"))
+        implementation 'com.mopub.mediation:admob:18.3.0.2'
     if (ads.contains("facebook"))
         implementation project(':FacebookAudienceNetwork')
+    if (!isContainTapdaq && ads.contains("unity")) {
+        implementation "com.unity3d.ads:unity-ads:$rootProject.ext.unity_lib"
+        implementation 'com.mopub.mediation:unityads:3.4.0.1'
+    }
+    if (!isContainTapdaq && ads.contains("ironsource")) {
+        implementation "com.ironsource.sdk:mediationsdk:$rootProject.ext.ironsource_lib"
+        implementation 'com.mopub.mediation:ironsource:6.13.0.0'
+    }
+    if (isContainTapdaq)
+        implementation project(':my-rn-ads-mopub-tapdaq-adapter')
+
+
+
+    //////////////////////////////////////////////////////////////////////////
 //    if (ads.contains("mintegral"))
 //        implementation project(':mintegral_mopub_adapter')
-
+    if (ads.contains("fyber_market")){
+        def vampVersion = "7.4.1"
+        api "com.fyber.vamp:mopub-custom-events-5.5:7.4.1"
+        implementation "com.fyber.vamp:core-sdk:${vampVersion}"
+        implementation "com.fyber.vamp:mraid-kit:${vampVersion}"
+        implementation "com.fyber.vamp:video-kit:${vampVersion}"
+    }
     if (gradle.ext.ads.contains("adcolony")) {
         implementation "com.adcolony:sdk:$rootProject.ext.adcolony_lib"
         implementation 'com.mopub.mediation:adcolony:4.1.0.2'
@@ -39,10 +62,6 @@ dependencies {
         implementation "com.applovin:applovin-sdk:$rootProject.ext.applovin_lib"
         implementation 'com.mopub.mediation:applovin:9.11.1.0'
     }
-    if (gradle.ext.ads.contains("unity")) {
-        implementation "com.unity3d.ads:unity-ads:$rootProject.ext.unity_lib"
-        implementation 'com.mopub.mediation:unityads:3.4.0.1'
-    }
     if (gradle.ext.ads.contains("vungle")) {
         implementation "com.vungle:publisher-sdk-android:$rootProject.ext.vungle_lib"
         implementation 'com.mopub.mediation:vungle:6.4.11.5'
@@ -50,10 +69,6 @@ dependencies {
     if (gradle.ext.ads.contains("tapjoy")) {
         implementation "com.tapjoy:tapjoy-android-sdk:$rootProject.ext.tapjoy_lib"
         implementation 'com.mopub.mediation:tapjoy:12.4.0.1'
-    }
-    if (gradle.ext.ads.contains("ironsource")) {
-        implementation "com.ironsource.sdk:mediationsdk:$rootProject.ext.ironsource_lib"
-        implementation 'com.mopub.mediation:ironsource:6.13.0.0'
     }
     if (gradle.ext.ads.contains("mobfox")) {
         implementation 'com.github.mobfox.MobFox-Android-SDK-Core:MobFox-Android-SDK-Core:3.6.9'

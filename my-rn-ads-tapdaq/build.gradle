@@ -12,14 +12,16 @@ android {
         versionName "1.0"
     }
 }
-def TapdaqVersion = "7.4.2"
+
+def TapdaqVersion = rootProject.ext.TapdaqVersion
 def ads = gradle.ext.ads
 dependencies {
     api project(':my-rn-ads-base')
     //Tapdaq
     api "com.tapdaq.sdk:Tapdaq-BaseSDK:$TapdaqVersion"
     api "com.tapdaq.sdk:TapdaqFANAdapter:$TapdaqVersion"
-    api "com.tapdaq.sdk:TapdaqAdMobAdapter:$TapdaqVersion"
+    if (ads.contains("admob"))
+        api "com.tapdaq.sdk:TapdaqAdMobAdapter:$TapdaqVersion"
 
     if (ads.contains("adcolony"))
         implementation "com.tapdaq.sdk:TapdaqAdColonyAdapter:$TapdaqVersion"
@@ -28,7 +30,7 @@ dependencies {
         implementation "com.tapdaq.sdk:TapdaqChartboostAdapter:$TapdaqVersion"
 
     if (ads.contains("mintegral"))
-        implementation "com.tapdaq.sdk:TapdaqMintegralAdapter:$TapdaqVersion"
+        api "com.tapdaq.sdk:TapdaqMintegralAdapter:$TapdaqVersion"
 
     if (ads.contains("tapjoy"))
         implementation "com.tapdaq.sdk:TapdaqTapjoyAdapter:$TapdaqVersion"
@@ -41,4 +43,7 @@ dependencies {
 
     if (ads.contains("inmobi"))
         implementation "com.tapdaq.sdk:TapdaqInmobiAdapter:$TapdaqVersion"
+
+    if (ads.contains("ironsource"))
+        api "com.tapdaq.sdk:TapdaqIronsourceAdapter:$TapdaqVersion"
 }

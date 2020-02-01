@@ -16,13 +16,16 @@ ext.addAdsProjectSetting = { ->
     }
     //endregion
 
-/////////////////
-    /////////////
-
+//////////////////////////////
 
     if (mediation == "tapdaq") {
         include ':my-rn-ads'
         project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_tapdaq')
+    } else if (mediation == "mopub_tapdaq") {
+        include ':my-rn-ads'
+        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_mopub_tapdaq')
+        include ':my-rn-ads-mopub-tapdaq-adapter'
+        project(':my-rn-ads-mopub-tapdaq-adapter').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/my-rn-ads-mopub-tapdaq-adapter')
     } else if (mediation == "mopub_fairbid") {
         include ':my-rn-ads'
         project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_mopub_fairbid')
@@ -30,29 +33,8 @@ ext.addAdsProjectSetting = { ->
         include ':my-rn-ads'
         project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_tapdaq_fairbid')
     } else { // mediation is mopub
-        //////////
-        include ':mintegral_mopub_adapter'
-        project(':mintegral_mopub_adapter').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mintegral_mopub_adapter')
-        //////////
-
         include ':my-rn-ads'
         project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_mopub')
-//        if (gradle.ext.ads.contains("inmobi")) {
-//            include ':mopub_inmobi'
-//            project(':mopub_inmobi').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mopub_inmobi')
-//        }
-//        if (gradle.ext.ads.contains("smaato")) {
-//            include ':mopub_smaato'
-//            project(':mopub_smaato').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mopub_smaato')
-//        }
-//        if (gradle.ext.ads.contains("mobvistar")) {
-//            include ':mopub_mobvistar'
-//            project(':mopub_mobvistar').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mopub_mobvistar')
-//        }
-//        if (gradle.ext.ads.contains("fairbid")) {
-//            include ':FairBid'
-//            project(':FairBid').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/FairBid')
-//        }
     }
 
     if (ads.contains("mopub") || mediation.contains("mopub")) {
@@ -64,6 +46,10 @@ ext.addAdsProjectSetting = { ->
             include ':FacebookAudienceNetwork'
             project(':FacebookAudienceNetwork').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/FacebookAudienceNetwork')
         }
+        //////////
+//        include ':mintegral_mopub_adapter'
+//        project(':mintegral_mopub_adapter').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mintegral_mopub_adapter')
+        //////////
     }
     if (ads.contains("tapdaq") || mediation.contains("tapdaq")) {
         include ':my-rn-ads-tapdaq'

@@ -1,17 +1,21 @@
 package com.my.rn.ads;
 
 import com.baseLibs.BaseApplication;
+import com.mopub.common.SdkConfiguration;
 import com.my.rn.ads.full.center.BaseAdsFullManager;
 import com.my.rn.ads.mopub.MopubInitUtils;
 import com.my.rn.ads.mopub.ad_native.MopubNativeManager;
 
-public class ApplicationContainAds extends BaseApplicationContainAds {
-    protected MopubInitUtils mopubInitUtils;
+public abstract class ApplicationContainAds extends BaseApplicationContainAds {
     protected AdsFullManager adsFullManager;
     protected INativeManager nativeManager;
+    protected MopubInitUtils mopubInitUtils;
+    protected RewardedAdsManager rewardedAdsManager;
 
-    @Override public IAdInitUtils getIAdInitTapdaqUtils() {
-        return null;
+    @Override public BaseRewardedAdsManager getRewardedAdsManager() {
+        if (rewardedAdsManager == null)
+            rewardedAdsManager = new RewardedAdsManager();
+        return rewardedAdsManager;
     }
 
     @Override public IAdInitUtils getIAdInitMopubUtils() {
@@ -20,11 +24,16 @@ public class ApplicationContainAds extends BaseApplicationContainAds {
         return mopubInitUtils;
     }
 
+    @Override public IAdInitUtils getIAdInitTapdaqUtils() {
+        return null;
+    }
+
     @Override public INativeManager getNativeManager() {
         if (nativeManager == null)
             nativeManager = new MopubNativeManager(this);
         return nativeManager;
     }
+
     @Override public BaseAdsFullManager getAdsFullManager() {
         if (adsFullManager == null)
             adsFullManager = new AdsFullManager();
