@@ -6,7 +6,6 @@ import {isEqual} from "lodash"
 import {Col} from "my-rn-base-component";
 import {OfflineAdsSetting} from "./OfflineAdsSetting";
 import {RowOfflineAds} from "./RowOfflineAds";
-import {CommonUtils} from "my-rn-base-utils";
 
 let NativeAdsViewRef: any = requireNativeComponent('NativeAdsView');
 
