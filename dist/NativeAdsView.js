@@ -6,7 +6,6 @@ import { isEqual } from "lodash";
 import { Col } from "my-rn-base-component";
 import { OfflineAdsSetting } from "./OfflineAdsSetting";
 import { RowOfflineAds } from "./RowOfflineAds";
-import { CommonUtils } from "my-rn-base-utils";
 let NativeAdsViewRef = requireNativeComponent('NativeAdsView');
 export class NativeAdsView extends Component {
     constructor(props) {
@@ -14,7 +13,6 @@ export class NativeAdsView extends Component {
         this.state = { needRender: false, isLoading: true, height: getHeightAds(this.props.typeAds) };
     }
     async componentDidMount() {
-        await CommonUtils.waitAfterInteractions();
         if (this.props.delayTime != undefined && !this.state.needRender) {
             setTimeout(() => {
                 this.setState({ needRender: true });

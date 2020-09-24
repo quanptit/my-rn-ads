@@ -15,5 +15,5 @@ android {
 
 dependencies {
     implementation project(':my-rn-ads-base')
-    implementation "com.facebook.android:audience-network-sdk:$rootProject.ext.fan_lib"
+    api "com.facebook.android:audience-network-sdk:$rootProject.ext.fan_lib"
 }

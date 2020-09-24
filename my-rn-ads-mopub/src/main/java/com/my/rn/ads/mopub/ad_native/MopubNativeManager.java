@@ -11,9 +11,11 @@ import androidx.annotation.Nullable;
 
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
+import com.baseLibs.utils.BaseUtils;
 import com.mopub.nativeads.*;
 import com.my.rn.ads.BaseApplicationContainAds;
 import com.my.rn.ads.IAdInitCallback;
+import com.my.rn.ads.IAdLoaderCallback;
 import com.my.rn.ads.INativeManager;
 import com.my.rn.ads.mopub.MopubInitUtils;
 import com.my.rn.ads.settings.AdsSetting;
@@ -29,8 +31,10 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
     private boolean isSkipWaitForComplete = false;
     private Queue<NativeAd> nativeAds = new LinkedList<>(); // Sẽ chứa NO_ADS_LOAD Ads
     private static final String TAG = "MOPUB_NATIVE";
+    private @Nullable IAdLoaderCallback iAdLoaderCallback;
 
-    public MopubNativeManager(Context context) {
+    public void setiAdLoaderCallback(IAdLoaderCallback iAdLoaderCallback) {
+        this.iAdLoaderCallback = iAdLoaderCallback;
     }
 
     private String getAdUnitID() {
@@ -79,10 +83,21 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
         return hasLoadAds;
     }
 
-    @Override public @Nullable View createNewAds(Context context, int typeAds, ViewGroup parent) {
+    @Override public @Nullable NativeViewResult createNewAds(Context context, int typeAds, ViewGroup parent) {
         NativeAd nativeAd = nativeAds.poll();
         if (nativeAd == null) return null;
-        return MopubNativeRenderUtils.createAdView(context, nativeAd, typeAds, parent);
+        View adsView = MopubNativeRenderUtils.createAdView(context, nativeAd, typeAds, parent);
+        return new NativeViewResult(adsView, nativeAd);
+    }
+
+    @Override public @Nullable View createNewAds(Context context, Object nativeAdObj, int typeAds, ViewGroup parent) {
+        if (nativeAdObj instanceof NativeAd) {
+            return MopubNativeRenderUtils.createAdView(context, (NativeAd) nativeAdObj, typeAds, parent);
+        }
+        return null;
+    }
+    public void clearRegisterView(NativeAd nativeAd, View view){
+        nativeAd.clear(view);
     }
 
     @Override public void checkAndLoadAds(Activity activity) {
@@ -90,9 +105,12 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
     }
 
     private void _checkAndLoadAds(boolean isNotResetCountError) {
+        if (!BaseUtils.isOnline()){
+            isLoading = false;
+            onNativeFail(NativeErrorCode.CONNECTION_ERROR);
+            return;
+        }
         if (isLoading || nativeAds.size() >= NO_ADS_LOAD) return;
-        if (!isNotResetCountError)
-            countLoadError = 0;
         MopubInitUtils.getInstance().initAds(null, new IAdInitCallback() {
             @Override public void didInitialise() {
                 excuteLoadNativeAds();
@@ -114,11 +132,11 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
         }
 
         try {
+            isLoading = true;
             RequestParameters mRequestParameters = new RequestParameters.Builder()
                     .desiredAssets(desiredAssets)
                     .build();
             moPubNative.makeRequest(mRequestParameters);
-            isLoading = true;
         } catch (Exception e) {
             e.printStackTrace();
             isLoading = false;
@@ -131,18 +149,21 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
         hasLoadAds = true;
         isLoading = false;
         nativeAds.add(nativeAd);
+        if (iAdLoaderCallback != null)
+            iAdLoaderCallback.onAdsLoaded();
         _checkAndLoadAds(false);
     }
 
     @Override public void onNativeFail(NativeErrorCode errorCode) {
         Log.d("MopubNativeManager", "MOPUB Load native ads => onNativeFail: " + errorCode);
         isSkipWaitForComplete = true;
-        countLoadError++;
         isLoading = false;
         hasLoadAds = true;
-        if (countLoadError < 3) {
-            _checkAndLoadAds(true);
-        }
+//        if (countLoadError < 3) {
+//            _checkAndLoadAds(true);
+//        } else
+            if (iAdLoaderCallback != null)
+            iAdLoaderCallback.onAdsFailedToLoad();
     }
     //endregion
 
@@ -160,9 +181,11 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
             RequestParameters.NativeAdAsset.ICON_IMAGE,
             RequestParameters.NativeAdAsset.STAR_RATING
     );
-    private static final int NO_ADS_LOAD = 2;
-    private int countLoadError = 0;
+    private static final int NO_ADS_LOAD = 1;
 
+    public boolean isCaching(){
+        return isLoading;
+    }
     public boolean isCached() {
         try {
             return !nativeAds.isEmpty();

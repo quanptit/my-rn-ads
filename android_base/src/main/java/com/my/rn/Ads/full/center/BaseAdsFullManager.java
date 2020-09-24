@@ -156,20 +156,24 @@ public abstract class BaseAdsFullManager {
     public boolean showAdsCenter(Activity activity, final IAdsCalbackOpen promise) {
         return showAdsCenter(activity, false, promise);
     }
+    public boolean showAdsCenter(Activity activity) {
+        return showAdsCenter(activity, null);
+    }
 
     public boolean showAdsCenter(final Activity activity, final boolean skipCheck, final IAdsCalbackOpen promise) {
         return showAdsCenter(activity, false, skipCheck, promise);
     }
 
     public boolean showAdsCenter(final Activity activity, final boolean isFromStart, final boolean skipCheck,
-                                 final IAdsCalbackOpen promise) {
+                                 final @Nullable IAdsCalbackOpen promise) {
         boolean isShowAds;
         if (skipCheck)
             isShowAds = true;
         else
             isShowAds = !AdsUtils.isDoNotShowAds() && (canShowAdsCenter(false) || isFromStart);
         if (!isShowAds) {
-            promise.noAdsCallback();
+            if (promise != null)
+                promise.noAdsCallback();
             return false;
         }
 
@@ -182,7 +186,8 @@ public abstract class BaseAdsFullManager {
                 isShowed = adxCenter.showAdsCenterIfCache(activity, promise);
 
             if (!isShowed) { // Không có quảng cáo để show
-                promise.noAdsCallback();
+                if (promise != null)
+                    promise.noAdsCallback();
                 cacheAdsCenter(activity, false, skipCheck, null);
             }
             return isShowed;
@@ -191,7 +196,8 @@ public abstract class BaseAdsFullManager {
         } catch (Error error) {
             error.printStackTrace();
         }
-        promise.noAdsCallback();
+        if (promise != null)
+            promise.noAdsCallback();
         return false;
     }
 

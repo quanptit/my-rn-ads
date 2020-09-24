@@ -74,7 +74,7 @@ export class RNAdsUtils {
         try {
             return await excuteFuncWithTimeOut(() => {
                 return NativeModules.RNAdsUtils.firstCacheAndCheckCanShowNativeAds(typeAds);
-            }, 8000);
+            }, 16000);
         }
         catch (e) {
             console.log("firstCacheAndCheckCanShowNativeAds: TIMEOUT");

@@ -3,12 +3,18 @@ package com.my.rn.ads;
 import android.app.Activity;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.appsharelib.KeysAds;
 
 
-public class RewardedAdsManager extends BaseRewardedAdsManager {
+public class RewardedAdsManager implements IRewardedAdsManager {
     private static final String TAG = "REWARDED_ADS_MANAGER";
     private boolean isLoading;
+
+    @Override public void showRewardedAds(Activity activity, boolean showLoaddingIfNotCache, @Nullable IAdsCalbackOpen adsCalbackOpen) {
+
+    }
 
     @Override public void cacheRewardedAds(Activity activity) {
         if (isLoading) return;
@@ -57,12 +63,12 @@ public class RewardedAdsManager extends BaseRewardedAdsManager {
         Log.d(TAG, "cacheRewardedAds");
     }
 
-    @Override public void showRewardedAds(Activity activity) {
-        Log.d(TAG, "showRewardedAds");
-//        boolean isReady = isCachedRewardedAds(activity);
-//        if (isReady)
-//            MoPubRewardedVideos.showRewardedVideo(KeysAds.MOPUB_REWARDED);
-    }
+//    @Override public void showRewardedAds(Activity activity) {
+//        Log.d(TAG, "showRewardedAds");
+////        boolean isReady = isCachedRewardedAds(activity);
+////        if (isReady)
+////            MoPubRewardedVideos.showRewardedVideo(KeysAds.MOPUB_REWARDED);
+//    }
 
     @Override public boolean isCachedRewardedAds(Activity activity) {
         return false;

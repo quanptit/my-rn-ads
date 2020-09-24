@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":my-rn-ads" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/../../../writing-studio/korean-writing/korean-writing/android" external.system.id="GRADLE" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":my-rn-ads" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/../../../Learn Via Game/EnglishGrammarGame/android" external.system.id="GRADLE" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="android-gradle" name="Android-Gradle">
       <configuration>
@@ -106,11 +106,13 @@
     <orderEntry type="library" name="Gradle: com.facebook.react:react-native:0.61.5@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.appcompat:appcompat:1.1.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.mopub:mopub-sdk-banner:5.10.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.mopub:mopub-sdk-rewardedvideo:5.10.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.mopub:mopub-sdk-interstitial:5.10.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.mopub:mopub-sdk-native-video:5.10.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.mopub:mopub-sdk-native-static:5.10.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-ads:18.3.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.browser:browser:1.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.facebook.android:audience-network-sdk:5.6.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-ads-identifier:17.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-gass:18.3.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-ads-lite:18.3.0@aar" level="project" />

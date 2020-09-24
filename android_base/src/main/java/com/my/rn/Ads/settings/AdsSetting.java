@@ -81,6 +81,8 @@ public class AdsSetting {
      */
     public static final int TYPE_SUMMARY_LIST3 = 3;
 
+    public static final int TYPE_NATIVE_BANNER = 5;
+
     /**
      * Trạng thái sử dụng cái Native Large Default do bọn facebook cung cấp
      */
@@ -156,8 +158,10 @@ public class AdsSetting {
         if (System.currentTimeMillis() - lasTimeUpdate < 48 * 60 * 60 * 1000) {
             if (settingObj == null)
                 getSettingObj();
-            if (settingObj != null)
+            if (settingObj != null) {
+                isUpdated = true;
                 return;
+            }
         }
 
         Log.d(TAG, "Start updateSetting from server: " + urlAdsSetting);

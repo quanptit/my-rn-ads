@@ -64,10 +64,18 @@ public class TabpadNativeManager extends TMAdListener implements INativeManager 
     }
 
     @Override
-    public @Nullable View createNewAds(Context context, int typeAds, ViewGroup parent) {
+    public @Nullable NativeViewResult createNewAds(Context context, int typeAds, ViewGroup parent) {
         TDMediatedNativeAd nativeAd = nativeAds.poll();
         if (nativeAd == null) return null;
-        return TapdaqNativeRenderUtils.createAdView(context, nativeAd, typeAds, parent);
+        View adsView =  TapdaqNativeRenderUtils.createAdView(context, nativeAd, typeAds, parent);
+        return new NativeViewResult(adsView, nativeAd);
+    }
+
+    @Nullable @Override public View createNewAds(Context context, Object nativeAdObj, int typeAds, ViewGroup parent) {
+//        if (nativeAdObj instanceof NativeAd) {
+//            return MopubNativeRenderUtils.createAdView(context, (NativeAd) nativeAdObj, typeAds, parent);
+//        }
+        return null;
     }
 
     @Override
@@ -113,7 +121,7 @@ public class TabpadNativeManager extends TMAdListener implements INativeManager 
 
     // region Event callback load Ads
     @Override public void didLoad(TDMediatedNativeAd ad) {
-        Log.d("MopubNativeManager", "onNativeLoad");
+        Log.d(TAG, "onNativeLoad");
         hasLoadAds = true;
         isLoading = false;
         nativeAds.add(ad);

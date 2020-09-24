@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
 import com.baseLibs.utils.PreferenceUtils;
@@ -12,7 +14,7 @@ import com.my.rn.ads.IAdsCalbackOpen;
 
 public abstract class BaseFullCenterAds {
     private boolean isCaching = false;
-    private IAdsCalbackOpen promise;
+    private @Nullable IAdsCalbackOpen promise;
 
     protected abstract String getLogTAG();
 

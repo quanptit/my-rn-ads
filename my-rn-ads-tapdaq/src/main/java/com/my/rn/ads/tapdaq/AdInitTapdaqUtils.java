@@ -7,6 +7,7 @@ import com.appsharelib.KeysAds;
 import com.my.rn.ads.BaseApplicationContainAds;
 import com.my.rn.ads.IAdInitCallback;
 import com.my.rn.ads.IAdInitUtils;
+import com.tapdaq.sdk.STATUS;
 import com.tapdaq.sdk.Tapdaq;
 import com.tapdaq.sdk.TapdaqConfig;
 import com.tapdaq.sdk.adnetworks.TMMediationNetworks;
@@ -42,6 +43,11 @@ public class AdInitTapdaqUtils implements IAdInitUtils {
         isIniting = true;
         isInitedFail = false;
         TapdaqConfig config = new TapdaqConfig();
+
+//        config.setUserSubjectToGDPR(STATUS.UNKNOWN); //GDPR declare if user is in EU
+//        config.setConsentStatus(STATUS.FALSE);
+//        config.setConsentStatus(STATUS.TRUE); //GDPR consent must be obtained from the user
+
         config.registerTestDevices(TMMediationNetworks.AD_MOB, Arrays.asList(KeysAds.DEVICE_TESTS));
         if (KeysAds.IS_DEVELOPMENT)
             TLog.setLoggingLevel(TLogLevel.DEBUG);
@@ -63,10 +69,6 @@ public class AdInitTapdaqUtils implements IAdInitUtils {
                     isDispatchingCallback = false;
                 }
                 isIniting = false;
-
-                if (true){//TODO return
-                    Tapdaq.getInstance().startTestActivity(activity);
-                }
             }
 
             @Override
@@ -91,6 +93,18 @@ public class AdInitTapdaqUtils implements IAdInitUtils {
     //region utils
     private static final String TAG = "TAPDAQ";
 
+    public static void showTestSuiteAds(final Activity activity){
+        AdInitTapdaqUtils.getInstance().initAds(activity, new IAdInitCallback() {
+            @Override public void didInitialise() {
+                Tapdaq.getInstance().startTestActivity(activity);
+            }
+
+            @Override public void didFailToInitialise() {
+
+            }
+        });
+    }
+
     private void logError(TMAdError error) {
         try {
             String str = String.format(Locale.ENGLISH, "didFailToInitialise: %d - %s", error.getErrorCode(), error.getErrorMessage());
@@ -112,8 +126,8 @@ public class AdInitTapdaqUtils implements IAdInitUtils {
         }
     }
 
-    public static IAdInitUtils getInstance() {
-        return BaseApplicationContainAds.getInstance().getIAdInitTapdaqUtils();
+    public static AdInitTapdaqUtils getInstance() {
+        return (AdInitTapdaqUtils) BaseApplicationContainAds.getInstance().getIAdInitTapdaqUtils();
     }
     //endregion
 }

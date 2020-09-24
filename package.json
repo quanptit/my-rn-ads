@@ -1,6 +1,6 @@
 {
   "name": "my-rn-ads",
-  "version": "2.0.3",
+  "version": "2.0.5",
   "description": "my-rn-ads",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

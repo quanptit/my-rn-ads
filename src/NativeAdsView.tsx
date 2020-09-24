@@ -43,7 +43,6 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
     }
 
     async componentDidMount() {
-        await CommonUtils.waitAfterInteractions();
         if (this.props.delayTime != undefined && !this.state.needRender) {
             setTimeout(() => {
                 this.setState({needRender: true})

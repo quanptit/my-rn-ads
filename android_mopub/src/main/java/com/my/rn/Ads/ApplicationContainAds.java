@@ -12,7 +12,7 @@ public abstract class ApplicationContainAds extends BaseApplicationContainAds {
     protected MopubInitUtils mopubInitUtils;
     protected RewardedAdsManager rewardedAdsManager;
 
-    @Override public BaseRewardedAdsManager getRewardedAdsManager() {
+    @Override public IRewardedAdsManager getRewardedAdsManager() {
         if (rewardedAdsManager == null)
             rewardedAdsManager = new RewardedAdsManager();
         return rewardedAdsManager;
@@ -30,7 +30,7 @@ public abstract class ApplicationContainAds extends BaseApplicationContainAds {
 
     @Override public INativeManager getNativeManager() {
         if (nativeManager == null)
-            nativeManager = new MopubNativeManager(this);
+            nativeManager = new MopubNativeManager();
         return nativeManager;
     }
 

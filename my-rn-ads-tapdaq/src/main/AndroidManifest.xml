@@ -4,20 +4,20 @@
     <!--    tools:node="remove"-->
     <application>
         <!--        Vốn Lib có, nhưng vì publish ko phải ở trung quốc + trên google play nên remove-->
-        <receiver
-            android:name="com.mintegral.msdk.click.AppReceiver"
-            tools:node="remove">
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <data android:scheme="package" />
-            </intent-filter>
-        </receiver>
-        <service
-            android:name="com.mintegral.msdk.shell.MTGService"
-            tools:node="remove">
-            <intent-filter>
-                <action android:name="com.mintegral.msdk.download.action" />
-            </intent-filter>
-        </service>
+<!--        <receiver-->
+<!--            android:name="com.mintegral.msdk.click.AppReceiver"-->
+<!--            tools:node="remove">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.PACKAGE_ADDED" />-->
+<!--                <data android:scheme="package" />-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
+<!--        <service-->
+<!--            android:name="com.mintegral.msdk.shell.MTGService"-->
+<!--            tools:node="remove">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.mintegral.msdk.download.action" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
     </application>
 </manifest>

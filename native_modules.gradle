@@ -1,19 +1,23 @@
 def ads = gradle.ext.ads
 def mediation = gradle.ext.mediation
 
+
+def dirPathBaseLibAds = "S:/Codes/react-native-my-libs/my-rn-ads/"
 ext.addAdsProjectSetting = { ->
     //region base
     include ':AppShareLibs'
     include ':my-rn-ads-base'
-    project(':my-rn-ads-base').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_base')
+    project(':my-rn-ads-base').projectDir = new File(dirPathBaseLibAds + 'android_base')
     include ':my-rn-ads-base-react-native'
-    project(':my-rn-ads-base-react-native').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-base-react-native')
+    project(':my-rn-ads-base-react-native').projectDir = new File(dirPathBaseLibAds + 'my-rn-ads-base-react-native')
     if (ads.contains("facebook")) {
         include ':my-rn-ads-fb'
-        project(':my-rn-ads-fb').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-fb')
+        project(':my-rn-ads-fb').projectDir = new File(dirPathBaseLibAds + 'my-rn-ads-fb')
         include ':my-rn-ads-fb-react-native'
-        project(':my-rn-ads-fb-react-native').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-fb-react-native')
+        project(':my-rn-ads-fb-react-native').projectDir = new File(dirPathBaseLibAds + 'my-rn-ads-fb-react-native')
     }
+    include ':AdMob'
+    project(':AdMob').projectDir = new File(dirPathBaseLibAds + 'mopub_mediations/AdMob')
     //endregion
 
 //////////////////////////////

@@ -19,23 +19,28 @@
             android:background="@null"
             android:contentDescription="@null" />
 
-        <TextView
-            android:id="@+id/native_title"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:layout_weight="1"
-            android:text="native_title"
-            android:textColor="@color/title"
-            android:textSize="@dimen/fontSize_large"
-            android:textStyle="bold" />
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/native_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="native_title"
+                android:textColor="@color/title"
+                android:textSize="@dimen/fontSize_large"
+                android:textStyle="bold" />
+        </FrameLayout>
 
         <ImageView
             android:id="@+id/native_privacy_information_icon_image"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="top"
-            android:padding="10dp" />
+            android:padding="5dp" />
     </LinearLayout>
 
     <com.mopub.nativeads.MediaLayout
@@ -52,14 +57,19 @@
         android:layout_marginBottom="1dp"
         android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/native_text"
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:maxLines="3"
-            android:text="native_text"
-            android:textColor="@android:color/darker_gray" />
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/native_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="3"
+                android:text="native_text"
+                android:textColor="@android:color/darker_gray" />
+        </FrameLayout>
 
         <Button
             android:id="@+id/native_cta"

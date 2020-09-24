@@ -12,7 +12,7 @@ public abstract class ApplicationContainAds extends BaseApplicationContainAds {
     protected RewardedAdsManager rewardedAdsManager;
     protected INativeManager nativeManager;
 
-    @Override public BaseRewardedAdsManager getRewardedAdsManager() {
+    @Override public IRewardedAdsManager getRewardedAdsManager() {
         if (rewardedAdsManager == null)
             rewardedAdsManager = new RewardedAdsManager();
         return rewardedAdsManager;

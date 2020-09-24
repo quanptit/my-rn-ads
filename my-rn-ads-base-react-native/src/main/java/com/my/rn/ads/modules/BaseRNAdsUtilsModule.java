@@ -148,7 +148,7 @@ public class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule implements 
         UiThreadUtil.runOnUiThread(new Runnable() {
             @Override public void run() {
                 BaseApplicationContainAds.getInstance().getRewardedAdsManager()
-                        .showRewardedAds(activity);
+                        .showRewardedAds(activity, true, null);
             }
         });
     }

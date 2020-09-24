@@ -1,6 +1,7 @@
 package com.my.rn.ads.mopub;
 
 import android.app.Activity;
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -28,7 +29,7 @@ public class MopubInitUtils implements IAdInitUtils {
         return KeysAds.MOPUB_FULL_CENTER;
     }
 
-    public void customInit(SdkConfiguration.Builder configBuilder){}
+    public void customInit(SdkConfiguration.Builder configBuilder) {}
 
     @Override public void initAds(Activity activity, IAdInitCallback callback) {
         if (MoPub.isSdkInitialized() || isInited) {
@@ -46,15 +47,14 @@ public class MopubInitUtils implements IAdInitUtils {
             listCallback.add(callback);
         if (isIniting) return;
         isIniting = true;
-
         SdkConfiguration.Builder configBuilder = new SdkConfiguration.Builder(key);
         customInit(configBuilder);
         if (BuildConfig.DEBUG)
-            configBuilder.withLogLevel(MoPubLog.LogLevel.DEBUG);
+            configBuilder.withLogLevel(MoPubLog.LogLevel.INFO);
         else
             configBuilder.withLogLevel(MoPubLog.LogLevel.NONE);
-
-        MoPub.initializeSdk(BaseApplication.getAppContext(), configBuilder.build(), new SdkInitializationListener() {
+        Context context = activity == null ? BaseApplication.getAppContext() : activity;
+        MoPub.initializeSdk(context, configBuilder.build(), new SdkInitializationListener() {
             @Override public void onInitializationFinished() {
                 Log.d("MopubInitUtils", "MoPub onInitializationFinished");
                 isInited = true;
