@@ -14,8 +14,7 @@
         <com.facebook.ads.AdIconView
             android:id="@+id/native_ad_icon"
             android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@color/gray"/>
+            android:layout_height="50dp"/>
 
         <FrameLayout
             android:layout_width="match_parent"

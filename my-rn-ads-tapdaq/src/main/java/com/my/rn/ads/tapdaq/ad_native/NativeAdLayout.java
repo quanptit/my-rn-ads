@@ -188,6 +188,8 @@ public class NativeAdLayout extends RelativeLayout {
 
         if (ad.getAppIconView() != null)
             mIconView.addView(ad.getAppIconView());
+        else
+            mIconView.setVisibility(GONE);
 
         ad.registerView(mButton);
         if (ad.getVideoController() != null && ad.getVideoController().hasVideoContent()) {

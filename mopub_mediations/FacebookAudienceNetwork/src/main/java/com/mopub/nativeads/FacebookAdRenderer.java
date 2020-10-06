@@ -28,7 +28,8 @@ public class FacebookAdRenderer implements MoPubAdRenderer<FacebookNative.Facebo
 
     // This is used instead of View.setTag, which causes a memory leak in 2.3
     // and earlier: https://code.google.com/p/android/issues/detail?id=18273
-    @NonNull final WeakHashMap<View, FacebookNativeViewHolder> mViewHolderMap;
+    @NonNull
+    final WeakHashMap<View, FacebookNativeViewHolder> mViewHolderMap;
 
     /**
      * Constructs a native ad renderer with a view binder.
@@ -83,7 +84,6 @@ public class FacebookAdRenderer implements MoPubAdRenderer<FacebookNative.Facebo
                 nativeAd.getAdvertiserName());
         NativeRendererHelper.addTextView(facebookNativeViewHolder.getSponsoredLabelView(),
                 nativeAd.getSponsoredName());
-
         //====== My code
         NativeRendererHelper.addTextView(facebookNativeViewHolder.getAdSocialContextView(), nativeAd.getFacebookNativeAd().getAdSocialContext());
         List<View> clickableViews = new ArrayList<>();
@@ -99,10 +99,8 @@ public class FacebookAdRenderer implements MoPubAdRenderer<FacebookNative.Facebo
 
         final RelativeLayout adChoicesContainer =
                 facebookNativeViewHolder.getAdChoicesContainer();
-        //====== My code : gố là có comment
 //        nativeAd.registerChildViewsForInteraction(facebookNativeViewHolder.getMainView(),
 //                facebookNativeViewHolder.getMediaView(), facebookNativeViewHolder.getAdIconView());
-        //============
         if (adChoicesContainer != null) {
             adChoicesContainer.removeAllViews();
             NativeAdLayout nativeAdLayout = null;
@@ -240,7 +238,8 @@ public class FacebookAdRenderer implements MoPubAdRenderer<FacebookNative.Facebo
         final int textId;
         final int callToActionId;
         final int adChoicesRelativeLayoutId;
-        @NonNull final Map<String, Integer> extras;
+        @NonNull
+        final Map<String, Integer> extras;
         final int mediaViewId;
         final int adIconViewId;
         final int advertiserNameId;

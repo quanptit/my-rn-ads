@@ -15,6 +15,8 @@ import java.util.Map;
 
 public class NativeAdsView extends SimpleViewManager<View> {
     public static final String REACT_CLASS = "NativeAdsView";
+//    private View adsView;
+//    private String color;
 
     @Override
     public String getName() {
@@ -26,9 +28,18 @@ public class NativeAdsView extends SimpleViewManager<View> {
     public void setTypeAds(FrameLayout view, Integer typeAds) {
         if (view.getChildCount() > 0)
             view.removeAllViews();
+//        INativeManager.NativeViewResult result =
         BaseApplicationContainAds.getNativeManagerInstance()
                 .createNewAds(view.getContext(), typeAds, view);
+//        if (result != null)
+//            this.adsView = result.adsView;
     }
+
+//    @ReactProp(name = "color")
+//    public void setColor(FrameLayout view, String color) {
+//        this.color = color;
+//        L.d("setColor: " + color);
+//    }
 
     @Override
     protected View createViewInstance(final ThemedReactContext reactContext) {

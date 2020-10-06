@@ -4,7 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
-import com.mopub.mobileads.CustomEventInterstitial;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.mopub.common.LifecycleListener;
+import com.mopub.mobileads.AdData;
+import com.mopub.mobileads.BaseAd;
 import com.mopub.mobileads.MoPubErrorCode;
 import com.my.rn.ads.IAdInitCallback;
 import com.my.rn.ads.full.center.BaseAdsFullManager;
@@ -13,31 +18,33 @@ import com.tapdaq.sdk.Tapdaq;
 import com.tapdaq.sdk.common.TMAdError;
 import com.tapdaq.sdk.listeners.TMAdListener;
 
-import java.util.Map;
-
-public class TapdaqMopubAdapterInterstitial extends CustomEventInterstitial {
+public class TapdaqMopubAdapterInterstitial extends BaseAd {
     private static final String TAG = "TAPDAQ_MOPUB";
-    private Activity activity;
-    private CustomEventInterstitialListener customEventInterstitialListener;
 
-    @Override
-    protected void loadInterstitial(Context context,
-                                    final CustomEventInterstitialListener customEventInterstitialListener, Map<String, Object> localExtras,
-                                    final Map<String, String> serverExtras) {
+
+    @Nullable @Override protected LifecycleListener getLifecycleListener() {
+        return null;
+    }
+
+    @NonNull @Override protected String getAdNetworkId() {
+        return "";
+    }
+
+    @Override protected void load(@NonNull Context context, @NonNull AdData adData) throws Exception {
         Log.d(TAG, "loadInterstitial");
         if (context instanceof Activity)
             activity = (Activity) context;
         else
             activity = BaseAdsFullManager.getMainActivity();
+
+
         if (activity == null) {
             Log.e(TAG, "loadInterstitial activity==null, Please CHECK AGAIN");
-            customEventInterstitialListener.onInterstitialFailed(MoPubErrorCode.INTERNAL_ERROR);
+            mLoadListener.onAdLoadFailed(MoPubErrorCode.INTERNAL_ERROR);
             return;
         }
-        this.customEventInterstitialListener = customEventInterstitialListener;
-
         if (Tapdaq.getInstance().isVideoReady(activity, null)) {
-            customEventInterstitialListener.onInterstitialLoaded();
+            mLoadListener.onAdLoaded();
             return;
         }
 
@@ -48,50 +55,72 @@ public class TapdaqMopubAdapterInterstitial extends CustomEventInterstitial {
                             @Override public void didInitialise() {
                                 Tapdaq.getInstance().loadVideo(activity, new TMAdListener() {
                                     @Override public void didLoad() {
-                                        customEventInterstitialListener.onInterstitialLoaded();
+                                        mLoadListener.onAdLoaded();
                                     }
 
                                     @Override public void didFailToLoad(TMAdError error) {
                                         Log.d(TAG, "loadInterstitial didFailToLoad: " + error.toString());
-                                        customEventInterstitialListener.onInterstitialFailed(MoPubErrorCode.INTERNAL_ERROR);
+                                        mLoadListener.onAdLoadFailed(MoPubErrorCode.FULLSCREEN_LOAD_ERROR);
                                     }
                                 });
                             }
 
                             @Override public void didFailToInitialise() {
                                 Log.w(TAG, "loadInterstitial ==> didFailToInitialise");
-                                customEventInterstitialListener.onInterstitialFailed(MoPubErrorCode.INTERNAL_ERROR);
+                                mLoadListener.onAdLoadFailed(MoPubErrorCode.INTERNAL_ERROR);
                             }
                         });
             }
         }).start();
     }
 
+    //#region utils
+    @Override protected boolean checkAndInitializeSdk(@NonNull Activity launcherActivity, @NonNull AdData adData) throws Exception {
+        return false;
+    }
+    //#endregion
+
+
+    private Activity activity;
+
+
     @Override
     protected void onInvalidate() {
         Log.d(TAG, "onInvalidate");
         this.activity = null;
-        this.customEventInterstitialListener = null;
     }
 
     @Override
-    protected void showInterstitial() {
+    protected void show() {
         Log.d(TAG, "showInterstitial");
-        if (this.activity == null){
+        if (this.activity == null) {
             Log.e(TAG, "showInterstitial FAIL BECAUSE activity == null");
+            if (mInteractionListener != null)
+                mInteractionListener.onAdFailed(MoPubErrorCode.INTERNAL_ERROR);
             return;
         }
-        Tapdaq.getInstance().showVideo(activity, new TMAdListener(){
+        if (!Tapdaq.getInstance().isVideoReady(activity, null)) {
+            if (mInteractionListener != null)
+                mInteractionListener.onAdFailed(MoPubErrorCode.NETWORK_NO_FILL);
+        }
+        Tapdaq.getInstance().showVideo(activity, new TMAdListener() {
             @Override public void didClose() {
-                customEventInterstitialListener.onInterstitialDismissed();
+                if (mInteractionListener != null) {
+                    mInteractionListener.onAdDismissed();
+                }
             }
 
             @Override public void didDisplay() {
-                customEventInterstitialListener.onInterstitialShown();
+                if (mInteractionListener != null) {
+                    mInteractionListener.onAdShown();
+                    mInteractionListener.onAdImpression();
+                }
             }
 
             @Override public void didClick() {
-                customEventInterstitialListener.onInterstitialClicked();
+                if (mInteractionListener != null) {
+                    mInteractionListener.onAdClicked();
+                }
             }
         });
     }

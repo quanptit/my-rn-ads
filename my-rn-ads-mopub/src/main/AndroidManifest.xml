@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.my.rn.ads.mopub">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:hardwareAccelerated="true"
         android:usesCleartextTraffic="true">

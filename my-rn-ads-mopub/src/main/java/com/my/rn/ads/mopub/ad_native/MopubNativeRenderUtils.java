@@ -17,6 +17,7 @@ class MopubNativeRenderUtils {
                 .titleId(R.id.native_title)
                 .textId(R.id.native_text)
                 .callToActionId(R.id.native_cta)
+                .sponsoredTextId(R.id.native_ad_sponsored_label)
                 .privacyInformationIconImageId(R.id.native_privacy_information_icon_image)
                 .build()));
 
@@ -26,6 +27,7 @@ class MopubNativeRenderUtils {
                 .titleId(R.id.native_title)
                 .textId(R.id.native_text)
                 .callToActionId(R.id.native_cta)
+                .sponsoredTextId(R.id.native_ad_sponsored_label)
                 .privacyInformationIconImageId(R.id.native_privacy_information_icon_image)
                 .build()));
 

@@ -17,6 +17,7 @@ import com.my.rn.ads.BaseApplicationContainAds;
 import com.my.rn.ads.IAdInitCallback;
 import com.my.rn.ads.IAdLoaderCallback;
 import com.my.rn.ads.INativeManager;
+import com.my.rn.ads.ManagerLoaderCallback;
 import com.my.rn.ads.mopub.MopubInitUtils;
 import com.my.rn.ads.settings.AdsSetting;
 
@@ -32,6 +33,7 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
     private Queue<NativeAd> nativeAds = new LinkedList<>(); // Sẽ chứa NO_ADS_LOAD Ads
     private static final String TAG = "MOPUB_NATIVE";
     private @Nullable IAdLoaderCallback iAdLoaderCallback;
+    ManagerLoaderCallback managerLoaderCallback = new ManagerLoaderCallback();
 
     public void setiAdLoaderCallback(IAdLoaderCallback iAdLoaderCallback) {
         this.iAdLoaderCallback = iAdLoaderCallback;
@@ -96,8 +98,18 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
         }
         return null;
     }
-    public void clearRegisterView(NativeAd nativeAd, View view){
+
+    public void clearRegisterView(NativeAd nativeAd, View view) {
         nativeAd.clear(view);
+    }
+
+    @Override public void loadAds(Activity activity, IAdLoaderCallback loaderCallback) {
+        if (nativeAds.size() > 0) {
+            loaderCallback.onAdsLoaded();
+            return;
+        }
+        managerLoaderCallback.registerCallback(loaderCallback, 12000);
+        checkAndLoadAds(activity);
     }
 
     @Override public void checkAndLoadAds(Activity activity) {
@@ -105,20 +117,24 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
     }
 
     private void _checkAndLoadAds(boolean isNotResetCountError) {
-        if (!BaseUtils.isOnline()){
+        if (!BaseUtils.isOnline()) {
             isLoading = false;
             onNativeFail(NativeErrorCode.CONNECTION_ERROR);
             return;
         }
         if (isLoading || nativeAds.size() >= NO_ADS_LOAD) return;
-        MopubInitUtils.getInstance().initAds(null, new IAdInitCallback() {
-            @Override public void didInitialise() {
-                excuteLoadNativeAds();
-            }
+        BaseApplication.getHandler().post(new Runnable() {
+            @Override public void run() {
+                MopubInitUtils.getInstance().initAds(null, new IAdInitCallback() {
+                    @Override public void didInitialise() {
+                        excuteLoadNativeAds();
+                    }
 
-            @Override public void didFailToInitialise() {
-                isLoading = false;
-                isSkipWaitForComplete = true;
+                    @Override public void didFailToInitialise() {
+                        isLoading = false;
+                        isSkipWaitForComplete = true;
+                    }
+                });
             }
         });
     }
@@ -151,6 +167,7 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
         nativeAds.add(nativeAd);
         if (iAdLoaderCallback != null)
             iAdLoaderCallback.onAdsLoaded();
+        managerLoaderCallback.dispatchLoadedCallback();
         _checkAndLoadAds(false);
     }
 
@@ -162,7 +179,8 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
 //        if (countLoadError < 3) {
 //            _checkAndLoadAds(true);
 //        } else
-            if (iAdLoaderCallback != null)
+//        managerLoaderCallback.dispatchLoadFailCallback();
+        if (iAdLoaderCallback != null)
             iAdLoaderCallback.onAdsFailedToLoad();
     }
     //endregion
@@ -183,9 +201,10 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
     );
     private static final int NO_ADS_LOAD = 1;
 
-    public boolean isCaching(){
+    public boolean isCaching() {
         return isLoading;
     }
+
     public boolean isCached() {
         try {
             return !nativeAds.isEmpty();

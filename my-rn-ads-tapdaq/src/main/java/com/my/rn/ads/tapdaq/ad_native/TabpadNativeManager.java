@@ -8,10 +8,14 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 
+import com.baseLibs.BaseApplication;
 import com.my.rn.ads.BaseApplicationContainAds;
 import com.my.rn.ads.IAdInitCallback;
+import com.my.rn.ads.IAdLoaderCallback;
 import com.my.rn.ads.INativeManager;
+import com.my.rn.ads.ManagerLoaderCallback;
 import com.my.rn.ads.full.center.BaseAdsFullManager;
+import com.my.rn.ads.full.center.StartAdsManager;
 import com.my.rn.ads.tapdaq.AdInitTapdaqUtils;
 import com.tapdaq.sdk.Tapdaq;
 import com.tapdaq.sdk.adnetworks.TDMediatedNativeAd;
@@ -28,6 +32,7 @@ public class TabpadNativeManager extends TMAdListener implements INativeManager 
     private boolean isLoading = false;
     private boolean isSkipWaitForComplete = false;
     private boolean hasLoadAds;
+    ManagerLoaderCallback managerLoaderCallback = new ManagerLoaderCallback();
 
     private Queue<TDMediatedNativeAd> nativeAds = new LinkedList<>(); // Sẽ chứa NO_ADS_LOAD Ads
 
@@ -49,7 +54,7 @@ public class TabpadNativeManager extends TMAdListener implements INativeManager 
         }
     }
 
-    @Override public boolean firstCacheAndCheckCanShowNativeAds(Activity activity, int typeAds) throws Exception{
+    @Override public boolean firstCacheAndCheckCanShowNativeAds(Activity activity, int typeAds) throws Exception {
         boolean isCached = isCached();
         if (isCached || hasLoadAds()) return isCached;
         // chưa thực hiện load ads lần nào => load
@@ -67,7 +72,7 @@ public class TabpadNativeManager extends TMAdListener implements INativeManager 
     public @Nullable NativeViewResult createNewAds(Context context, int typeAds, ViewGroup parent) {
         TDMediatedNativeAd nativeAd = nativeAds.poll();
         if (nativeAd == null) return null;
-        View adsView =  TapdaqNativeRenderUtils.createAdView(context, nativeAd, typeAds, parent);
+        View adsView = TapdaqNativeRenderUtils.createAdView(context, nativeAd, typeAds, parent);
         return new NativeViewResult(adsView, nativeAd);
     }
 
@@ -83,9 +88,16 @@ public class TabpadNativeManager extends TMAdListener implements INativeManager 
         _checkAndLoadAds(activity, false);
     }
 
-    private void _checkAndLoadAds(final Activity activity, boolean isNotResetCountError) {
-//        if (true) return; //TODOs
+    @Override public void loadAds(Activity activity, IAdLoaderCallback loaderCallback) {
+        if (nativeAds.size() > 0) {
+            loaderCallback.onAdsLoaded();
+            return;
+        }
+        managerLoaderCallback.registerCallback(loaderCallback, 6000);
+        checkAndLoadAds(activity);
+    }
 
+    private void _checkAndLoadAds(final Activity activity, boolean isNotResetCountError) {
         if (isLoading || nativeAds.size() >= NO_ADS_LOAD) return;
         if (!isNotResetCountError)
             countLoadError = 0;
@@ -126,6 +138,7 @@ public class TabpadNativeManager extends TMAdListener implements INativeManager 
         isLoading = false;
         nativeAds.add(ad);
         Activity activity = BaseAdsFullManager.getMainActivity();
+        managerLoaderCallback.dispatchLoadedCallback();
         if (activity != null)
             _checkAndLoadAds(activity, false);
     }
@@ -149,9 +162,14 @@ public class TabpadNativeManager extends TMAdListener implements INativeManager 
         countLoadError++;
         isLoading = false;
         if (countLoadError < 3) {
-            Activity activity = BaseAdsFullManager.getMainActivity();
-            if (activity != null)
-                _checkAndLoadAds(activity, true);
+            final Activity activity = BaseAdsFullManager.getMainActivity();
+            if (activity != null) {
+                BaseApplication.getHandler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        _checkAndLoadAds(activity, true);
+                    }
+                }, 1600);
+            }
         }
     }
     //endregion

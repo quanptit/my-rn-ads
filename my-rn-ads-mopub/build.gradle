@@ -16,15 +16,16 @@ android {
 def ads = gradle.ext.ads
 def isContainTapdaq = gradle.ext.mediation.contains("tapdaq")
 dependencies {
-    //     For banners
+    // For banners
     api("com.mopub:mopub-sdk-banner:$rootProject.ext.mopub") { transitive = true }
-    // For interstitials
-    api("com.mopub:mopub-sdk-interstitial:$rootProject.ext.mopub") { transitive = true }
+    // For interstitials and rewarded ads
+    api("com.mopub:mopub-sdk-fullscreen:$rootProject.ext.mopub") { transitive = true }
     // For native static (images).
     api("com.mopub:mopub-sdk-native-static:$rootProject.ext.mopub") { transitive = true }
-    //For native video. This will automatically also include native static
+    // For native video. This will automatically also include native static
     api("com.mopub:mopub-sdk-native-video:$rootProject.ext.mopub") { transitive = true }
-    api("com.mopub:mopub-sdk-rewardedvideo:$rootProject.ext.mopub") { transitive = true }
+
+
     implementation project(':my-rn-ads-base')
 
 //    if (ads.contains("admob"))

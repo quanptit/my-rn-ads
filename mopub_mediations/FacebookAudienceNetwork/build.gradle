@@ -15,16 +15,16 @@ android {
 
 dependencies {
     api project(':BaseLibs')
-//    api("com.mopub:mopub-sdk:$rootProject.ext.mopub") { transitive = true }
-    //     For banners
-    api("com.mopub:mopub-sdk-banner:$rootProject.ext.mopub") { transitive = true }
-    // For interstitials
-    api("com.mopub:mopub-sdk-interstitial:$rootProject.ext.mopub") { transitive = true }
+    // For banners
+    implementation("com.mopub:mopub-sdk-banner:$rootProject.ext.mopub") { transitive = true }
+    // For interstitials and rewarded ads
+    implementation("com.mopub:mopub-sdk-fullscreen:$rootProject.ext.mopub") { transitive = true }
     // For native static (images).
-    api("com.mopub:mopub-sdk-native-static:$rootProject.ext.mopub") { transitive = true }
-    //For native video. This will automatically also include native static
+    implementation("com.mopub:mopub-sdk-native-static:$rootProject.ext.mopub") { transitive = true }
+    // For native video. This will automatically also include native static
     implementation("com.mopub:mopub-sdk-native-video:$rootProject.ext.mopub") { transitive = true }
-    api ("com.facebook.android:audience-network-sdk:$rootProject.ext.fan_lib") { transitive = true }
+
+    api("com.facebook.android:audience-network-sdk:$rootProject.ext.fan_lib") { transitive = true }
     api "com.google.android.gms:play-services-ads:$rootProject.ext.play_services_ads"
     implementation project(':AppShareLibs')
 }

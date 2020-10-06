@@ -42,7 +42,7 @@ public class AdInitTapdaqUtils implements IAdInitUtils {
         if (isIniting) return;
         isIniting = true;
         isInitedFail = false;
-        TapdaqConfig config = new TapdaqConfig();
+        final TapdaqConfig config = new TapdaqConfig();
 
 //        config.setUserSubjectToGDPR(STATUS.UNKNOWN); //GDPR declare if user is in EU
 //        config.setConsentStatus(STATUS.FALSE);
@@ -54,46 +54,50 @@ public class AdInitTapdaqUtils implements IAdInitUtils {
         else
             TLog.setLoggingLevel(TLogLevel.WARNING);
         config.setAutoReloadAds(false);
-        Tapdaq.getInstance().initialize(activity, KeysAds.TAPDAQ_APP_ID, KeysAds.TAPDAQ_CLIENT_KEY, config, new TMInitListener() {
-            @Override
-            public void didInitialise() {
-                super.didInitialise();
-                isInitedFail = false;
-                if (listCallback != null) {
-                    isDispatchingCallback = true;
-                    for (IAdInitCallback initializationListener : listCallback) {
-                        if (initializationListener != null)
-                            initializationListener.didInitialise();
+        new Thread(new Runnable() {
+            @Override public void run() {
+                Tapdaq.getInstance().initialize(activity, KeysAds.TAPDAQ_APP_ID, KeysAds.TAPDAQ_CLIENT_KEY, config, new TMInitListener() {
+                    @Override
+                    public void didInitialise() {
+                        super.didInitialise();
+                        isInitedFail = false;
+                        if (listCallback != null) {
+                            isDispatchingCallback = true;
+                            for (IAdInitCallback initializationListener : listCallback) {
+                                if (initializationListener != null)
+                                    initializationListener.didInitialise();
+                            }
+                            listCallback.clear();
+                            isDispatchingCallback = false;
+                        }
+                        isIniting = false;
                     }
-                    listCallback.clear();
-                    isDispatchingCallback = false;
-                }
-                isIniting = false;
-            }
 
-            @Override
-            public void didFailToInitialise(TMAdError error) {
-                super.didFailToInitialise(error);
-                isInitedFail = true;
-                logError(error);
-                if (listCallback != null) {
-                    isDispatchingCallback = true;
-                    for (IAdInitCallback initializationListener : listCallback) {
-                        if (initializationListener != null)
-                            initializationListener.didFailToInitialise();
+                    @Override
+                    public void didFailToInitialise(TMAdError error) {
+                        super.didFailToInitialise(error);
+                        isInitedFail = true;
+                        logError(error);
+                        if (listCallback != null) {
+                            isDispatchingCallback = true;
+                            for (IAdInitCallback initializationListener : listCallback) {
+                                if (initializationListener != null)
+                                    initializationListener.didFailToInitialise();
+                            }
+                            listCallback.clear();
+                            isDispatchingCallback = false;
+                        }
+                        isIniting = false;
                     }
-                    listCallback.clear();
-                    isDispatchingCallback = false;
-                }
-                isIniting = false;
+                });
             }
-        });
+        }).start();
     }
 
     //region utils
     private static final String TAG = "TAPDAQ";
 
-    public static void showTestSuiteAds(final Activity activity){
+    public static void showTestSuiteAds(final Activity activity) {
         AdInitTapdaqUtils.getInstance().initAds(activity, new IAdInitCallback() {
             @Override public void didInitialise() {
                 Tapdaq.getInstance().startTestActivity(activity);

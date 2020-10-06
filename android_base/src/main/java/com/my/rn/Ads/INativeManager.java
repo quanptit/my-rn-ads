@@ -9,6 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public interface INativeManager {
+    // callback ngay nếu đã có ads load từ trước.
+    void loadAds(Activity activity, IAdLoaderCallback loaderCallback);
+
     void checkAndLoadAds(Activity activity);
 
     void cacheNativeAndWaitForComplete(final Activity activity) throws Exception;

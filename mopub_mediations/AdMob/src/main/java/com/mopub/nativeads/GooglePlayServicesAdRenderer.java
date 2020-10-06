@@ -207,7 +207,6 @@ public class GooglePlayServicesAdRenderer implements MoPubAdRenderer<GooglePlayS
         unifiedAdView.setBodyView(staticNativeViewHolder.mTextView);
         if (staticNativeViewHolder.mMediaView != null) {
             MediaView mediaview = new MediaView(unifiedAdView.getContext());
-            mediaview.setImageScaleType(ImageView.ScaleType.CENTER_CROP);
             staticNativeViewHolder.mMediaView.removeAllViews();
             staticNativeViewHolder.mMediaView.addView(mediaview);
             unifiedAdView.setMediaView(mediaview);

@@ -49,11 +49,10 @@ import static com.mopub.nativeads.NativeErrorCode.UNEXPECTED_RESPONSE_CODE;
 import static com.mopub.nativeads.NativeErrorCode.UNSPECIFIED;
 
 public class FacebookNative extends CustomEventNative {
-    public static final String NATIVE_BANNER_KEY = "native_banner";
-
     private static final String PLACEMENT_ID_KEY = "placement_id";
     private static final String ADAPTER_NAME = FacebookNative.class.getSimpleName();
-    private static AtomicBoolean sIsInitialized = new AtomicBoolean(false);
+    private static final String NATIVE_BANNER_KEY = "native_banner";
+
     private Boolean isNativeBanner;
     private static String mPlacementId;
 
@@ -75,9 +74,10 @@ public class FacebookNative extends CustomEventNative {
         Preconditions.checkNotNull(localExtras);
         Preconditions.checkNotNull(serverExtras);
 
-        if (!sIsInitialized.getAndSet(true)) {
+        if (!AudienceNetworkAds.isInitialized(context)) {
             AudienceNetworkAds.initialize(context);
         }
+
         final String placementId;
         if (extrasAreValid(serverExtras)) {
             placementId = serverExtras.get(PLACEMENT_ID_KEY);
@@ -370,7 +370,8 @@ public class FacebookNative extends CustomEventNative {
          * Given a particular String key, return the associated Object value from the ad's extras map.
          * See {@link StaticNativeAd#getExtras()} for more information.
          */
-        @Nullable final public Object getExtra(final String key) {
+        @Nullable
+        final public Object getExtra(final String key) {
             if (!Preconditions.NoThrow.checkNotNull(key, "getExtra key is not allowed " +
                     "to be null")) {
                 return null;

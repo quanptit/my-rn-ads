@@ -3,7 +3,6 @@
     android:id="@+id/native_outer_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     android:orientation="vertical"
     android:paddingBottom="3dp">
 
@@ -19,11 +18,12 @@
             android:background="@null"
             android:contentDescription="@null" />
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/native_title"
@@ -33,7 +33,17 @@
                 android:textColor="@color/title"
                 android:textSize="@dimen/fontSize_large"
                 android:textStyle="bold" />
-        </FrameLayout>
+
+            <TextView
+                android:id="@+id/native_ad_sponsored_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="sponsored"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/native_privacy_information_icon_image"
@@ -50,7 +60,7 @@
         android:layout_marginTop="3dp"
         android:layout_weight="1"
         android:background="@null"
-        android:scaleType="centerCrop" />
+        android:scaleType="fitCenter" />
 
     <LinearLayout
         android:layout_width="match_parent"

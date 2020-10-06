@@ -12,8 +12,9 @@ android {
     }
 }
 dependencies {
-    // For interstitials
-    api("com.mopub:mopub-sdk-interstitial:$rootProject.ext.mopub") { transitive = true }
+    // For interstitials and rewarded ads
+    implementation("com.mopub:mopub-sdk-fullscreen:$rootProject.ext.mopub") { transitive = true }
+
     api "com.tapdaq.sdk:Tapdaq-BaseSDK:$rootProject.ext.TapdaqVersion"
     api project(':my-rn-ads-base')
     api project(path: ':my-rn-ads-tapdaq')

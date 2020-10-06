@@ -23,6 +23,9 @@ public class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule implements 
     public static final String EVENT_AD_FAILED_TO_LOAD = "onAdFailedToLoad";
     public static final String EVENT_SIZE_CHANGE = "onSizeChange";
 
+    //#region Start Ads Only Admob
+
+    //#endregion
 
     //region start ads
     @ReactMethod
@@ -250,13 +253,21 @@ public class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule implements 
     @ReactMethod
     public void loadNativeAds(int typeAds, final Promise promise) {
         new Thread(new Runnable() {
+            PromiseSaveObj promiseSaveObj = new PromiseSaveObj(promise);
             @Override public void run() {
                 try {
-                    BaseApplicationContainAds.getNativeManagerInstance().cacheNativeAndWaitForComplete(getSafeActivity());
-                    promise.resolve(1);
+                    BaseApplicationContainAds.getNativeManagerInstance().loadAds(getSafeActivity(), new IAdLoaderCallback() {
+                        @Override public void onAdsFailedToLoad() {
+                            promiseSaveObj.reject("0", "onAdsFailedToLoad");
+                        }
+
+                        @Override public void onAdsLoaded() {
+                            promiseSaveObj.resolve(1);
+                        }
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
-                    promise.reject("0", e.getMessage());
+                    promiseSaveObj.reject("0", e.getMessage());
                 }
             }
         }).start();

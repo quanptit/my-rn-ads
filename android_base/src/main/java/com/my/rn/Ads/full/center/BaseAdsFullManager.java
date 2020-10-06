@@ -156,6 +156,7 @@ public abstract class BaseAdsFullManager {
     public boolean showAdsCenter(Activity activity, final IAdsCalbackOpen promise) {
         return showAdsCenter(activity, false, promise);
     }
+
     public boolean showAdsCenter(Activity activity) {
         return showAdsCenter(activity, null);
     }
@@ -203,6 +204,16 @@ public abstract class BaseAdsFullManager {
 
     //endregion
 
+    //#region Cache only admob for start Ads: Start Ads chỉ show Admob, với key có set sàn ECPM cao
+    public void cacheAdmobStartAds(final Activity activity, final IAdLoaderCallback loaderCallback) {
+        try {
+            getAdmobCenter().loadCenterAds(activity, true, loaderCallback);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    //#endregion
+
     //region utils
     public void destroy() {
         if (mainActivityRef != null) {
@@ -230,6 +241,8 @@ public abstract class BaseAdsFullManager {
 
     //checkForCache: kiểm tra điều kiện để cache ads. nếu false => Kiểm tra điều kiện để show ads
     private static boolean canShowAdsCenter(boolean checkForCache) {
+//        if(true) return true; //TODOs comment
+
         long lastTimeShowAds = PreferenceUtils.getLongSetting(KeysAds.LAST_TIME_SHOW_ADS, 0);
         long time = checkForCache ? 3 * 60 * 1000 : 5 * 60 * 1000;
         if (System.currentTimeMillis() - lastTimeShowAds > time)

@@ -3,7 +3,6 @@
     android:id="@+id/native_outer_view"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:background="@android:color/white"
     android:orientation="horizontal">
 
     <ImageView
