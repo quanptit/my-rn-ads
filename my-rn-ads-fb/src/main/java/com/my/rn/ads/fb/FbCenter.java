@@ -25,6 +25,10 @@ public class FbCenter extends BaseFullCenterAds {
 
     @Override protected void showAds(Activity activity) {
         IS_LOADER = false;
+        // Check if ad is already expired or invalidated, and do not show ad if that is the case. You will not get paid to show an invalidated ad.
+        if(interstitialCenter.isAdInvalidated()) {
+            return;
+        }
         interstitialCenter.show();
     }
 
@@ -49,7 +53,7 @@ public class FbCenter extends BaseFullCenterAds {
             AudienceNetworkAds.initialize(BaseApplication.getAppContext());
 
         interstitialCenter = new InterstitialAd(BaseApplication.getAppContext(), keyAds);
-        interstitialCenter.setAdListener(new InterstitialAdListener() {
+        InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
             @Override public void onAdLoaded(Ad ad) {
                 IS_LOADER = true;
                 FbCenter.this.onAdLoaded(iAdLoaderCallback);
@@ -76,8 +80,13 @@ public class FbCenter extends BaseFullCenterAds {
             @Override public void onLoggingImpression(Ad ad) {
 
             }
-        });
-        interstitialCenter.loadAd();
+        };
+        // For auto play video ads, it's recommended to load the ad
+        // at least 30 seconds before it is shown
+        interstitialCenter.loadAd(
+                interstitialCenter.buildLoadAdConfig()
+                        .withAdListener(interstitialAdListener)
+                        .build());
     }
 
     @Override public void destroyAds() {

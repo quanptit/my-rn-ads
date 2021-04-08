@@ -253,7 +253,7 @@ public class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule implements 
     @ReactMethod
     public void loadNativeAds(int typeAds, final Promise promise) {
         new Thread(new Runnable() {
-            PromiseSaveObj promiseSaveObj = new PromiseSaveObj(promise);
+            final PromiseSaveObj promiseSaveObj = new PromiseSaveObj(promise);
             @Override public void run() {
                 try {
                     BaseApplicationContainAds.getNativeManagerInstance().loadAds(getSafeActivity(), new IAdLoaderCallback() {

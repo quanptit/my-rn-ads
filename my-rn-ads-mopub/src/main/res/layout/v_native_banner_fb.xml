@@ -5,7 +5,7 @@
     android:layout_height="60dp"
     android:orientation="horizontal">
 
-    <com.facebook.ads.AdIconView
+    <com.facebook.ads.MediaView
         android:id="@+id/native_icon_image"
         android:layout_width="60dp"
         android:layout_height="60dp"

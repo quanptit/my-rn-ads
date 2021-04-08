@@ -8,6 +8,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.appsharelib.KeysAds;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -20,6 +21,8 @@ import com.mopub.common.Preconditions;
 import com.mopub.common.logging.MoPubLog;
 import com.mopub.common.util.Views;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
@@ -37,6 +40,8 @@ import static com.mopub.common.logging.MoPubLog.AdapterLogEvent.LOAD_SUCCESS;
 import static com.mopub.common.logging.MoPubLog.AdapterLogEvent.SHOW_ATTEMPTED;
 import static com.mopub.common.logging.MoPubLog.AdapterLogEvent.SHOW_SUCCESS;
 import static com.mopub.mobileads.GooglePlayServicesAdapterConfiguration.forwardNpaIfSet;
+import static com.mopub.mobileads.MoPubErrorCode.NETWORK_NO_FILL;
+import static com.mopub.mobileads.MoPubErrorCode.NO_FILL;
 
 public class GooglePlayServicesBanner extends BaseAd {
     /*
@@ -53,14 +58,16 @@ public class GooglePlayServicesBanner extends BaseAd {
     private AdView mGoogleAdView;
     @Nullable
     private String mAdUnitId;
+    private Integer adWidth;
+    private Integer adHeight;
 
     @Override
     protected void load(@NonNull final Context context, @NonNull final AdData adData) {
         Preconditions.checkNotNull(context);
         Preconditions.checkNotNull(adData);
 
-        final Integer adWidth = adData.getAdWidth();
-        final Integer adHeight = adData.getAdHeight();
+        adWidth = adData.getAdWidth();
+        adHeight = adData.getAdHeight();
         final Map<String, String> extras = adData.getExtras();
 
         mAdUnitId = extras.get(AD_UNIT_ID_KEY);
@@ -77,11 +84,11 @@ public class GooglePlayServicesBanner extends BaseAd {
             mGoogleAdView.setAdSize(adSize);
         } else {
             MoPubLog.log(getAdNetworkId(), LOAD_FAILED, ADAPTER_NAME,
-                    MoPubErrorCode.NETWORK_NO_FILL.getIntCode(),
-                    MoPubErrorCode.NETWORK_NO_FILL);
+                    NETWORK_NO_FILL.getIntCode(),
+                    NETWORK_NO_FILL);
 
             if (mLoadListener != null) {
-                mLoadListener.onAdLoadFailed(MoPubErrorCode.NETWORK_NO_FILL);
+                mLoadListener.onAdLoadFailed(NETWORK_NO_FILL);
             }
             return;
         }
@@ -101,11 +108,13 @@ public class GooglePlayServicesBanner extends BaseAd {
         final RequestConfiguration.Builder requestConfigurationBuilder = new RequestConfiguration.Builder();
 
         // Publishers may request for test ads by passing test device IDs to the MoPubView.setLocalExtras() call.
-        final String testDeviceId = extras.get(TEST_DEVICES_KEY);
-
-        if (!TextUtils.isEmpty(testDeviceId)) {
-            requestConfigurationBuilder.setTestDeviceIds(Collections.singletonList(testDeviceId));
-        }
+//        final String testDeviceId = extras.get(TEST_DEVICES_KEY);
+//        if (!TextUtils.isEmpty(testDeviceId)) {
+//            requestConfigurationBuilder.setTestDeviceIds(Collections.singletonList(testDeviceId));
+//        }
+        //====== My code
+        requestConfigurationBuilder.setTestDeviceIds(Arrays.asList(KeysAds.DEVICE_TESTS));
+        //======
 
         // Publishers may want to indicate that their content is child-directed and forward this
         // information to Google.
@@ -197,17 +206,29 @@ public class GooglePlayServicesBanner extends BaseAd {
         }
 
         @Override
-        public void onAdLeftApplication() {
-        }
-
-        @Override
         public void onAdLoaded() {
-            MoPubLog.log(getAdNetworkId(), LOAD_SUCCESS, ADAPTER_NAME);
-            MoPubLog.log(getAdNetworkId(), SHOW_ATTEMPTED, ADAPTER_NAME);
-            MoPubLog.log(getAdNetworkId(), SHOW_SUCCESS, ADAPTER_NAME);
+            final int receivedWidth = mGoogleAdView.getAdSize().getWidth();
+            final int receivedHeight = mGoogleAdView.getAdSize().getHeight();
 
-            if (mLoadListener != null) {
-                mLoadListener.onAdLoaded();
+            if (receivedWidth > adWidth || receivedHeight > adHeight) {
+                MoPubLog.log(getAdNetworkId(), LOAD_FAILED, ADAPTER_NAME,
+                        NETWORK_NO_FILL.getIntCode(),
+                        NETWORK_NO_FILL);
+                MoPubLog.log(getAdNetworkId(), CUSTOM, ADAPTER_NAME, "Google served an ad but" +
+                        " it was invalidated because its size of " + receivedWidth + " x " + receivedHeight +
+                        " exceeds the publisher-specified size of " + adWidth + " x " + adHeight);
+
+                if (mLoadListener != null) {
+                    mLoadListener.onAdLoadFailed(getMoPubErrorCode(NETWORK_NO_FILL.getIntCode()));
+                }
+            } else {
+                MoPubLog.log(getAdNetworkId(), LOAD_SUCCESS, ADAPTER_NAME);
+                MoPubLog.log(getAdNetworkId(), SHOW_ATTEMPTED, ADAPTER_NAME);
+                MoPubLog.log(getAdNetworkId(), SHOW_SUCCESS, ADAPTER_NAME);
+
+                if (mLoadListener != null) {
+                    mLoadListener.onAdLoaded();
+                }
             }
         }
 
@@ -236,7 +257,7 @@ public class GooglePlayServicesBanner extends BaseAd {
                 case AdRequest.ERROR_CODE_NETWORK_ERROR:
                     return MoPubErrorCode.NO_CONNECTION;
                 case AdRequest.ERROR_CODE_NO_FILL:
-                    return MoPubErrorCode.NO_FILL;
+                    return NO_FILL;
                 default:
                     return MoPubErrorCode.UNSPECIFIED;
             }

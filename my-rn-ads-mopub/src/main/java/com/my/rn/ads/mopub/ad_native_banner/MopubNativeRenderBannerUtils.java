@@ -5,14 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.ads.RequestConfiguration;
 import com.mopub.nativeads.FacebookAdRenderer;
 import com.mopub.nativeads.GooglePlayServicesAdRenderer;
-import com.mopub.nativeads.MediaViewBinder;
-import com.mopub.nativeads.MoPubAdRenderer;
+import com.mopub.nativeads.GooglePlayServicesViewBinder;
 import com.mopub.nativeads.MoPubNative;
 import com.mopub.nativeads.MoPubStaticNativeAdRenderer;
-import com.mopub.nativeads.MoPubVideoNativeAdRenderer;
 import com.mopub.nativeads.NativeAd;
 import com.mopub.nativeads.ViewBinder;
 import com.my.rn.ads.mopub.R;
@@ -38,7 +35,7 @@ class MopubNativeRenderBannerUtils {
                         .callToActionId(R.id.native_cta)
                         .build()));
         moPubNative.registerAdRenderer(new GooglePlayServicesAdRenderer(
-                new MediaViewBinder.Builder(R.layout.v_native_banner_admob)
+                new GooglePlayServicesViewBinder.Builder(R.layout.v_native_banner_admob)
                         .titleId(R.id.native_title)
                         .textId(R.id.native_text)
                         .callToActionId(R.id.native_cta)

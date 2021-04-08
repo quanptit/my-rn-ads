@@ -52,11 +52,7 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
         isSkipWaitForComplete = false;
         Log.d(TAG, "cacheNativeAndWaitForComplete");
         long startTimeLoad = System.currentTimeMillis();
-        BaseApplication.getHandler().post(new Runnable() {
-            @Override public void run() {
-                _checkAndLoadAds(false);
-            }
-        });
+        _checkAndLoadAds(false);
         while (true) {
             if (isSkipWaitForComplete) return;
             Thread.sleep(100);
@@ -87,7 +83,9 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
 
     @Override public @Nullable NativeViewResult createNewAds(Context context, int typeAds, ViewGroup parent) {
         NativeAd nativeAd = nativeAds.poll();
-        if (nativeAd == null) return null;
+        if (nativeAd == null){
+            return null;
+        }
         View adsView = MopubNativeRenderUtils.createAdView(context, nativeAd, typeAds, parent);
         return new NativeViewResult(adsView, nativeAd);
     }
@@ -123,6 +121,10 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
             return;
         }
         if (isLoading || nativeAds.size() >= NO_ADS_LOAD) return;
+        if (MopubInitUtils.getInstance().isInited()) {
+            excuteLoadNativeAds();
+            return;
+        }
         BaseApplication.getHandler().post(new Runnable() {
             @Override public void run() {
                 MopubInitUtils.getInstance().initAds(null, new IAdInitCallback() {
@@ -149,10 +151,14 @@ public class MopubNativeManager implements MoPubNative.MoPubNativeNetworkListene
 
         try {
             isLoading = true;
-            RequestParameters mRequestParameters = new RequestParameters.Builder()
+            final RequestParameters mRequestParameters = new RequestParameters.Builder()
                     .desiredAssets(desiredAssets)
                     .build();
-            moPubNative.makeRequest(mRequestParameters);
+            BaseApplication.getHandler().post(new Runnable() {
+                @Override public void run() {
+                    moPubNative.makeRequest(mRequestParameters);
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
             isLoading = false;

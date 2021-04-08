@@ -11,15 +11,15 @@ import com.my.rn.ads.settings.AdsSetting;
 
 class MopubNativeRenderUtils {
     public static void initAdRender(MoPubNative moPubNative) {
-        moPubNative.registerAdRenderer(new MoPubVideoNativeAdRenderer(new MediaViewBinder.Builder(R.layout.v_native_video_mopub_ads)
-                .mediaLayoutId(R.id.native_ad_video_view)
-                .iconImageId(R.id.native_icon_image)
-                .titleId(R.id.native_title)
-                .textId(R.id.native_text)
-                .callToActionId(R.id.native_cta)
-                .sponsoredTextId(R.id.native_ad_sponsored_label)
-                .privacyInformationIconImageId(R.id.native_privacy_information_icon_image)
-                .build()));
+//        moPubNative.registerAdRenderer(new MoPubVideoNativeAdRenderer(new MediaViewBinder.Builder(R.layout.v_native_video_mopub_ads)
+//                .mediaLayoutId(R.id.native_ad_video_view)
+//                .iconImageId(R.id.native_icon_image)
+//                .titleId(R.id.native_title)
+//                .textId(R.id.native_text)
+//                .callToActionId(R.id.native_cta)
+//                .sponsoredTextId(R.id.native_ad_sponsored_label)
+//                .privacyInformationIconImageId(R.id.native_privacy_information_icon_image)
+//                .build()));
 
         moPubNative.registerAdRenderer(new MoPubStaticNativeAdRenderer(new ViewBinder.Builder(R.layout.v_native_static_mopub_ads)
                 .mainImageId(R.id.native_main_image)
@@ -45,12 +45,13 @@ class MopubNativeRenderUtils {
 
         // Cái này sẽ cần viết lại để giới hạn vùng nhấp chuột chỉ có CTA button
         moPubNative.registerAdRenderer(new GooglePlayServicesAdRenderer(
-                new MediaViewBinder.Builder(R.layout.admob_nativead_layout)
+                new GooglePlayServicesViewBinder.Builder(R.layout.admob_nativead_layout)
                         .titleId(R.id.title_textview)
                         .textId(R.id.body_textview)
                         .callToActionId(R.id.cta_button)
                         .iconImageId(R.id.icon_image_view)
                         .mediaLayoutId(R.id.native_ad_media_layout)
+                        .privacyInformationIconImageId(R.id.native_privacy_information_icon_image)
                         .addExtra(GooglePlayServicesAdRenderer.VIEW_BINDER_KEY_AD_CHOICES_ICON_CONTAINER,
                                 R.id.adchoices_view)
                         .addExtra(GooglePlayServicesAdRenderer.VIEW_BINDER_KEY_STAR_RATING,
@@ -58,7 +59,7 @@ class MopubNativeRenderUtils {
                         .addExtra(GooglePlayServicesAdRenderer.VIEW_BINDER_KEY_STORE,
                                 R.id.store_textview)
                         .addExtra(GooglePlayServicesAdRenderer.VIEW_BINDER_KEY_ADVERTISER,
-                                R.id.store_textview)
+                                R.id.advertiser_view)
                         .build()));
     }
 

@@ -269,6 +269,7 @@ public abstract class BaseAdsFullManager {
     private WeakReference<Activity> mainActivityRef = null;
 
     public static void setMainActivity(Activity activity) {
+        if (getInstance()==null) return;
         getInstance().mainActivityRef = new WeakReference<>(activity);
     }
 

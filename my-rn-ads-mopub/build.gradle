@@ -23,7 +23,7 @@ dependencies {
     // For native static (images).
     api("com.mopub:mopub-sdk-native-static:$rootProject.ext.mopub") { transitive = true }
     // For native video. This will automatically also include native static
-    api("com.mopub:mopub-sdk-native-video:$rootProject.ext.mopub") { transitive = true }
+//    api("com.mopub:mopub-sdk-native-video:$rootProject.ext.mopub") { transitive = true }
 
 
     implementation project(':my-rn-ads-base')

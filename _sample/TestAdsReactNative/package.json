@@ -1,0 +1,46 @@
+{
+  "name": "testadsreactnative",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "install_npm": "yarn install",
+    "update_extends_libs": "node extends_libs.js  && node local_git.js"
+  },
+  "dependencies": {
+    "react": "16.13.1",
+    "react-native": "0.63.4",
+    "react-native-paper": "^4.1.0",
+    "react-native-vector-icons": "^7.1.0",
+    "react-native-gesture-handler": "^1.8.0",
+    "my-rn-base-native-utils": "^1.0.3",
+    "my-rn-cached-image": "^1.5.3",
+    "my-rn-common-resource": "^1.0.1",
+    "@react-native-community/async-storage": "^1.12.0",
+    "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-community/netinfo": "^4.0.0",
+    "rn-fetch-blob": "^0.12.0",
+    "@react-native-community/slider": "^3.0.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.10",
+    "@babel/runtime": "^7.13.10",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "babel-jest": "^26.6.3",
+    "@types/react": "^16.9.49",
+    "@types/color": "^3.0.1",
+    "@types/react-native": "^0.63.17",
+    "eslint": "^7.22.0",
+    "jest": "^26.6.3",
+    "metro-react-native-babel-preset": "^0.65.2",
+    "react-test-renderer": "17.0.1",
+    "react-native-typescript-transformer": "^1.2.13",
+    "typescript": "^4.0.2",
+    "shelljs": "^0.8.4"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}

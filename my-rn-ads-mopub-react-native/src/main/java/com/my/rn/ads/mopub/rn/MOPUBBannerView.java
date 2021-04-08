@@ -81,6 +81,7 @@ class MOPUBBannerUI extends MoPubView implements MoPubView.BannerAdListener, Lif
     }
 
     private void createAdViewAfterInit() {
+        if (getAdUnitID() == null) return;
         this.setAdUnitId(getAdUnitID());
         if (AdsSetting.RECTANGLE_HEIGHT_250.equals(typeAds)) {
             this.setAdSize(MoPubView.MoPubAdSize.HEIGHT_250);

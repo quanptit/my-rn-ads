@@ -67,7 +67,6 @@ public class FbBannerUI extends ReactViewGroup implements AdListener, LifecycleE
             this.frameLayoutAds = new FrameLayout(mContext);
             addView(frameLayoutAds, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
             myAdView = new AdView(this.getContext(), adUnitId, mSize);
-            myAdView.setAdListener(this);
 
             Resources r = mContext.getResources();
             int pxW;
@@ -81,7 +80,7 @@ public class FbBannerUI extends ReactViewGroup implements AdListener, LifecycleE
                 pxW = BaseUtils.convertDpToPixel(widthDpi);
             int pxH = BaseUtils.convertDpToPixel(mSize.getHeight());
             frameLayoutAds.addView(myAdView, new FrameLayout.LayoutParams(pxW, pxH));
-            myAdView.loadAd();
+            myAdView.loadAd(myAdView.buildLoadAdConfig().withAdListener(this).build());
         }
     }
 

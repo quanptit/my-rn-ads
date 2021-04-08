@@ -1,0 +1,17 @@
+// Default Config
+project.ext.applicationId = "com.test.ads"
+project.ext.versionCode = 1
+project.ext.versionName = "1.0"
+
+// Build setting
+project.ext.multiDexEnabled = true
+project.ext.enableHermesSetting = true // Sử dụng engine Hermes JS
+project.ext.usingVectorIcons = true
+project.ext.iconFontNames = ['MaterialCommunityIcons.ttf'] // 'MaterialIcons.ttf',
+
+// signingConfigs
+project.ext.storeFile = file('D:/OneDrive/key store ultility/atoz/kew_build.jks')
+project.ext.storePassword = 'quanhanh'
+project.ext.keyAlias = 'quanhanh'
+project.ext.keyPassword = 'quanhanh'
+

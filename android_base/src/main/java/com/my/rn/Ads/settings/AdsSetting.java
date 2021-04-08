@@ -153,6 +153,8 @@ public class AdsSetting {
         }
     }
 
+    private boolean isUpdating;
+
     public void updateAdsSetting(String urlAdsSetting) {
         long lasTimeUpdate = PreferenceUtils.getLongSetting(UPDATE_ADS_TIME, 0);
         if (System.currentTimeMillis() - lasTimeUpdate < 48 * 60 * 60 * 1000) {
@@ -163,12 +165,14 @@ public class AdsSetting {
                 return;
             }
         }
-
+        if (isUpdating) return;
+        isUpdating = true;
         Log.d(TAG, "Start updateSetting from server: " + urlAdsSetting);
         BaseUtils.executeHttpGet(urlAdsSetting, new BaseUtils.IGetDataResponse<String>() {
             @Override public void onResponse(String jsonSettingStr) {
                 try {
                     isUpdated = true;
+                    isUpdating = false;
                     SettingObj settingObjFromServer = SettingObj.createInstance(jsonSettingStr);
                     if (settingObjFromServer != null) {
                         AdsSetting.this.settingObj = settingObjFromServer;
@@ -185,6 +189,7 @@ public class AdsSetting {
             }
 
             @Override public void onError(String errorStr) {
+                isUpdating = false;
                 isUpdated = true;
                 postAllCallback();
                 Log.d(TAG, "updateAdsSetting onError: " + errorStr);

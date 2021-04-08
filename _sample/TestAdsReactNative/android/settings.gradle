@@ -1,0 +1,12 @@
+rootProject.name = 'TestAdsReactNative'
+
+gradle.ext.mediation = "mopub" // tapdaq, mopub, mopub_tapdaq
+gradle.ext.ads = "facebook,admob" // facebook,admob,smaato,mobvistar,fairbidupltv,epom,
+//adcolony(124),chartboost (134),tapjoy (252kb), mobfox (140),vungle(193kb), unity (136kb), ironsource (262kb)
+//applovin(236): Can sdk key, + AppLovinSdk.initializeSdk(context); ==> https://developers.mopub.com/publishers/mediation/networks/applovin/
+apply from: file("S:/Codes/react-native-my-libs/my-rn-ads/native_modules.gradle");  addAdsProjectSetting()
+include ':BaseLibs'
+project(':BaseLibs').projectDir = new File('S:/Codes/libs/RN-AndroidX-Libs/BaseLibs')
+
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+include ':app'

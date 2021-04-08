@@ -2,7 +2,7 @@ package com.my.rn.ads;
 
 import android.os.Bundle;
 
-import com.ironsource.mediationsdk.IronSource;
+//import com.ironsource.mediationsdk.IronSource;
 import com.mopub.common.MoPub;
 
 public class BaseAdsActivity extends BasicAdsActivity {
@@ -31,7 +31,7 @@ public class BaseAdsActivity extends BasicAdsActivity {
         }
         try {
             MoPub.onPause(this);
-            IronSource.onPause(this);
+//            IronSource.onPause(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,7 +46,7 @@ public class BaseAdsActivity extends BasicAdsActivity {
         }
         try {
             MoPub.onResume(this);
-            IronSource.onResume(this);
+//            IronSource.onResume(this);
         } catch (Exception e) {
             e.printStackTrace();
         }

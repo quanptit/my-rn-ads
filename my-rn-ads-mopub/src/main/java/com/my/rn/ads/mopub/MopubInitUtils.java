@@ -31,6 +31,10 @@ public class MopubInitUtils implements IAdInitUtils {
 
     public void customInit(SdkConfiguration.Builder configBuilder) {}
 
+    @Override public boolean isInited(){
+        return MoPub.isSdkInitialized() || isInited;
+    }
+
     @Override public void initAds(Activity activity, IAdInitCallback callback) {
         if (MoPub.isSdkInitialized() || isInited) {
             if (callback != null)
@@ -53,6 +57,7 @@ public class MopubInitUtils implements IAdInitUtils {
             configBuilder.withLogLevel(MoPubLog.LogLevel.INFO);
         else
             configBuilder.withLogLevel(MoPubLog.LogLevel.NONE);
+
         Context context = activity == null ? BaseApplication.getAppContext() : activity;
         MoPub.initializeSdk(context, configBuilder.build(), new SdkInitializationListener() {
             @Override public void onInitializationFinished() {

@@ -25,6 +25,10 @@ public class AdInitTapdaqUtils implements IAdInitUtils {
     private boolean isDispatchingCallback, isInitedFail;
     private ArrayList<IAdInitCallback> listCallback = new ArrayList<>();
 
+    @Override public boolean isInited() {
+        return Tapdaq.getInstance().IsInitialised();
+    }
+
     @Override public void initAds(final Activity activity, IAdInitCallback callback) {
         if (Tapdaq.getInstance().IsInitialised()) {
             if (callback != null)
