@@ -4,37 +4,30 @@ import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.applovin.mediation.MaxAd;
+import com.applovin.mediation.MaxAdListener;
+import com.applovin.mediation.MaxError;
+import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.appsharelib.KeysAds;
-import com.mopub.mobileads.MoPubErrorCode;
-import com.mopub.mobileads.MoPubInterstitial;
 import com.my.rn.ads.IAdInitCallback;
 import com.my.rn.ads.IAdLoaderCallback;
 import com.my.rn.ads.full.center.BaseFullCenterAds;
 import com.my.rn.ads.settings.AdsSetting;
 
 public class MopubFullCenter extends BaseFullCenterAds {
-    private MoPubInterstitial interstitialCenter;
+    private MaxInterstitialAd interstitialCenter;
 
     @Override protected String getLogTAG() {
-        return "MOPUB_CENTER";
+        return "MAX_CENTER";
     }
 
     @Override public String getKeyAds(boolean isFromStart) {
         Log.d(getLogTAG(), "getKeyAds isFromStart: " + isFromStart);
-        if (KeysAds.IS_DEVELOPMENT && KeysAds.MOPUB_FULL_CENTER != null)
-            return "24534e1901884e398f1253216226017e";
         String keySave;
-        if (isFromStart) {
-            keySave = AdsSetting.getStartKey(AdsSetting.ID_MOPUB);
-            if (!TextUtils.isEmpty(keySave))
-                return keySave;
-            return KeysAds.MOPUB_FULL_START;
-        } else {
-            keySave = AdsSetting.getCenterKey(AdsSetting.ID_MOPUB);
-            if (!TextUtils.isEmpty(keySave))
-                return keySave;
-            return KeysAds.MOPUB_FULL_CENTER;
-        }
+        keySave = AdsSetting.getCenterKey(AdsSetting.ID_MOPUB);
+        if (!TextUtils.isEmpty(keySave))
+            return keySave;
+        return KeysAds.MOPUB_FULL_CENTER;
     }
 
     @Override public boolean isCachedCenter(Activity activity) {
@@ -42,7 +35,7 @@ public class MopubFullCenter extends BaseFullCenterAds {
     }
 
     @Override protected void showAds(Activity activity) {
-        interstitialCenter.show();
+        interstitialCenter.showAd();
     }
 
     @Override public void destroyAds() {
@@ -59,36 +52,39 @@ public class MopubFullCenter extends BaseFullCenterAds {
     @Override protected void adsInitAndLoad(final Activity activity, final String keyAds, final IAdLoaderCallback iAdLoaderCallback) throws Exception {
         MopubInitUtils.getInstance().initAds(activity, new IAdInitCallback() {
             @Override public void didInitialise() {
-                interstitialCenter = new MoPubInterstitial(activity, keyAds);
-                interstitialCenter.setInterstitialAdListener(new MoPubInterstitial.InterstitialAdListener() {
-                    @Override public void onInterstitialLoaded(MoPubInterstitial interstitial) {
-                        onAdLoaded(iAdLoaderCallback);
+                interstitialCenter = new MaxInterstitialAd(keyAds, activity);
+                interstitialCenter.setListener(new MaxAdListener() {
+                    @Override public void onAdLoaded(MaxAd ad) {
+                        MopubFullCenter.this.onAdLoaded(iAdLoaderCallback);
                     }
 
-                    @Override public void onInterstitialFailed(MoPubInterstitial interstitial, MoPubErrorCode errorCode) {
-                        onAdFailedToLoad(errorCode.toString(), iAdLoaderCallback);
-                    }
-
-                    @Override public void onInterstitialShown(MoPubInterstitial interstitial) {
+                    @Override public void onAdDisplayed(MaxAd ad) {
                         onAdOpened();
                     }
 
-                    @Override public void onInterstitialDismissed(MoPubInterstitial interstitial) {
+                    @Override public void onAdHidden(MaxAd ad) {
                         onAdClosed();
                     }
 
-                    //region hide
-                    @Override public void onInterstitialClicked(MoPubInterstitial interstitial) {
+                    @Override public void onAdClicked(MaxAd ad) {
 
                     }
-                    //endregion
+
+                    @Override public void onAdLoadFailed(String adUnitId, MaxError error) {
+                        String errorMesg = error!=null?error.getMessage():null;
+                        onAdFailedToLoad(errorMesg, iAdLoaderCallback);
+                    }
+
+                    @Override public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+
+                    }
                 });
-                interstitialCenter.load();
+                interstitialCenter.loadAd();
             }
-
             @Override public void didFailToInitialise() {
-
             }
         });
+
+//        AppLovinSdk.getInstance(activity).showMediationDebugger();
     }
 }

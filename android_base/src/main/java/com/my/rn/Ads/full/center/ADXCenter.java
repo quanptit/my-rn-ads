@@ -7,24 +7,23 @@ import android.util.Log;
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
-import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
 import com.my.rn.ads.IAdLoaderCallback;
 import com.my.rn.ads.settings.AdsSetting;
 
 public class ADXCenter extends BaseFullCenterAds {
-    private PublisherInterstitialAd interstitialCenter;
+//    private PublisherInterstitialAd interstitialCenter;
 
     @Override protected String getLogTAG() {
         return "ADX_CENTER";
     }
 
     @Override public boolean isCachedCenter(Activity activity) {
-        return (interstitialCenter != null && interstitialCenter.isLoaded());
+//        return (interstitialCenter != null && interstitialCenter.isLoaded());
+        return false;
     }
 
     @Override protected void showAds(Activity activity) {
-        interstitialCenter.show();
+//        interstitialCenter.show();
     }
 
     @Override public String getKeyAds(boolean isFromStart) {
@@ -44,40 +43,40 @@ public class ADXCenter extends BaseFullCenterAds {
 
 
     @Override protected void adsInitAndLoad(Activity activity, String keyAds, final IAdLoaderCallback iAdLoaderCallback) throws Exception {
-        if (interstitialCenter != null && interstitialCenter.isLoading()) return;
-        Log.d(getLogTAG(), "adsInitAndLoad: "+keyAds);
-        interstitialCenter = new PublisherInterstitialAd(BaseApplication.getAppContext());
-        interstitialCenter.setAdUnitId(keyAds);
-        interstitialCenter.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                ADXCenter.this.onAdLoaded(iAdLoaderCallback);
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                ADXCenter.this.onAdFailedToLoad("errorCode: " + errorCode, iAdLoaderCallback);
-            }
-
-            @Override
-            public void onAdClosed() {
-                ADXCenter.this.onAdClosed();
-            }
-
-            @Override public void onAdOpened() {
-                ADXCenter.this.onAdOpened();
-            }
-        });
-        PublisherAdRequest.Builder adRequest = new PublisherAdRequest.Builder();
-        if (KeysAds.DEVICE_TESTS != null) {
-            for (String s : KeysAds.DEVICE_TESTS) {
-                adRequest.addTestDevice(s);
-            }
-        }
-        interstitialCenter.loadAd(adRequest.build());
+//        if (interstitialCenter != null && interstitialCenter.isLoading()) return;
+//        Log.d(getLogTAG(), "adsInitAndLoad: "+keyAds);
+//        interstitialCenter = new PublisherInterstitialAd(BaseApplication.getAppContext());
+//        interstitialCenter.setAdUnitId(keyAds);
+//        interstitialCenter.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdLoaded() {
+//                ADXCenter.this.onAdLoaded(iAdLoaderCallback);
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int errorCode) {
+//                ADXCenter.this.onAdFailedToLoad("errorCode: " + errorCode, iAdLoaderCallback);
+//            }
+//
+//            @Override
+//            public void onAdClosed() {
+//                ADXCenter.this.onAdClosed();
+//            }
+//
+//            @Override public void onAdOpened() {
+//                ADXCenter.this.onAdOpened();
+//            }
+//        });
+//        PublisherAdRequest.Builder adRequest = new PublisherAdRequest.Builder();
+//        if (KeysAds.DEVICE_TESTS != null) {
+//            for (String s : KeysAds.DEVICE_TESTS) {
+//                adRequest.addTestDevice(s);
+//            }
+//        }
+//        interstitialCenter.loadAd(adRequest.build());
     }
 
     @Override protected void destroyAds() {
-        interstitialCenter = null;
+//        interstitialCenter = null;
     }
 }

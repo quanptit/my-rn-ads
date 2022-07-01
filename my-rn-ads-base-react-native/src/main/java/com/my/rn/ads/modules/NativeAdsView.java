@@ -8,6 +8,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.baseLibs.utils.L;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
@@ -16,17 +17,17 @@ import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
-import com.facebook.react.views.view.ReactViewGroup;
-import com.google.android.gms.ads.AdView;
 import com.my.rn.ads.BaseApplicationContainAds;
+import com.my.rn.ads.IAdLoaderCallback;
 import com.my.rn.ads.INativeManager;
 
-import java.lang.annotation.Native;
 import java.util.Map;
 
 public class NativeAdsView extends SimpleViewManager<NativeAdsView.NativeAdsViewUI> {
     public static final String REACT_CLASS = "NativeAdsView";
     public static final String EVENT_UNKNOWN_ERROR = "onUnknownError";
+    public static final String EVENT_AD_LOADER = "onAdLoaded";
+    public static final String EVENT_AD_LOAD_FAILED = "onAdFailed";
 //    private View adsView;
 //    private String color;
 
@@ -56,7 +57,7 @@ public class NativeAdsView extends SimpleViewManager<NativeAdsView.NativeAdsView
     public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
         MapBuilder.Builder<String, Object> builder = MapBuilder.builder();
         String[] events = {
-                EVENT_UNKNOWN_ERROR
+                EVENT_UNKNOWN_ERROR, EVENT_AD_LOADER, EVENT_AD_LOAD_FAILED
         };
         for (String event : events) {
             builder.put(event, MapBuilder.of("registrationName", event));
@@ -67,6 +68,7 @@ public class NativeAdsView extends SimpleViewManager<NativeAdsView.NativeAdsView
     @SuppressLint("ViewConstructor") public static class NativeAdsViewUI extends FrameLayout {
         private ReactContext mContext;
         private RCTEventEmitter mEventEmitter;
+        private INativeManager.INativeViewUtils nativeViewResult;
 
         public NativeAdsViewUI(ThemedReactContext context) {
             super(context);
@@ -75,15 +77,26 @@ public class NativeAdsView extends SimpleViewManager<NativeAdsView.NativeAdsView
         }
 
         public void setTypeAds(Integer typeAds) {
+            if (nativeViewResult != null)
+                nativeViewResult.destroyAds();
             if (getChildCount() > 0)
                 removeAllViews();
-            INativeManager.NativeViewResult result = BaseApplicationContainAds.getNativeManagerInstance()
-                    .createNewAds(mContext, typeAds, this);
-            if (result == null) { // Do một số trường hợp bất đồng bộ các thread dẫ đến cái này => dispatch event để thực hiện load lại ads
-                WritableMap event = Arguments.createMap();
-                event.putInt("errorCode", 1);
-                mEventEmitter.receiveEvent(getId(), NativeAdsView.EVENT_UNKNOWN_ERROR, event);
-            }
+            nativeViewResult = BaseApplicationContainAds.getNativeManagerInstance()
+                    .createNewAds(mContext, typeAds, this, new IAdLoaderCallback() {
+                        @Override public void onAdsLoaded() {
+                            mEventEmitter.receiveEvent(getId(), NativeAdsView.EVENT_AD_LOADER, Arguments.createMap());
+                        }
+
+                        @Override public void onAdsFailedToLoad() {
+                            mEventEmitter.receiveEvent(getId(), NativeAdsView.EVENT_AD_LOAD_FAILED, Arguments.createMap());
+                        }
+                    });
+        }
+
+        @Override protected void onDetachedFromWindow() {
+            super.onDetachedFromWindow();
+            L.d("NativeAdsViewUI onDetachedFromWindow");
+            nativeViewResult.destroyAds();
         }
     }
 }

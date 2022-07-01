@@ -13,7 +13,8 @@ import com.my.rn.ads.settings.AdsSetting;
 // Sẽ tự động tải File setting, xác định xem có show Ads không. Có mới show Admob lúc start.
 public class NewStartManager {
     public static void showStartAds(final Activity activity, final ISplashScreenActionCallback callback) {
-        String packageName = activity.getApplicationInfo().loadLabel(activity.getPackageManager()).toString();
+//        String packageName = activity.getApplicationInfo().loadLabel(activity.getPackageManager()).toString();
+        String packageName = activity.getPackageName();
         AdsSetting.getInstance().updateAdsSetting(KeysAds.ROOT + "ads_new/" + packageName);
 
         L.d("Load Admob Start Ads");

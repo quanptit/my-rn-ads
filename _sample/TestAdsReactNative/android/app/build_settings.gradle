@@ -1,5 +1,5 @@
 // Default Config
-project.ext.applicationId = "com.test.ads"
+project.ext.applicationId = "com.writing.learn.hindi"
 project.ext.versionCode = 1
 project.ext.versionName = "1.0"
 

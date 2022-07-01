@@ -17,4 +17,5 @@ android {
 dependencies {
     api 'com.facebook.react:react-native:+'
     api project(':my-rn-ads-base')
+    implementation project(path: ':my-rn-ads-mopub')
 }

@@ -5,6 +5,7 @@ import { Button } from 'react-native-paper';
 import { RenderAdsUtils } from './my-rn/ads/RenderAdsUtils';
 import { RNAdsUtils } from './my-rn/ads/RNAdsUtils';
 import { Col } from './my-rn/base-cpn/Col';
+import { LoadAdsUtils } from './my-rn/my-ads/LoadAdsUtils';
 
 
 interface Props {
@@ -14,6 +15,8 @@ interface Props {
 
 export function TestComponent() {
     const [showNativeAdsState, setShowNativeAdsState] = useState(false);
+
+    LoadAdsUtils.cacheJsonAdsIfNeed("http://learnlanguage.xyz/ads/android_japan_english");
 
     // useEffect(() => {
     // }, []);
@@ -27,7 +30,6 @@ export function TestComponent() {
             RNAdsUtils.cacheAdsCenter();
         }
     }
-
     console.log("TestComponent Render=================");
     return (
         <ScrollView style={{ flex: 1, backgroundColor: '#FBFBD0' }}>
@@ -47,6 +49,7 @@ export function TestComponent() {
                         <Text>TYPE_NATIVE_DETAIL_VOCA</Text>
                         {RenderAdsUtils.renderRowAds({ large: true, typeAds: 12 }, [styles.card, styles.marginAll])}
                         <Text>TYPE_NATIVE_SUMMARY_SMALL_CUSTOM --- Chưa làm, mới chỉnh size lại của cái trên thành nhỏ. Cần làm lại cái này.</Text>
+                        {RenderAdsUtils.renderRowAds({ large: false, typeAds: 1 }, [styles.card, styles.marginAll])}
                     </>
                 }
 

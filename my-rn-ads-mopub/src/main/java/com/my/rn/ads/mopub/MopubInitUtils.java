@@ -5,12 +5,10 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.applovin.sdk.AppLovinSdk;
+import com.applovin.sdk.AppLovinSdkConfiguration;
 import com.appsharelib.KeysAds;
 import com.baseLibs.BaseApplication;
-import com.mopub.common.MoPub;
-import com.mopub.common.SdkConfiguration;
-import com.mopub.common.SdkInitializationListener;
-import com.mopub.common.logging.MoPubLog;
 import com.my.rn.ads.BaseApplicationContainAds;
 import com.my.rn.ads.IAdInitCallback;
 import com.my.rn.ads.IAdInitUtils;
@@ -22,46 +20,31 @@ public class MopubInitUtils implements IAdInitUtils {
     private boolean isIniting, isInited;
     private ArrayList<IAdInitCallback> listCallback = new ArrayList<>();
 
-    private String getKey() {
-        String keySave = AdsSetting.getCenterKey(AdsSetting.ID_MOPUB);
-        if (!TextUtils.isEmpty(keySave))
-            return keySave;
-        return KeysAds.MOPUB_FULL_CENTER;
-    }
 
-    public void customInit(SdkConfiguration.Builder configBuilder) {}
-
-    @Override public boolean isInited(){
-        return MoPub.isSdkInitialized() || isInited;
+    @Override public boolean isInited() {
+        return isInited;
     }
 
     @Override public void initAds(Activity activity, IAdInitCallback callback) {
-        if (MoPub.isSdkInitialized() || isInited) {
+        if (isInited()) {
             if (callback != null)
                 callback.didInitialise();
-            return;
-        }
-        String key = getKey();
-        if (TextUtils.isEmpty(key)) {
-            if (callback != null)
-                callback.didFailToInitialise();
             return;
         }
         if (callback != null)
             listCallback.add(callback);
         if (isIniting) return;
         isIniting = true;
-        SdkConfiguration.Builder configBuilder = new SdkConfiguration.Builder(key);
-        customInit(configBuilder);
-        if (BuildConfig.DEBUG)
-            configBuilder.withLogLevel(MoPubLog.LogLevel.INFO);
-        else
-            configBuilder.withLogLevel(MoPubLog.LogLevel.NONE);
 
         Context context = activity == null ? BaseApplication.getAppContext() : activity;
-        MoPub.initializeSdk(context, configBuilder.build(), new SdkInitializationListener() {
-            @Override public void onInitializationFinished() {
-                Log.d("MopubInitUtils", "MoPub onInitializationFinished");
+        // Make sure to set the mediation provider value to "max" to ensure proper functionality
+        AppLovinSdk.getInstance(context).setMediationProvider("max");
+        AppLovinSdk.getInstance(context).getSettings().setVerboseLogging(false);
+        AppLovinSdk.initializeSdk(context, new AppLovinSdk.SdkInitializationListener() {
+            @Override
+            public void onSdkInitialized(final AppLovinSdkConfiguration configuration) {
+                // AppLovin SDK is initialized, start loading ads
+                Log.d("MopubInitUtils", "MAX onSdkInitialized");
                 isInited = true;
                 isIniting = false;
                 if (listCallback != null) {

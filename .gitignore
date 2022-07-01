@@ -8,6 +8,7 @@ Pods/
 DerivedData
 *.hmap
 *.ipa
+*.hprof
 *.xcuserstate
 project.xcworkspace
 yarn.lock

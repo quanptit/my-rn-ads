@@ -16,9 +16,7 @@ ext.addAdsProjectSetting = { ->
         include ':my-rn-ads-fb-react-native'
         project(':my-rn-ads-fb-react-native').projectDir = new File(dirPathBaseLibAds + 'my-rn-ads-fb-react-native')
     }
-    include ':AdMob'
-    project(':AdMob').projectDir = new File(dirPathBaseLibAds + 'mopub_mediations/AdMob')
-    //endregion
+    
 
 //////////////////////////////
 
@@ -46,10 +44,7 @@ ext.addAdsProjectSetting = { ->
         project(':my-rn-ads-mopub').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-mopub')
         include ':my-rn-ads-mopub-react-native'
         project(':my-rn-ads-mopub-react-native').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-mopub-react-native')
-        if (ads.contains("facebook")) {
-            include ':FacebookAudienceNetwork'
-            project(':FacebookAudienceNetwork').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/FacebookAudienceNetwork')
-        }
+        
         //////////
 //        include ':mintegral_mopub_adapter'
 //        project(':mintegral_mopub_adapter').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mintegral_mopub_adapter')

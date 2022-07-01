@@ -3,6 +3,8 @@ package com.my.rn.ads.modules;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.appsharelib.KeysAds;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.LifecycleEventListener;
@@ -16,6 +18,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
 import com.my.rn.ads.settings.AdsSetting;
 
 public class AdmobBannerUI extends ReactViewGroup implements LifecycleEventListener {
@@ -65,8 +68,8 @@ public class AdmobBannerUI extends ReactViewGroup implements LifecycleEventListe
             mAdView.setAdUnitId(adUnitId);
             mAdView.setAdSize(mSize);
             mAdView.setAdListener(new AdListener() {
-                @Override public void onAdFailedToLoad(int i) {
-                    sendAdFaildEvent(i);
+                @Override public void onAdFailedToLoad(@NonNull LoadAdError var1) {
+                    sendAdFaildEvent(var1.getCode());
                     mAdView = null;
                 }
 
@@ -85,11 +88,11 @@ public class AdmobBannerUI extends ReactViewGroup implements LifecycleEventListe
             addView(mAdView);
 
             AdRequest.Builder adRequest = new AdRequest.Builder();
-            if (KeysAds.DEVICE_TESTS != null) {
-                for (String s : KeysAds.DEVICE_TESTS) {
-                    adRequest.addTestDevice(s);
-                }
-            }
+//            if (KeysAds.DEVICE_TESTS != null) {
+//                for (String s : KeysAds.DEVICE_TESTS) {
+//                    adRequest.addTestDevice(s);
+//                }
+//            }
             mAdView.loadAd(adRequest.build());
         }
     }

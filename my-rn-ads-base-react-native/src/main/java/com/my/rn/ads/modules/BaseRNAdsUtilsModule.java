@@ -216,61 +216,64 @@ public class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule implements 
     //region native ads
     @ReactMethod
     public void canShowNativeAds(int typeAds, Promise promise) {
-        promise.resolve(BaseApplicationContainAds.getNativeManagerInstance().canShowNativeAds(typeAds));
+        promise.resolve(true);
+//        promise.resolve(BaseApplicationContainAds.getNativeManagerInstance().canShowNativeAds(typeAds));
     }
 
     // Nếu chưa cache lần nào sẽ cache, true nếu xác định có ads để show
     @ReactMethod
     public void firstCacheAndCheckCanShowNativeAds(final int typeAds, final Promise promise) {
-        new Thread(new Runnable() {
-            @Override public void run() {
-                try {
-                    Activity activity = getSafeActivity();
-                    if (activity == null) {
-                        promise.reject("0", "activity null");
-                        return;
-                    }
-                    promise.resolve(BaseApplicationContainAds
-                            .getNativeManagerInstance().firstCacheAndCheckCanShowNativeAds(activity, typeAds));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    promise.reject("0", e.getMessage());
-                }
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override public void run() {
+//                try {
+//                    Activity activity = getSafeActivity();
+//                    if (activity == null) {
+//                        promise.reject("0", "activity null");
+//                        return;
+//                    }
+//                    promise.resolve(BaseApplicationContainAds
+//                            .getNativeManagerInstance().firstCacheAndCheckCanShowNativeAds(activity, typeAds));
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    promise.reject("0", e.getMessage());
+//                }
+//            }
+//        }).start();
     }
 
     @ReactMethod
     public void hasLoadNativeAds(Promise promise) {
-        promise.resolve(BaseApplicationContainAds.getNativeManagerInstance().hasLoadAds());
+        promise.resolve(true);
+//        promise.resolve(BaseApplicationContainAds.getNativeManagerInstance().hasLoadAds());
     }
 
     @ReactMethod
     public void cacheNativeAdsIfNeed(int typeAds) {
-        BaseApplicationContainAds.getNativeManagerInstance().checkAndLoadAds(getSafeActivity());
+//        BaseApplicationContainAds.getNativeManagerInstance().checkAndLoadAds(getSafeActivity());
     }
 
     @ReactMethod
     public void loadNativeAds(int typeAds, final Promise promise) {
-        new Thread(new Runnable() {
-            final PromiseSaveObj promiseSaveObj = new PromiseSaveObj(promise);
-            @Override public void run() {
-                try {
-                    BaseApplicationContainAds.getNativeManagerInstance().loadAds(getSafeActivity(), new IAdLoaderCallback() {
-                        @Override public void onAdsFailedToLoad() {
-                            promiseSaveObj.reject("0", "onAdsFailedToLoad");
-                        }
-
-                        @Override public void onAdsLoaded() {
-                            promiseSaveObj.resolve(1);
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    promiseSaveObj.reject("0", e.getMessage());
-                }
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            final PromiseSaveObj promiseSaveObj = new PromiseSaveObj(promise);
+//
+//            @Override public void run() {
+//                try {
+//                    BaseApplicationContainAds.getNativeManagerInstance().loadAds(getSafeActivity(), new IAdLoaderCallback() {
+//                        @Override public void onAdsFailedToLoad() {
+//                            promiseSaveObj.reject("0", "onAdsFailedToLoad");
+//                        }
+//
+//                        @Override public void onAdsLoaded() {
+//                            promiseSaveObj.resolve(1);
+//                        }
+//                    });
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    promiseSaveObj.reject("0", e.getMessage());
+//                }
+//            }
+//        }).start();
     }
     //endregion
 

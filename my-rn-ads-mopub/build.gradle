@@ -13,86 +13,29 @@ android {
     }
 }
 
+//repositories {
+//    google()
+//    mavenCentral()
+//    maven { url "https://android-sdk.is.com" }
+//    maven { url "https://artifact.bytedance.com/repository/pangle" }
+//}
+
 def ads = gradle.ext.ads
 def isContainTapdaq = gradle.ext.mediation.contains("tapdaq")
 dependencies {
-    // For banners
-    api("com.mopub:mopub-sdk-banner:$rootProject.ext.mopub") { transitive = true }
-    // For interstitials and rewarded ads
-    api("com.mopub:mopub-sdk-fullscreen:$rootProject.ext.mopub") { transitive = true }
-    // For native static (images).
-    api("com.mopub:mopub-sdk-native-static:$rootProject.ext.mopub") { transitive = true }
-    // For native video. This will automatically also include native static
-//    api("com.mopub:mopub-sdk-native-video:$rootProject.ext.mopub") { transitive = true }
-
+    implementation 'com.applovin:applovin-sdk:+'
+    implementation 'com.applovin.mediation:google-adapter:+'
+    implementation 'com.applovin.mediation:facebook-adapter:+'
+    implementation 'com.applovin.mediation:bytedance-adapter:+'
 
     implementation project(':my-rn-ads-base')
 
-//    if (ads.contains("admob"))
-        implementation project(':AdMob')
-//        implementation 'com.mopub.mediation:admob:18.3.0.2'
-
-    if (ads.contains("facebook"))
-        implementation project(':FacebookAudienceNetwork')
     if (!isContainTapdaq && ads.contains("unity")) {
-        implementation "com.unity3d.ads:unity-ads:$rootProject.ext.unity_lib"
-        implementation 'com.mopub.mediation:unityads:3.4.0.1'
+        implementation 'com.applovin.mediation:unityads-adapter:+'
     }
     if (!isContainTapdaq && ads.contains("ironsource")) {
-        implementation "com.ironsource.sdk:mediationsdk:$rootProject.ext.ironsource_lib"
-        implementation 'com.mopub.mediation:ironsource:6.13.0.0'
+        implementation 'com.applovin.mediation:ironsource-adapter:+'
     }
     if (isContainTapdaq)
         implementation project(':my-rn-ads-mopub-tapdaq-adapter')
-
-
-
-    //////////////////////////////////////////////////////////////////////////
-//    if (ads.contains("mintegral"))
-//        implementation project(':mintegral_mopub_adapter')
-    if (ads.contains("fyber_market")){
-        def vampVersion = "7.4.1"
-        api "com.fyber.vamp:mopub-custom-events-5.5:7.4.1"
-        implementation "com.fyber.vamp:core-sdk:${vampVersion}"
-        implementation "com.fyber.vamp:mraid-kit:${vampVersion}"
-        implementation "com.fyber.vamp:video-kit:${vampVersion}"
-    }
-    if (gradle.ext.ads.contains("adcolony")) {
-        implementation "com.adcolony:sdk:$rootProject.ext.adcolony_lib"
-        implementation 'com.mopub.mediation:adcolony:4.1.0.2'
-    }
-    if (gradle.ext.ads.contains("applovin")) {
-        implementation "com.applovin:applovin-sdk:$rootProject.ext.applovin_lib"
-        implementation 'com.mopub.mediation:applovin:9.11.1.0'
-    }
-    if (gradle.ext.ads.contains("vungle")) {
-        implementation "com.vungle:publisher-sdk-android:$rootProject.ext.vungle_lib"
-        implementation 'com.mopub.mediation:vungle:6.4.11.5'
-    }
-    if (gradle.ext.ads.contains("tapjoy")) {
-        implementation "com.tapjoy:tapjoy-android-sdk:$rootProject.ext.tapjoy_lib"
-        implementation 'com.mopub.mediation:tapjoy:12.4.0.1'
-    }
-    if (gradle.ext.ads.contains("mobfox")) {
-        implementation 'com.github.mobfox.MobFox-Android-SDK-Core:MobFox-Android-SDK-Core:3.6.9'
-        implementation files('libs/MobFox-Android-MoPub-Adapter.jar')
-    }
-    if (gradle.ext.ads.contains("chartboost")) {
-        implementation 'com.mopub.mediation:chartboost:7.5.0.3'
-        implementation files('libs/chartboost-7.5.0.jar')
-    }
-
-    //region old code ==> hide
-//    if (gradle.ext.ads.contains("smaato")) implementation project(':mopub_smaato')
-//    if (gradle.ext.ads.contains("mobvistar")) implementation project(':mopub_mobvistar')
-//    if (gradle.ext.ads.contains("inmobi")) implementation project(':mopub_inmobi')
-    //    // App next =========
-    //    implementation 'com.appnext.sdk.adapters:mopub-ads:2.+'
-    //    // Mandatory for interstitial and fullscreen/rewarded video ad units
-    //    implementation 'com.appnext.sdk.adapters:mopub-native-ads:2.+'
-    //    // Mandatory for native ads ad unit
-    //    implementation 'com.appnext.sdk.adapters:mopub-banners:2.+'
-    //    // Mandatory for banners ad unit
-    //    implementation 'com.google.android.gms:play-services-location:16.0.0'
-    //endregion
 }

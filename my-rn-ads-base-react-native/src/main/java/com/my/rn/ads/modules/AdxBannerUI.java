@@ -15,13 +15,13 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.facebook.react.views.view.ReactViewGroup;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
-import com.google.android.gms.ads.doubleclick.PublisherAdView;
+//import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+//import com.google.android.gms.ads.doubleclick.PublisherAdView;
 import com.my.rn.ads.settings.AdsSetting;
 
 public class AdxBannerUI extends ReactViewGroup implements LifecycleEventListener {
     private ReactContext mContext;
-    private PublisherAdView mAdView;
+//    private PublisherAdView mAdView;
     private RCTEventEmitter mEventEmitter;
     private AdSize mSize;
 
@@ -53,45 +53,45 @@ public class AdxBannerUI extends ReactViewGroup implements LifecycleEventListene
     }
 
     private void createAdViewIfCan() {
-        if (mAdView == null && mSize != null) {
-            String adUnitId = getKeyAds();
-            Log.d("ADXBannerUI", "Create Ad View: " + adUnitId);
-            if (TextUtils.isEmpty(adUnitId)) {
-                sendAdFaildEvent(-99);
-                return;
-            }
-            removeAllViews();
-            mAdView = new PublisherAdView(this.getContext());
-            mAdView.setAdUnitId(adUnitId);
-            mAdView.setAdSizes(mSize);
-            mAdView.setAdListener(new AdListener() {
-                @Override public void onAdFailedToLoad(int i) {
-                    L.d("AdxBannerUI onAdFailedToLoad code = : " + i);
-                    sendAdFaildEvent(i);
-                    mAdView = null;
-                }
-
-                @Override public void onAdLoaded() {
-                    if (mAdView == null) return;
-                    AdSize adSize = mAdView.getAdSize();
-                    int width = adSize.getWidthInPixels(mContext);
-                    int height = adSize.getHeightInPixels(mContext);
-                    int left = mAdView.getLeft();
-                    int top = mAdView.getTop();
-                    mAdView.measure(width, height);
-                    mAdView.layout(left, top, left + width, top + height);
-                    sendOnSizeChangeEvent(adSize);
-                }
-            });
-            addView(mAdView);
-            PublisherAdRequest.Builder adRequest = new PublisherAdRequest.Builder();
-            if (KeysAds.DEVICE_TESTS != null) {
-                for (String s : KeysAds.DEVICE_TESTS) {
-                    adRequest.addTestDevice(s);
-                }
-            }
-            mAdView.loadAd(adRequest.build());
-        }
+//        if (mAdView == null && mSize != null) {
+//            String adUnitId = getKeyAds();
+//            Log.d("ADXBannerUI", "Create Ad View: " + adUnitId);
+//            if (TextUtils.isEmpty(adUnitId)) {
+//                sendAdFaildEvent(-99);
+//                return;
+//            }
+//            removeAllViews();
+//            mAdView = new PublisherAdView(this.getContext());
+//            mAdView.setAdUnitId(adUnitId);
+//            mAdView.setAdSizes(mSize);
+//            mAdView.setAdListener(new AdListener() {
+//                @Override public void onAdFailedToLoad(int i) {
+//                    L.d("AdxBannerUI onAdFailedToLoad code = : " + i);
+//                    sendAdFaildEvent(i);
+//                    mAdView = null;
+//                }
+//
+//                @Override public void onAdLoaded() {
+//                    if (mAdView == null) return;
+//                    AdSize adSize = mAdView.getAdSize();
+//                    int width = adSize.getWidthInPixels(mContext);
+//                    int height = adSize.getHeightInPixels(mContext);
+//                    int left = mAdView.getLeft();
+//                    int top = mAdView.getTop();
+//                    mAdView.measure(width, height);
+//                    mAdView.layout(left, top, left + width, top + height);
+//                    sendOnSizeChangeEvent(adSize);
+//                }
+//            });
+//            addView(mAdView);
+//            PublisherAdRequest.Builder adRequest = new PublisherAdRequest.Builder();
+//            if (KeysAds.DEVICE_TESTS != null) {
+//                for (String s : KeysAds.DEVICE_TESTS) {
+//                    adRequest.addTestDevice(s);
+//                }
+//            }
+//            mAdView.loadAd(adRequest.build());
+//        }
     }
 
     private void sendOnSizeChangeEvent(AdSize adSize) {
@@ -126,10 +126,10 @@ public class AdxBannerUI extends ReactViewGroup implements LifecycleEventListene
     }
 
     public void destroy() {
-        if (mAdView != null) {
-            mAdView.destroy();
-            mAdView = null;
-        }
+//        if (mAdView != null) {
+//            mAdView.destroy();
+//            mAdView = null;
+//        }
     }
 
     //region hide

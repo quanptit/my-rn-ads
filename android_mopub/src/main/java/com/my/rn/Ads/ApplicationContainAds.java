@@ -1,7 +1,6 @@
 package com.my.rn.ads;
 
 import com.baseLibs.BaseApplication;
-import com.mopub.common.SdkConfiguration;
 import com.my.rn.ads.full.center.BaseAdsFullManager;
 import com.my.rn.ads.mopub.MopubInitUtils;
 import com.my.rn.ads.mopub.ad_native.MopubNativeManager;
