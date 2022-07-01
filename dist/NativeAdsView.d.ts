@@ -14,6 +14,7 @@ export declare class NativeAdsView extends Component<Props, {
     needRender: boolean;
     height: number;
     showLoading?: boolean;
+    isHasAds?: boolean;
 }> {
     static TYPE_SUMMARY_FB: number;
     static TYPE_SUMMARY_SMALL_CUSTOM: number;
@@ -33,9 +34,11 @@ export declare class NativeAdsView extends Component<Props, {
     componentDidMount(): Promise<void>;
     shouldComponentUpdate(nextProps: any, nextState: any): boolean;
     render(): JSX.Element;
+    renderLoadingView(): JSX.Element;
+    private _renderOfflineAds;
+    private _onAdFailed;
+    private _renderNativeView;
     private _renderBanner50Ads;
     private _renderRectBannerAds;
-    private _renderNativeView;
-    renderEmptyView(): JSX.Element;
 }
 export {};

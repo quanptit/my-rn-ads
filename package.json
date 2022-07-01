@@ -7,7 +7,8 @@
   "scripts": {
     "install_npm": "yarn install",
     "npm_publish": "npm publish",
-    "link_d": "yarn link rn-fetch-blob react-native-router-flux @types/react @types/react-native @types/lodash react react-native lodash my-rn-base-component my-rn-base-utils my-rn-common-resource"
+    "build": "tsc",
+    "link_d": "yarn link my-rn-cached-image rn-fetch-blob react-native-router-flux @types/react @types/react-native @types/lodash react react-native lodash my-rn-base-component my-rn-base-utils my-rn-common-resource"
   },
   "keywords": [
     "react-native"

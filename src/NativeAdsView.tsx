@@ -19,7 +19,7 @@ interface Props {
     style?: StyleProp<ViewStyle>
 }
 
-export class NativeAdsView extends Component<Props, { isLoading: boolean, needRender: boolean, height: number, showLoading?: boolean }> {
+export class NativeAdsView extends Component<Props, { isLoading: boolean, needRender: boolean, height: number, showLoading?: boolean , isHasAds?: boolean }> {
     public static TYPE_SUMMARY_FB = 0;
     public static TYPE_SUMMARY_SMALL_CUSTOM = 1;
     public static TYPE_SUMMARY_LARGE = 3;
@@ -32,7 +32,7 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
     private isPreferShowBanner: boolean;
     static defaultProps = {
         typeAds: 3,
-        allowBannerBackup: true,
+        allowBannerBackup: false,
         skipCacheNative: false
     };
 
@@ -47,23 +47,6 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
                 this.setState({needRender: true})
             }, this.props.delayTime);
         }
-        if (this.props.isAlwayPreferNative)
-            this.isPreferShowBanner = false;
-        else
-            this.isPreferShowBanner = await RNAdsUtils.isPreferShowBanner(this.props.typeAds);
-
-        if (!this.isPreferShowBanner) {
-            if (!await RNAdsUtils.hasLoadNativeAds())
-                this.setState({showLoading: true});
-            this.isCachedNativeAds = await RNAdsUtils.firstCacheAndCheckCanShowNativeAds(this.props.typeAds);
-            if (!this.props.skipCacheNative)
-                // noinspection JSIgnoredPromiseFromCall
-                RNAdsUtils.cacheNativeAdsIfNeed(this.props.typeAds);
-        }
-        if (!this.isCachedNativeAds && this.props.allowBannerBackup === false) {
-            this.offlineAds = await OfflineAdsSetting.getPreferAds(true);
-        }
-        this.setState({isLoading: false, showLoading: false});
     }
 
 
@@ -72,24 +55,62 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
     }
 
     render() {
-        if (this.state.isLoading
-            || (this.props.delayTime != undefined && !this.state.needRender))
-            return this.renderEmptyView();
-        if (this.isCachedNativeAds)
-            return this._renderNativeView();
+        return <View style={this.props.style}>
+            <View style={{ height: this.state.height }}>
+                {this._renderNativeView()}
+            </View>
+            {this.renderLoadingView()}
+            {this._renderOfflineAds()}
+        </View>;
+    }
 
-        if (this.props.allowBannerBackup === false) {
-            if (this.offlineAds != null)
-                return <RowOfflineAds style={{height: this.state.height}}
-                                      myAdsObj={this.offlineAds}/>;
-            else
-                return null;
-        }
+    
+    renderLoadingView() {
+        if (this.state.isLoading)
+            return (
+                <Col dial={5} style={[{ height: this.state.height, position: "absolute", left: 0, top: 0, right: 0, backgroundColor: "white" }]}>
+                    {<Text style={styles.tvSponsored}>Loading ... </Text>}
+                </Col>
+            );
+        return null;
+    }
+    
+    private _renderOfflineAds() {
+        if (this.state.isLoading || this.offlineAds == null || this.state.isHasAds)
+            return null;
+        return (
+            <Col stretch style={[{ height: this.state.height , position: "absolute", left: 0, top: 0, right: 0}]}>
+                <Text style={styles.tvSponsored}>Sponsored by: </Text>
+                <View style={styles.containerBannerAds}>
+                    <RowOfflineAds myAdsObj={this.offlineAds} />
+                </View>
+            </Col>
+        );
+    }
 
-        if (this.state.height > 200)
-            return this._renderRectBannerAds();
+    private async _onAdFailed(){
+        console.log("NativeView onAdFailed Call");
+        this.offlineAds = await OfflineAdsSetting.getPreferAds(true);
+        this.setState({ isLoading: false, isHasAds: false });
+    }
 
-        return this._renderBanner50Ads();
+    private _renderNativeView() {
+        if (!this.state.isLoading && !this.state.isHasAds)
+            return null;
+
+        return (
+            <NativeAdsViewRef
+                style={{ height: this.state.isLoading ? 1 : this.state.height }}
+                onUnknownError={this._onAdFailed.bind(this)}
+                onAdLoaded={() => {
+                    console.log("NativeView onAdLoaded Call: ");
+                    this.setState({ isLoading: false, isHasAds: true });
+                }}
+                // onAdLoaded={this._onAdFailed.bind(this)}
+                onAdFailed={this._onAdFailed.bind(this)}
+                typeAds={this.props.typeAds}
+            />
+        );
     }
 
     //region banner backup =============
@@ -113,29 +134,6 @@ export class NativeAdsView extends Component<Props, { isLoading: boolean, needRe
     }
 
     //endregion
-
-    private _renderNativeView() {
-        return (
-            <View style={this.props.style}>
-                <NativeAdsViewRef
-                    style={{height: this.state.height}}
-                    typeAds={this.props.typeAds}
-                />
-            </View>)
-    }
-
-    renderEmptyView() {
-        if (this.state.height > 200)
-            return (
-                <Col dial={5} style={[this.props.style as any, {height: this.state.height}]}>
-                    {this.state.showLoading && <Text style={styles.tvSponsored}>Loading ... </Text>}
-                </Col>
-            );
-
-        return (
-            <View style={[this.props.style as any, {height: this.state.height}]}/>
-        )
-    }
 }
 
 //region styles
