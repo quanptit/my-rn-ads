@@ -33,17 +33,18 @@ public class AdxBannerUI extends ReactViewGroup implements LifecycleEventListene
     }
 
     private String getKeyAds() {
-        if (KeysAds.IS_DEVELOPMENT && KeysAds.ADX_BANNER != null)
-            return "ca-app-pub-3940256099942544/6300978111";
-        if (this.mSize == AdSize.MEDIUM_RECTANGLE) {
-            String saveKey = AdsSetting.getBannerRectKey(AdsSetting.ID_ADX);
-            if (saveKey != null) return saveKey;
-            return KeysAds.ADX_BANNER;
-        }
-
-        String saveKey = AdsSetting.getBannerKey(AdsSetting.ID_ADX);
-        if (saveKey != null) return saveKey;
-        return KeysAds.ADX_BANNER;
+        return null;
+//        if (KeysAds.IS_DEVELOPMENT && KeysAds.ADX_BANNER != null)
+//            return "ca-app-pub-3940256099942544/6300978111";
+//        if (this.mSize == AdSize.MEDIUM_RECTANGLE) {
+//            String saveKey = AdsSetting.getBannerRectKey(AdsSetting.ID_ADX);
+//            if (saveKey != null) return saveKey;
+//            return KeysAds.ADX_BANNER;
+//        }
+//
+//        String saveKey = AdsSetting.getBannerKey(AdsSetting.ID_ADX);
+//        if (saveKey != null) return saveKey;
+//        return KeysAds.ADX_BANNER;
     }
 
     private void sendAdFaildEvent(int errorCode) {

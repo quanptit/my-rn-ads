@@ -27,7 +27,7 @@ public class MopubFullCenter extends BaseFullCenterAds {
         keySave = AdsSetting.getCenterKey(AdsSetting.ID_MOPUB);
         if (!TextUtils.isEmpty(keySave))
             return keySave;
-        return KeysAds.MOPUB_FULL_CENTER;
+        return KeysAds.MAX_FULL;
     }
 
     @Override public boolean isCachedCenter(Activity activity) {

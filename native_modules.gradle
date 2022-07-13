@@ -56,10 +56,10 @@ ext.addAdsProjectSetting = { ->
         include ':my-rn-ads-tapdaq-react-native'
         project(':my-rn-ads-tapdaq-react-native').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-tapdaq-react-native')
     }
-    if (ads.contains("fairbid") || mediation.contains("fairbid")) {
-        include ':my-rn-ads-fairbid'
-        project(':my-rn-ads-fairbid').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-fairbid')
-    }
+ //   if (ads.contains("fairbid") || mediation.contains("fairbid")) {
+ //       include ':my-rn-ads-fairbid'
+ //       project(':my-rn-ads-fairbid').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-fairbid')
+ //   }
     //region old mediation // comment
 //    if (gradle.ext.ads == "upltv") {
 //        include ':my-rn-ads'

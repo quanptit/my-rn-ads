@@ -2,7 +2,7 @@ package com.my.rn.ads;
 
 import android.os.Bundle;
 
-public class BaseAdsActivity extends BasicAdsActivity {
+public abstract class BaseAdsActivity extends BasicAdsActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }

@@ -23,30 +23,22 @@ public class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule implements 
     public static final String EVENT_AD_FAILED_TO_LOAD = "onAdFailedToLoad";
     public static final String EVENT_SIZE_CHANGE = "onSizeChange";
 
-    //#region Start Ads Only Admob
-
-    //#endregion
-
     //region start ads
     @ReactMethod
     public void loadStartAds(final Promise promise) {
         Log.d(TAG, "Call loadStartAds");
         final PromiseSaveObj promiseSaveObj = new PromiseSaveObj(promise);
-        UiThreadUtil.runOnUiThread(new Runnable() {
-            @Override public void run() {
-                StartAdsManager.loadStartAds(getSafeActivity(), new IAdLoaderCallback() {
-                    @Override public void onAdsFailedToLoad() {
-                        Log.d(TAG, "loadStartAds onAdsFailedToLoad");
-                        promiseSaveObj.resolve(false);
-                    }
-
-                    @Override public void onAdsLoaded() {
-                        Log.d(TAG, "loadStartAds onAdsLoaded");
-                        promiseSaveObj.resolve(true);
-                    }
-                });
+        UiThreadUtil.runOnUiThread(() -> StartAdsManager.loadStartAds(getSafeActivity(), new IAdLoaderCallback() {
+            @Override public void onAdsFailedToLoad() {
+                Log.d(TAG, "loadStartAds onAdsFailedToLoad");
+                promiseSaveObj.resolve(false);
             }
-        });
+
+            @Override public void onAdsLoaded() {
+                Log.d(TAG, "loadStartAds onAdsLoaded");
+                promiseSaveObj.resolve(true);
+            }
+        }));
     }
 
     @ReactMethod

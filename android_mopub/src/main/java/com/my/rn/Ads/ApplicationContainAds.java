@@ -10,6 +10,13 @@ public abstract class ApplicationContainAds extends BaseApplicationContainAds {
     protected INativeManager nativeManager;
     protected MopubInitUtils mopubInitUtils;
     protected RewardedAdsManager rewardedAdsManager;
+    protected AdmobAppOpenManager admobAppOpenManager;
+
+    @Override public BaseAppOpenAdsManager getAppOpenAdsManager() {
+        if (admobAppOpenManager==null)
+            admobAppOpenManager = new AdmobAppOpenManager();
+        return admobAppOpenManager;
+    }
 
     @Override public IRewardedAdsManager getRewardedAdsManager() {
         if (rewardedAdsManager == null)

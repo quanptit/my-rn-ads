@@ -27,18 +27,19 @@ public class ADXCenter extends BaseFullCenterAds {
     }
 
     @Override public String getKeyAds(boolean isFromStart) {
-        if (KeysAds.IS_DEVELOPMENT)
-            return "ca-app-pub-3940256099942544/1033173712";
-        String keySave;
-        if (isFromStart) {
-            keySave = AdsSetting.getStartKey(AdsSetting.ID_ADX);
-            if (!TextUtils.isEmpty(keySave)) return keySave;
-            return KeysAds.ADX_FULL_START;
-        } else {
-            keySave = AdsSetting.getCenterKey(AdsSetting.ID_ADX);
-            if (!TextUtils.isEmpty(keySave)) return keySave;
-            return KeysAds.ADX_FULL_CENTER;
-        }
+        return null;
+//        if (KeysAds.IS_DEVELOPMENT)
+//            return "ca-app-pub-3940256099942544/1033173712";
+//        String keySave;
+//        if (isFromStart) {
+//            keySave = AdsSetting.getStartKey(AdsSetting.ID_ADX);
+//            if (!TextUtils.isEmpty(keySave)) return keySave;
+//            return KeysAds.ADX_FULL_START;
+//        } else {
+//            keySave = AdsSetting.getCenterKey(AdsSetting.ID_ADX);
+//            if (!TextUtils.isEmpty(keySave)) return keySave;
+//            return KeysAds.ADX_FULL_CENTER;
+//        }
     }
 
 

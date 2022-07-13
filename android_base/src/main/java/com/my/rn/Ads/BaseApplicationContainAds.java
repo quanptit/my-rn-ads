@@ -1,7 +1,5 @@
 package com.my.rn.ads;
 
-import android.app.Activity;
-
 import com.baseLibs.BaseApplication;
 import com.my.rn.ads.full.center.BaseAdsFullManager;
 import com.my.rn.ads.settings.AdsSetting;
@@ -10,8 +8,9 @@ public abstract class BaseApplicationContainAds extends BaseApplication {
     private AdsSetting adsSetting;
 
     public abstract IRewardedAdsManager getRewardedAdsManager();
-
+    public abstract BaseAppOpenAdsManager getAppOpenAdsManager();
     public abstract BaseAdsFullManager getAdsFullManager();
+
 
     public abstract IAdInitUtils getIAdInitTapdaqUtils();
 

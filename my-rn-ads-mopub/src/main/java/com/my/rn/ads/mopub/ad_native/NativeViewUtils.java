@@ -39,6 +39,12 @@ public class NativeViewUtils implements INativeManager.INativeViewUtils {
 
     public void startLoadAndDisplayAds(int typeAds, Context context, final ViewGroup nativeAdContainer) {
         nativeAdLoader = getMaxNativeAdLoader(typeAds, context);
+        if (nativeAdLoader == null) {
+            L.d("Native Ad Unit Is NULL: typeAds = " + typeAds);
+            if (loaderCallback != null)
+                loaderCallback.onAdsFailedToLoad();
+            return;
+        }
         nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
             @Override
             public void onNativeAdLoaded(final MaxNativeAdView nativeAdView, final MaxAd ad) {
@@ -71,9 +77,13 @@ public class NativeViewUtils implements INativeManager.INativeViewUtils {
 
     private MaxNativeAdLoader getMaxNativeAdLoader(int typeAds, Context context) {
         if (typeAds >= 2) {
-            return new MaxNativeAdLoader(KeysAds.MAX_NATIVE_LARGE, context);
+            return KeysAds.MAX_NATIVE_LARGE != null
+                    ? new MaxNativeAdLoader(KeysAds.MAX_NATIVE_LARGE, context)
+                    : null;
         } else {
-            return new MaxNativeAdLoader(KeysAds.MAX_NATIVE_SMALL, context);
+            return KeysAds.MAX_NATIVE_SMALL != null
+                    ? new MaxNativeAdLoader(KeysAds.MAX_NATIVE_SMALL, context)
+                    : null;
         }
     }
 }

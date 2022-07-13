@@ -26,10 +26,11 @@ dependencies {
     implementation 'com.applovin:applovin-sdk:+'
     implementation 'com.applovin.mediation:google-adapter:+'
     implementation 'com.applovin.mediation:facebook-adapter:+'
-    implementation 'com.applovin.mediation:bytedance-adapter:+'
 
     implementation project(':my-rn-ads-base')
-
+    if (ads.contains("pangle")) {
+        implementation 'com.applovin.mediation:bytedance-adapter:+'
+    }
     if (!isContainTapdaq && ads.contains("unity")) {
         implementation 'com.applovin.mediation:unityads-adapter:+'
     }

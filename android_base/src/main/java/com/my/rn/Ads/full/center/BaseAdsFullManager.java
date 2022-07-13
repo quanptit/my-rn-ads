@@ -170,8 +170,15 @@ public abstract class BaseAdsFullManager {
         boolean isShowAds;
         if (skipCheck)
             isShowAds = true;
-        else
-            isShowAds = !AdsUtils.isDoNotShowAds() && (canShowAdsCenter(false) || isFromStart);
+        else{
+            boolean checkTimeCanShowAds = canShowAdsCenter(false);
+            if (!checkTimeCanShowAds){
+                L.d("TIME: Can't show Center Ads. Because Time");
+            }
+            isShowAds = !AdsUtils.isDoNotShowAds() && (checkTimeCanShowAds|| isFromStart);
+        }
+
+
         if (!isShowAds) {
             if (promise != null)
                 promise.noAdsCallback();
