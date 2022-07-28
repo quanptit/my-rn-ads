@@ -33,7 +33,12 @@ public class StartAdsManager {
 
     // Callback chỉ được gọi khi đã có setting
     public static void loadStartAds(final Activity activity, IAdLoaderCallback loaderCallback) {
-        if (!AdsSetting.getInstance().isShowStartAds()){
+        if (BaseAppOpenAdsManager.getInstance() == null) {
+            loaderCallback.onAdsFailedToLoad();
+            return;
+        }
+
+        if (!AdsSetting.getInstance().isShowStartAds()) {
             Log.d("StartAdsManager", "Skip show start ads by setting");
             loaderCallback.onAdsFailedToLoad();
             return;
@@ -70,8 +75,12 @@ public class StartAdsManager {
 
     // return true khi có ads được cached và show nó ra
     public static void showStartAdsIfCached(Activity activity, IAdsCalbackOpen adsCalbackOpen) {
+        if (BaseAppOpenAdsManager.getInstance() == null) {
+            adsCalbackOpen.noAdsCallback();
+            return;
+        }
         if (AdsSetting.getInstance().isShowStartAds())
-            if (BaseAppOpenAdsManager.getInstance().showAdsIfCached(activity,  adsCalbackOpen))
+            if (BaseAppOpenAdsManager.getInstance().showAdsIfCached(activity, adsCalbackOpen))
                 return;
         adsCalbackOpen.noAdsCallback();
         destroyStartAdsIfNeed(activity);
@@ -80,7 +89,8 @@ public class StartAdsManager {
     // Hàm này sẽ gọi khi load ads nhưng bị timeout không được show. Và chỉ destroy nếu start không phải là mediation
     public static void destroyStartAdsIfNeed(final Activity activity) {
         Log.d(TAG, "======= destroyStartAdsIfNeed =========");
-        BaseAppOpenAdsManager.getInstance().destroy();
+        if (BaseAppOpenAdsManager.getInstance() != null)
+            BaseAppOpenAdsManager.getInstance().destroy();
         BaseApplication.getHandler().postDelayed(() -> BaseAdsFullManager.getInstance().cacheAdsCenter(activity), 6000);
     }
 

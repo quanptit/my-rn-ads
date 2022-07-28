@@ -1,6 +1,6 @@
 def ads = gradle.ext.ads
 def mediation = gradle.ext.mediation
-
+def skipAdmob = gradle.ext.has("skipAdmob") && gradle.ext.skipAdmob
 
 def dirPathBaseLibAds = "S:/Codes/react-native-my-libs/my-rn-ads/"
 ext.addAdsProjectSetting = { ->
@@ -15,8 +15,14 @@ ext.addAdsProjectSetting = { ->
         project(':my-rn-ads-fb').projectDir = new File(dirPathBaseLibAds + 'my-rn-ads-fb')
         include ':my-rn-ads-fb-react-native'
         project(':my-rn-ads-fb-react-native').projectDir = new File(dirPathBaseLibAds + 'my-rn-ads-fb-react-native')
+    } else if (ads.contains("unity")) {
+        include ':my-rn-ads-unity'
+        project(':my-rn-ads-unity').projectDir = new File(dirPathBaseLibAds + 'my-rn-ads-unity')
     }
-    
+    if (!skipAdmob) {
+        include ':my-rn-ads-admob'
+        project(':my-rn-ads-admob').projectDir = new File(dirPathBaseLibAds + 'my-rn-ads-admob')
+    }
 
 //////////////////////////////
 
@@ -34,9 +40,14 @@ ext.addAdsProjectSetting = { ->
     } else if (mediation == "tapdaq_fairbid") {
         include ':my-rn-ads'
         project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_tapdaq_fairbid')
-    } else { // mediation is mopub
-        include ':my-rn-ads'
-        project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_mopub')
+    } else { // mediation is mopub/MAX
+        if (skipAdmob) {
+            include ':my-rn-ads'
+            project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_mopub_skip_admob')
+        } else {
+            include ':my-rn-ads'
+            project(':my-rn-ads').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/android_mopub')
+        }
     }
 
     if (ads.contains("mopub") || mediation.contains("mopub")) {
@@ -44,22 +55,22 @@ ext.addAdsProjectSetting = { ->
         project(':my-rn-ads-mopub').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-mopub')
         include ':my-rn-ads-mopub-react-native'
         project(':my-rn-ads-mopub-react-native').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-mopub-react-native')
-        
+
         //////////
 //        include ':mintegral_mopub_adapter'
 //        project(':mintegral_mopub_adapter').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/mopub_mediations/mintegral_mopub_adapter')
         //////////
     }
-    if (ads.contains("tapdaq") || mediation.contains("tapdaq")) {
-        include ':my-rn-ads-tapdaq'
-        project(':my-rn-ads-tapdaq').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-tapdaq')
-        include ':my-rn-ads-tapdaq-react-native'
-        project(':my-rn-ads-tapdaq-react-native').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-tapdaq-react-native')
-    }
- //   if (ads.contains("fairbid") || mediation.contains("fairbid")) {
- //       include ':my-rn-ads-fairbid'
- //       project(':my-rn-ads-fairbid').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-fairbid')
- //   }
+    //    if (ads.contains("tapdaq") || mediation.contains("tapdaq")) {
+    //       include ':my-rn-ads-tapdaq'
+    //       project(':my-rn-ads-tapdaq').projectDir = new  //File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-tapdaq')
+    //        include ':my-rn-ads-tapdaq-react-native'
+    //       project(':my-rn-ads-tapdaq-react-native').projectDir = new  //File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-tapdaq-react-native')
+    // }
+    //   if (ads.contains("fairbid") || mediation.contains("fairbid")) {
+    //       include ':my-rn-ads-fairbid'
+    //       project(':my-rn-ads-fairbid').projectDir = new File('S:/Codes/react-native-my-libs/my-rn-ads/my-rn-ads-fairbid')
+    //   }
     //region old mediation // comment
 //    if (gradle.ext.ads == "upltv") {
 //        include ':my-rn-ads'

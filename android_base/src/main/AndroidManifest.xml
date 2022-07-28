@@ -1,26 +1,15 @@
-<manifest package="com.my.rn.ads.base"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.my.rn.ads.base">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!--    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>-->
 
-    <application
-        android:hardwareAccelerated="true"
-        android:usesCleartextTraffic="true">
-
-        <!-- AdMob -->
-        <activity
-            android:name="com.google.android.gms.ads.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
-        <!-- ========= GOOGLE PLAY SERVICE ==================== -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
-        <meta-data
-            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
-            android:value="true"/>
-
-    </application>
+    <!--    Tapjoy 12.9.0 includes play-services-ads v17.1.0. This version of play-services-ads includes the AD_ID permission
+    which must be removed for members of the Google Play Families Program.-->
+    <uses-permission
+        android:name="com.google.android.gms.permission.AD_ID"
+        tools:node="remove" />
 </manifest>

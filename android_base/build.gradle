@@ -16,6 +16,6 @@ android {
 dependencies {
     api project(':AppShareLibs')
     api project(':BaseLibs')
-    api "com.google.android.gms:play-services-ads:$rootProject.ext.play_services_ads"
+//    api "com.google.android.gms:play-services-ads:$rootProject.ext.play_services_ads"
 //    api 'com.google.android.ads.consent:consent-library:1.0.6'
 }

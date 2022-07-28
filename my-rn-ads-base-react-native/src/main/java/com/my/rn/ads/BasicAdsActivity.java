@@ -11,7 +11,11 @@ public abstract class BasicAdsActivity extends BaseReactActivtiy {
     }
 
     @Override protected void onDestroy() {
-        BaseAdsFullManager.getInstance().destroy();
+        try {
+            BaseAdsFullManager.getInstance().destroy();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         super.onDestroy();
     }
 

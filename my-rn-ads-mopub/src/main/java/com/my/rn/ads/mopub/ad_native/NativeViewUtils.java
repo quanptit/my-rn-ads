@@ -1,6 +1,10 @@
 package com.my.rn.ads.mopub.ad_native;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
+import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -52,6 +56,14 @@ public class NativeViewUtils implements INativeManager.INativeViewUtils {
                 if (nativeAd != null)
                     nativeAdLoader.destroy(nativeAd);
                 nativeAd = ad;
+                try {
+                    ColorStateList textColor = getSystemAttrColor(context, android.R.attr.textColorPrimary);
+                    nativeAdView.getTitleTextView().setTextColor(textColor);
+                    nativeAdView.getAdvertiserTextView().setTextColor(textColor);
+                    nativeAdView.getBodyTextView().setTextColor(textColor);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 // Add ad view to view.
                 nativeAdContainer.removeAllViews();
                 nativeAdContainer.addView(nativeAdView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -74,17 +86,27 @@ public class NativeViewUtils implements INativeManager.INativeViewUtils {
 
         nativeAdLoader.loadAd();
     }
-
+    public static ColorStateList getSystemAttrColor(Context context,
+                                                    int attr) {
+        TypedArray a = context.obtainStyledAttributes(new int[] { attr });
+        ColorStateList color = a.getColorStateList(a.getIndex(0));
+        a.recycle();
+        return color;
+    }
     private MaxNativeAdLoader getMaxNativeAdLoader(int typeAds, Context context) {
-        if (typeAds >= 2) {
-            return KeysAds.MAX_NATIVE_LARGE != null
-                    ? new MaxNativeAdLoader(KeysAds.MAX_NATIVE_LARGE, context)
-                    : null;
-        } else {
-            return KeysAds.MAX_NATIVE_SMALL != null
-                    ? new MaxNativeAdLoader(KeysAds.MAX_NATIVE_SMALL, context)
-                    : null;
-        }
+        String keyAds = typeAds >= 2 ? KeysAds.MAX_NATIVE_LARGE : KeysAds.MAX_NATIVE_SMALL;
+        if (TextUtils.isEmpty(keyAds))
+            return null;
+        return new MaxNativeAdLoader(KeysAds.MAX_NATIVE_LARGE, context);
+//        if (typeAds >= 2) {
+//            return (KeysAds.MAX_NATIVE_LARGE != null)
+//                    ? new MaxNativeAdLoader(KeysAds.MAX_NATIVE_LARGE, context)
+//                    : null;
+//        } else {
+//            return KeysAds.MAX_NATIVE_SMALL != null
+//                    ? new MaxNativeAdLoader(KeysAds.MAX_NATIVE_SMALL, context)
+//                    : null;
+//        }
     }
 }
 

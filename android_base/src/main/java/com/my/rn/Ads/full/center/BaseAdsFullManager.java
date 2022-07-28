@@ -16,24 +16,6 @@ import com.my.rn.ads.settings.AdsSetting;
 import java.lang.ref.WeakReference;
 
 public abstract class BaseAdsFullManager {
-    private AdmobCenter admobCenter;
-    private ADXCenter adxCenter;
-
-    //region get & set
-    public ADXCenter getADXCenter() {
-        if (adxCenter == null)
-            adxCenter = new ADXCenter();
-        return adxCenter;
-    }
-
-    public AdmobCenter getAdmobCenter() {
-        if (admobCenter == null)
-            admobCenter = new AdmobCenter();
-        return admobCenter;
-    }
-
-    //endregion
-
     /**
      * isShowed = mopubInterstitialManager.showAdsCenterIfCache(promiseSaveObj);
      * if (!isShowed)
@@ -53,17 +35,7 @@ public abstract class BaseAdsFullManager {
             return;
         }
         try {
-            switch (typeAds) {
-                case AdsSetting.ID_ADMOB:
-                    getAdmobCenter().loadCenterAds(activity, isFromStart, iAdLoaderCallback);
-                    break;
-                case AdsSetting.ID_ADX:
-                    getADXCenter().loadCenterAds(activity, isFromStart, iAdLoaderCallback);
-                    break;
-                default:
-                    cacheAdsCenterExtend(activity, isFromStart, typeAds, iAdLoaderCallback);
-                    break;
-            }
+            cacheAdsCenterExtend(activity, isFromStart, typeAds, iAdLoaderCallback);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,10 +43,6 @@ public abstract class BaseAdsFullManager {
 
     public void cacheAdsCenter(Activity activity) {
         cacheAdsCenter(activity, false, false, null);
-    }
-
-    public void cacheAdsCenterSkipCheck(Activity activity) {
-        cacheAdsCenter(activity, false, true, null);
     }
 
     public void cacheAdsCenter(final Activity activity, final boolean isFromStart, boolean skipCheckCanShowAds,
@@ -188,10 +156,6 @@ public abstract class BaseAdsFullManager {
         boolean isShowed;
         try {
             isShowed = showAdsCenterIfCache(activity, promise);
-            if (!isShowed && admobCenter != null)
-                isShowed = admobCenter.showAdsCenterIfCache(activity, promise);
-            if (!isShowed && adxCenter != null)
-                isShowed = adxCenter.showAdsCenterIfCache(activity, promise);
 
             if (!isShowed) { // Không có quảng cáo để show
                 if (promise != null)
@@ -211,38 +175,15 @@ public abstract class BaseAdsFullManager {
 
     //endregion
 
-    //#region Cache only admob for start Ads: Start Ads chỉ show Admob, với key có set sàn ECPM cao
-    public void cacheAdmobStartAds(final Activity activity, final IAdLoaderCallback loaderCallback) {
-        try {
-            getAdmobCenter().loadCenterAds(activity, true, loaderCallback);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    //#endregion
-
     //region utils
     public void destroy() {
         if (mainActivityRef != null) {
             mainActivityRef.clear();
             mainActivityRef = null;
         }
-        if (admobCenter != null)
-            admobCenter.destroy();
-        if (adxCenter != null)
-            adxCenter.destroy();
         destroyExtend();
     }
 
-    public void destroyIgnoreMediation() {
-        if (admobCenter != null)
-            admobCenter.destroy();
-        if (adxCenter != null)
-            adxCenter.destroy();
-        destroyIgnoreMediationExtend();
-    }
-
-    protected abstract void destroyIgnoreMediationExtend();
 
     protected abstract void destroyExtend();
 
@@ -258,18 +199,15 @@ public abstract class BaseAdsFullManager {
     }
 
     public boolean isCachedCenter(Activity activity) {
-        return isCachedCenterExtend(activity)
-                || (admobCenter != null && admobCenter.isCachedCenter(activity))
-                || (adxCenter != null && adxCenter.isCachedCenter(activity));
+        return isCachedCenterExtend(activity);
     }
 
     protected abstract boolean isCachedCenterExtend(Activity activity);
-
-    protected abstract boolean isCachedByMediation(Activity activity);
     //endregion
 
     //region save activity ref
     public static BaseAdsFullManager getInstance() {
+        if (BaseApplicationContainAds.getInstance()==null) return null;
         return BaseApplicationContainAds.getInstance().getAdsFullManager();
     }
 
@@ -281,7 +219,7 @@ public abstract class BaseAdsFullManager {
     }
 
     public static Activity getMainActivity() {
-        if (getInstance().mainActivityRef == null) return null;
+        if (getInstance()==null || getInstance().mainActivityRef == null) return null;
         return getInstance().mainActivityRef.get();
     }
     //endregion

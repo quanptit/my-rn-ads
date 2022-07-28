@@ -14,29 +14,43 @@ android {
 }
 
 //repositories {
-//    google()
-//    mavenCentral()
-//    maven { url "https://android-sdk.is.com" }
+//    maven {
+//        name 'Google'
+//        url 'https://maven.google.com/'
+//    }
+//    maven { url 'https://artifacts.applovin.com/android' }
+//    maven { url "https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea" }
+//    maven { url "https://sdk.tapjoy.com" }
 //    maven { url "https://artifact.bytedance.com/repository/pangle" }
 //}
 
+def skipAdmob = gradle.ext.has("skipAdmob") && gradle.ext.skipAdmob
 def ads = gradle.ext.ads
-def isContainTapdaq = gradle.ext.mediation.contains("tapdaq")
 dependencies {
-    implementation 'com.applovin:applovin-sdk:+'
-    implementation 'com.applovin.mediation:google-adapter:+'
-    implementation 'com.applovin.mediation:facebook-adapter:+'
-
+    api 'com.applovin:applovin-sdk:+'
     implementation project(':my-rn-ads-base')
+    if (!skipAdmob) {
+        implementation 'com.applovin.mediation:google-adapter:+'
+    }
+    if (ads.contains("facebook")) {
+        implementation 'com.applovin.mediation:facebook-adapter:+'
+    }
     if (ads.contains("pangle")) {
         implementation 'com.applovin.mediation:bytedance-adapter:+'
     }
-    if (!isContainTapdaq && ads.contains("unity")) {
+    if (ads.contains("unity")) {
         implementation 'com.applovin.mediation:unityads-adapter:+'
     }
-    if (!isContainTapdaq && ads.contains("ironsource")) {
+    if (ads.contains("ironsource")) {
         implementation 'com.applovin.mediation:ironsource-adapter:+'
     }
-    if (isContainTapdaq)
-        implementation project(':my-rn-ads-mopub-tapdaq-adapter')
+    if (ads.contains("adcolony")) {
+        implementation 'com.applovin.mediation:adcolony-adapter:+'
+    }
+    if (ads.contains("tapjoy")) {
+        implementation 'com.applovin.mediation:tapjoy-adapter:+'
+    }
+    if (ads.contains("vungle")) {
+        implementation 'com.applovin.mediation:vungle-adapter:+'
+    }
 }

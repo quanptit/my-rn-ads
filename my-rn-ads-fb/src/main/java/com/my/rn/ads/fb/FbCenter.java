@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.text.TextUtils;
 
 import com.appsharelib.KeysAds;
+import com.baseLibs.utils.DeviceTestID;
 import com.facebook.ads.*;
 
 import com.my.rn.ads.IAdLoaderCallback;
@@ -11,9 +12,15 @@ import com.baseLibs.BaseApplication;
 import com.my.rn.ads.full.center.BaseFullCenterAds;
 import com.my.rn.ads.settings.AdsSetting;
 
+import java.util.Arrays;
+
 public class FbCenter extends BaseFullCenterAds {
     public static boolean IS_LOADER = false;
     private InterstitialAd interstitialCenter;
+
+    public FbCenter() {
+        AdSettings.addTestDevices(Arrays.asList(DeviceTestID.FB_TEST));
+    }
 
     @Override protected String getLogTAG() {
         return "FB_CENTER";
@@ -26,7 +33,7 @@ public class FbCenter extends BaseFullCenterAds {
     @Override protected void showAds(Activity activity) {
         IS_LOADER = false;
         // Check if ad is already expired or invalidated, and do not show ad if that is the case. You will not get paid to show an invalidated ad.
-        if(interstitialCenter.isAdInvalidated()) {
+        if (interstitialCenter.isAdInvalidated()) {
             return;
         }
         interstitialCenter.show();

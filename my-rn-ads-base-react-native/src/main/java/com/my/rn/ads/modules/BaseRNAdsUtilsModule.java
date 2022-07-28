@@ -80,6 +80,10 @@ public class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule implements 
     public void canShowFullCenterAds(final Promise promise) {
         UiThreadUtil.runOnUiThread(new Runnable() {
             @Override public void run() {
+                if (BaseAdsFullManager.getInstance()==null){
+                    promise.resolve(false);
+                    return;
+                }
                 boolean result = !AdsUtils.isDoNotShowAds()
                         && BaseAdsFullManager.getInstance().isCachedCenter(getSafeActivity());
                 promise.resolve(result);
@@ -102,7 +106,8 @@ public class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule implements 
         Log.d(TAG, "Call cacheAdsCenter");
         UiThreadUtil.runOnUiThread(new Runnable() {
             @Override public void run() {
-                BaseAdsFullManager.getInstance().cacheAdsCenter(getSafeActivity());
+                if (BaseAdsFullManager.getInstance() != null)
+                    BaseAdsFullManager.getInstance().cacheAdsCenter(getSafeActivity());
             }
         });
     }
@@ -118,6 +123,11 @@ public class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule implements 
         final PromiseSaveObj promiseSaveObj = new PromiseSaveObj(promise);
         BaseApplicationContainAds.getHandler().post(new Runnable() {
             @Override public void run() {
+                if (BaseAdsFullManager.getInstance() == null) {
+                    promiseSaveObj.resolve(false);
+                    return;
+                }
+
                 BaseAdsFullManager.getInstance().showAdsCenter(activity, new IAdsCalbackOpen() {
                     @Override public void onAdOpened() {
                         promiseSaveObj.resolve(true);
@@ -302,7 +312,11 @@ public class BaseRNAdsUtilsModule extends ReactContextBaseJavaModule implements 
     }
 
     @Override public void onHostDestroy() {
-        BaseAdsFullManager.getInstance().destroy();
+        try {
+            BaseAdsFullManager.getInstance().destroy();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     //endregion
 }

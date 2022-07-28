@@ -40,20 +40,17 @@ public class MopubInitUtils implements IAdInitUtils {
         // Make sure to set the mediation provider value to "max" to ensure proper functionality
         AppLovinSdk.getInstance(context).setMediationProvider("max");
         AppLovinSdk.getInstance(context).getSettings().setVerboseLogging(false);
-        AppLovinSdk.initializeSdk(context, new AppLovinSdk.SdkInitializationListener() {
-            @Override
-            public void onSdkInitialized(final AppLovinSdkConfiguration configuration) {
-                // AppLovin SDK is initialized, start loading ads
-                Log.d("MopubInitUtils", "MAX onSdkInitialized");
-                isInited = true;
-                isIniting = false;
-                if (listCallback != null) {
-                    for (IAdInitCallback initializationListener : listCallback) {
-                        if (initializationListener != null)
-                            initializationListener.didInitialise();
-                    }
-                    listCallback.clear();
+        AppLovinSdk.initializeSdk(context, configuration -> {
+            // AppLovin SDK is initialized, start loading ads
+            Log.d("MopubInitUtils", "MAX onSdkInitialized");
+            isInited = true;
+            isIniting = false;
+            if (listCallback != null) {
+                for (IAdInitCallback initializationListener : listCallback) {
+                    if (initializationListener != null)
+                        initializationListener.didInitialise();
                 }
+                listCallback.clear();
             }
         });
     }

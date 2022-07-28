@@ -22,7 +22,6 @@ public class MopubFullCenter extends BaseFullCenterAds {
     }
 
     @Override public String getKeyAds(boolean isFromStart) {
-        Log.d(getLogTAG(), "getKeyAds isFromStart: " + isFromStart);
         String keySave;
         keySave = AdsSetting.getCenterKey(AdsSetting.ID_MOPUB);
         if (!TextUtils.isEmpty(keySave))

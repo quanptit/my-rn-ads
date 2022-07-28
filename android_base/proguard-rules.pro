@@ -488,3 +488,17 @@ public static final ** CREATOR;
 #        -keep class com.alphab.** {*; }
 #        -keep interface com.alphab.** {*; }
 #
+
+#========== Start app ========
+-keep class com.startapp.** {
+      *;
+}
+-keep class com.truenet.** {
+      *;
+}
+-keepattributes Exceptions, InnerClasses, Signature, Deprecated, SourceFile,
+LineNumberTable, *Annotation*, EnclosingMethod
+-dontwarn android.webkit.JavascriptInterface
+-dontwarn com.startapp.**
+-dontwarn org.jetbrains.annotations.**
+-keep class com.applovin.mediation.adapters.**

@@ -12,8 +12,6 @@ public abstract class BaseApplicationContainAds extends BaseApplication {
     public abstract BaseAdsFullManager getAdsFullManager();
 
 
-    public abstract IAdInitUtils getIAdInitTapdaqUtils();
-
     public abstract IAdInitUtils getIAdInitMopubUtils();
 
     public abstract INativeManager getNativeManager();

@@ -1,0 +1,20 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+dependencies {
+    implementation project(':my-rn-ads-base')
+    implementation project(path: ':my-rn-ads-base-react-native')
+    api "com.google.android.gms:play-services-ads:$rootProject.ext.play_services_ads"
+}

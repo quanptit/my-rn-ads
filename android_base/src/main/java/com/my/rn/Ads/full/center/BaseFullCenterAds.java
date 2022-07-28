@@ -31,14 +31,18 @@ public abstract class BaseFullCenterAds {
     public void loadCenterAds(Activity activity, boolean isFromStart, final IAdLoaderCallback iAdLoaderCallback) {
         String keyAds = getKeyAds(isFromStart);
         if (TextUtils.isEmpty(keyAds)) {
+            Log.d(getLogTAG(), "loadCenterAds skip because Empty keyAds");
             if (iAdLoaderCallback != null)
                 iAdLoaderCallback.onAdsFailedToLoad();
             return;
         }
-        if (isCachedCenter(activity) || isCaching) return;
+        if (isCachedCenter(activity) || isCaching) {
+            Log.d(getLogTAG(), "loadCenterAds Skip because cached || isCaching = " + isCaching);
+            return;
+        }
 
-        destroy();
         Log.d(getLogTAG(), "loadCenterAds");
+        destroy();
         isCaching = true;
         try {
             adsInitAndLoad(activity, keyAds, iAdLoaderCallback);
