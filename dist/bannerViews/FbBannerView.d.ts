@@ -9,7 +9,7 @@ export declare class FbBannerView extends Component<Props> {
     static defaultProps: {
         typeAds: string;
     };
-    render(): JSX.Element;
+    render(): any;
     shouldComponentUpdate(nextProps: any, nextState: any): boolean;
     private _getStyle;
 }

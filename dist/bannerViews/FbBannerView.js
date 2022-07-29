@@ -8,6 +8,9 @@ let iface = {
 };
 let RNFbBannerView = requireNativeComponent('FbBannerView');
 export class FbBannerView extends Component {
+    static defaultProps = {
+        typeAds: "BANNER_50"
+    };
     render() {
         return (<RNFbBannerView style={[this._getStyle(), this.props.style]} typeAds={this.props.typeAds} onAdFailedToLoad={this.props.onAdFailedToLoad}/>);
     }
@@ -24,9 +27,6 @@ export class FbBannerView extends Component {
         return styles.BANNER_50;
     }
 }
-FbBannerView.defaultProps = {
-    typeAds: "BANNER_50"
-};
 const styles = StyleSheet.create({
     RECTANGLE_HEIGHT_250: { height: 250, width: 320 },
     BANNER_50: { height: 50, alignSelf: "stretch" },

@@ -9,6 +9,9 @@ let iface = {
 };
 let RNAdmobBannerView = requireNativeComponent('AdxBannerView');
 export class AdxBannerView extends Component {
+    static defaultProps = {
+        typeAds: "SMART_BANNER"
+    };
     constructor(props) {
         super(props);
         let width, heigth;
@@ -30,11 +33,8 @@ export class AdxBannerView extends Component {
     render() {
         console.log("render: ", this.state.width, this.state.height);
         return (<RNAdmobBannerView style={[this.props.style, { width: this.state.width, height: this.state.height }]} typeAds={this.props.typeAds} onSizeChange={(event) => {
-            let { width, height } = event.nativeEvent;
-            this.setState({ width: width, height: height });
-        }} onAdFailedToLoad={this.props.onAdFailedToLoad}/>);
+                let { width, height } = event.nativeEvent;
+                this.setState({ width: width, height: height });
+            }} onAdFailedToLoad={this.props.onAdFailedToLoad}/>);
     }
 }
-AdxBannerView.defaultProps = {
-    typeAds: "SMART_BANNER"
-};

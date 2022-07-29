@@ -33,8 +33,8 @@ export declare class NativeAdsView extends Component<Props, {
     constructor(props: any);
     componentDidMount(): Promise<void>;
     shouldComponentUpdate(nextProps: any, nextState: any): boolean;
-    render(): JSX.Element;
-    renderLoadingView(): JSX.Element;
+    render(): any;
+    renderLoadingView(): any;
     private _renderOfflineAds;
     private _onAdFailed;
     private _renderNativeView;

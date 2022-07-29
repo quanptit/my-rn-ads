@@ -11,6 +11,10 @@ import { OfflineAdsSetting } from "./OfflineAdsSetting";
 import { RNCommonUtils } from "my-rn-base-utils";
 import { TapdaqBannerView } from "./bannerViews/TapdaqBannerView";
 export class BannerAdsView extends Component {
+    static defaultProps = {
+        typeAds: "SMART_BANNER"
+    };
+    noFail;
     constructor(props) {
         super(props);
         this.state = { typeShow: "NONE", isVip: false };
@@ -79,6 +83,3 @@ export class BannerAdsView extends Component {
         return <FbBannerView style={this.props.style} typeAds={fbTypeAds} onAdFailedToLoad={this.onAdFailedToLoad.bind(this)}/>;
     }
 }
-BannerAdsView.defaultProps = {
-    typeAds: "SMART_BANNER"
-};

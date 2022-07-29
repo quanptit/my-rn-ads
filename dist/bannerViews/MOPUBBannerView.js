@@ -3,6 +3,9 @@ import { requireNativeComponent } from 'react-native';
 import { isEqual } from 'lodash';
 let RNMOPUBBannerView = requireNativeComponent('MOPUBBannerView');
 export class MOPUBBannerView extends Component {
+    static defaultProps = {
+        typeAds: "BANNER_50"
+    };
     constructor(props) {
         super(props);
         let width, heigth;
@@ -23,14 +26,11 @@ export class MOPUBBannerView extends Component {
     }
     render() {
         return (<RNMOPUBBannerView style={[this.props.style, { width: this.state.width, height: this.state.height }]} typeAds={this.props.typeAds} onSizeChange={(event) => {
-            let { width, height } = event.nativeEvent;
-            if (width === this.state.width && height === this.state.height)
-                this.forceUpdate();
-            else
-                this.setState({ width: width, height: height });
-        }} onAdFailedToLoad={this.props.onAdFailedToLoad}/>);
+                let { width, height } = event.nativeEvent;
+                if (width === this.state.width && height === this.state.height)
+                    this.forceUpdate();
+                else
+                    this.setState({ width: width, height: height });
+            }} onAdFailedToLoad={this.props.onAdFailedToLoad}/>);
     }
 }
-MOPUBBannerView.defaultProps = {
-    typeAds: "BANNER_50"
-};

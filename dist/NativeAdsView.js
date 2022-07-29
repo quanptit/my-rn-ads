@@ -7,6 +7,20 @@ import { OfflineAdsSetting } from "./OfflineAdsSetting";
 import { RowOfflineAds } from "./RowOfflineAds";
 let NativeAdsViewRef = requireNativeComponent('NativeAdsView');
 export class NativeAdsView extends Component {
+    static TYPE_SUMMARY_FB = 0;
+    static TYPE_SUMMARY_SMALL_CUSTOM = 1;
+    static TYPE_SUMMARY_LARGE = 3;
+    static TYPE_DETAIL_FB = 10;
+    static TYPE_DETAIL_CUSTOM = 11;
+    static TYPE_DETAIL_VOCA = 12;
+    isCachedNativeAds;
+    offlineAds;
+    isPreferShowBanner;
+    static defaultProps = {
+        typeAds: 3,
+        allowBannerBackup: false,
+        skipCacheNative: false
+    };
     constructor(props) {
         super(props);
         this.state = { needRender: false, isLoading: true, height: getHeightAds(this.props.typeAds) };
@@ -56,9 +70,9 @@ export class NativeAdsView extends Component {
         if (!this.state.isLoading && !this.state.isHasAds)
             return null;
         return (<NativeAdsViewRef style={{ height: this.state.isLoading ? 1 : this.state.height }} onUnknownError={this._onAdFailed.bind(this)} onAdLoaded={() => {
-            console.log("NativeView onAdLoaded Call: ");
-            this.setState({ isLoading: false, isHasAds: true });
-        }} 
+                console.log("NativeView onAdLoaded Call: ");
+                this.setState({ isLoading: false, isHasAds: true });
+            }} 
         // onAdLoaded={this._onAdFailed.bind(this)}
         onAdFailed={this._onAdFailed.bind(this)} typeAds={this.props.typeAds}/>);
     }
@@ -77,17 +91,6 @@ export class NativeAdsView extends Component {
             </Col>);
     }
 }
-NativeAdsView.TYPE_SUMMARY_FB = 0;
-NativeAdsView.TYPE_SUMMARY_SMALL_CUSTOM = 1;
-NativeAdsView.TYPE_SUMMARY_LARGE = 3;
-NativeAdsView.TYPE_DETAIL_FB = 10;
-NativeAdsView.TYPE_DETAIL_CUSTOM = 11;
-NativeAdsView.TYPE_DETAIL_VOCA = 12;
-NativeAdsView.defaultProps = {
-    typeAds: 3,
-    allowBannerBackup: false,
-    skipCacheNative: false
-};
 //region styles
 const styles = StyleSheet.create({
     container: { flexDirection: "column", justifyContent: 'flex-start', alignItems: 'center' },

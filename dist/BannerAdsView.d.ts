@@ -21,7 +21,7 @@ export declare class BannerAdsView extends Component<Props, {
     onAdFailedToLoad(): Promise<void>;
     private getNewTypeShow;
     private updateTypeShow;
-    render(): JSX.Element;
+    render(): any;
     private _renderFbBanner;
 }
 export {};

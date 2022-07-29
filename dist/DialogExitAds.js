@@ -14,9 +14,9 @@ export class DialogExitAds extends BaseDialog {
                 </Text>
                 <Row style={[{ marginTop: 15 }, styles.margin_h]}>
                     <Button model={ButtonModel.light} title="OK" style={{ flex: 1, marginRight: 6 }} onPress={() => {
-            this.dismiss();
-            BackHandler.exitApp();
-        }}/>
+                this.dismiss();
+                BackHandler.exitApp();
+            }}/>
                     <Button model={ButtonModel.light} title="CANCEL" style={{ flex: 1, marginLeft: 6 }} onPress={() => this.dismiss()}/>
                 </Row>
             </Col>);

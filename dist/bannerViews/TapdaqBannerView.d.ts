@@ -14,6 +14,6 @@ export declare class TapdaqBannerView extends Component<Props, {
     };
     constructor(props: any);
     shouldComponentUpdate(nextProps: any, nextState: any): boolean;
-    render(): JSX.Element;
+    render(): any;
 }
 export {};

@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {StyleSheet, StyleProp, ViewStyle, View, Text, Linking} from "react-native";
-import {CachedImage} from 'my-rn-cached-image'
-import {Col, ComponentNoUpdate, Row, Touchable} from "my-rn-base-component";
-import {OfflineAdsSetting} from "./OfflineAdsSetting";
-import {isIOS} from "my-rn-base-utils";
+import { Col, ComponentNoUpdate, Row, Touchable } from "my-rn-base-component";
+import { isIOS } from "my-rn-base-utils";
+import { CachedImage } from 'my-rn-cached-image';
+import React from 'react';
+import { Linking, StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
+import { OfflineAdsSetting } from "./OfflineAdsSetting";
 
 interface Props {
     style?: StyleProp<ViewStyle>
@@ -40,25 +40,25 @@ export class RowOfflineAds extends ComponentNoUpdate<Props, any> {
         if (myAdsObj == null) return null;
         let styleImage: any = [styles.image];
         if (isIOS())
-            styleImage.push({borderRadius: 5});
-        let imgUrl = "http://learnlanguage.xyz/icon/" + myAdsObj.package + ".png";
+            styleImage.push({ borderRadius: 5 });
+        let imgUrl = "https://adsservice.blob.core.windows.net/icons/" + myAdsObj.package + ".png";
         return (
-            <Col style={[{alignItems: "stretch", alignSelf: "stretch"}, this.props.style as any]}>
+            <Col style={[{ alignItems: "stretch", alignSelf: "stretch" }, this.props.style as any]}>
                 <View style={styles.row}>
                     <CachedImage
                         resizeMode="contain"
-                        source={{uri: imgUrl}}
-                        style={styleImage}/>
+                        source={{ uri: imgUrl }}
+                        style={styleImage} />
                     <View style={styles.content}>
                         <Text numberOfLines={2} style={styles.title}>{myAdsObj.title}</Text>
                         <Row dial={5}>
                             <Text style={styles.des}>{myAdsObj.des == undefined ? "Good choice" : myAdsObj.des}</Text>
-                            <Touchable onPress={this.onListItemClick.bind(this)}>
-                                <Text style={styles.install}>{"INSTALL NOW"}</Text>
-                            </Touchable>
                         </Row>
                     </View>
                 </View>
+                <Touchable style={styles.btnInstall} onPress={this.onListItemClick.bind(this)}>
+                    <Text style={styles.install}>{"INSTALL NOW"}</Text>
+                </Touchable>
             </Col>
         )
     }
@@ -73,12 +73,15 @@ const styles = StyleSheet.create({
     row: {
         padding: 12, flexDirection: "row", alignItems: "stretch"
     },
-    image: {width: 80, height: 60},
+    image: { width: 80, height: 60 },
     install: {
-        fontSize: 13, borderRadius: 5, borderColor: "#42afe9", color: "#42afe9", borderWidth: 0.8,
-        paddingHorizontal: 6, paddingVertical: 3
+        color: "#ffffff", fontSize: 13, textAlign: "center",
+        fontWeight: 'bold'
     },
-    content: {flex: 1, flexDirection: "column", marginLeft: 12},
-    title: {color: "#A05500", fontSize: 18, fontWeight: 'bold', marginBottom: 3, marginRight: 10},
-    des: {color: "black", fontSize: 16, marginRight: 6, flex: 1},
+    btnInstall: {
+        borderRadius: 3, backgroundColor: "#42afe9", padding: 8, marginHorizontal: 8
+    },
+    content: { flex: 1, flexDirection: "column", marginLeft: 12 },
+    title: { color: "#A05500", fontSize: 18, fontWeight: 'bold', marginBottom: 3, marginRight: 10 },
+    des: { color: "black", fontSize: 16, marginRight: 6, flex: 1 },
 });

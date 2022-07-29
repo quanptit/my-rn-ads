@@ -3,6 +3,9 @@ import { requireNativeComponent } from 'react-native';
 import { isEqual } from 'lodash';
 let RNTapdaqBannerView = requireNativeComponent('TapdaqBannerView');
 export class TapdaqBannerView extends Component {
+    static defaultProps = {
+        typeAds: "RECTANGLE_HEIGHT_250"
+    };
     constructor(props) {
         super(props);
         let width, heigth;
@@ -23,6 +26,3 @@ export class TapdaqBannerView extends Component {
         return (<RNTapdaqBannerView style={[this.props.style, { width: this.state.width, height: this.state.height }]} typeAds={this.props.typeAds} onAdFailedToLoad={this.props.onAdFailedToLoad}/>);
     }
 }
-TapdaqBannerView.defaultProps = {
-    typeAds: "RECTANGLE_HEIGHT_250"
-};

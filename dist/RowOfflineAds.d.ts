@@ -1,6 +1,5 @@
-/// <reference types="react" />
-import { StyleProp, ViewStyle } from "react-native";
 import { ComponentNoUpdate } from "my-rn-base-component";
+import { StyleProp, ViewStyle } from "react-native";
 interface Props {
     style?: StyleProp<ViewStyle>;
     myAdsObj: {
@@ -12,6 +11,6 @@ interface Props {
 }
 export declare class RowOfflineAds extends ComponentNoUpdate<Props, any> {
     onListItemClick(): Promise<void>;
-    render(): JSX.Element;
+    render(): any;
 }
 export {};
