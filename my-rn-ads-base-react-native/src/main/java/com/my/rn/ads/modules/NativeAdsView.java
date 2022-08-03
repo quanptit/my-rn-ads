@@ -18,6 +18,7 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 import com.my.rn.ads.BaseApplicationContainAds;
+import com.my.rn.ads.BaseNativeViewUtils;
 import com.my.rn.ads.IAdLoaderCallback;
 import com.my.rn.ads.INativeManager;
 
@@ -68,7 +69,7 @@ public class NativeAdsView extends SimpleViewManager<NativeAdsView.NativeAdsView
     @SuppressLint("ViewConstructor") public static class NativeAdsViewUI extends FrameLayout {
         private ReactContext mContext;
         private RCTEventEmitter mEventEmitter;
-        private INativeManager.INativeViewUtils nativeViewResult;
+        private BaseNativeViewUtils nativeViewUtils;
 
         public NativeAdsViewUI(ThemedReactContext context) {
             super(context);
@@ -77,26 +78,31 @@ public class NativeAdsView extends SimpleViewManager<NativeAdsView.NativeAdsView
         }
 
         public void setTypeAds(Integer typeAds) {
-            if (nativeViewResult != null)
-                nativeViewResult.destroyAds();
             if (getChildCount() > 0)
                 removeAllViews();
-            nativeViewResult = BaseApplicationContainAds.getNativeManagerInstance()
-                    .createNewAds(mContext, typeAds, this, new IAdLoaderCallback() {
-                        @Override public void onAdsLoaded() {
-                            mEventEmitter.receiveEvent(getId(), NativeAdsView.EVENT_AD_LOADER, Arguments.createMap());
-                        }
+            if (nativeViewUtils != null)
+                nativeViewUtils.destroy();
+            IAdLoaderCallback loadCallback = new IAdLoaderCallback() {
+                @Override public void onAdsLoaded() {
+                    mEventEmitter.receiveEvent(getId(), NativeAdsView.EVENT_AD_LOADER, Arguments.createMap());
+                }
 
-                        @Override public void onAdsFailedToLoad() {
-                            mEventEmitter.receiveEvent(getId(), NativeAdsView.EVENT_AD_LOAD_FAILED, Arguments.createMap());
-                        }
-                    });
+                @Override public void onAdsFailedToLoad() {
+                    mEventEmitter.receiveEvent(getId(), NativeAdsView.EVENT_AD_LOAD_FAILED, Arguments.createMap());
+                }
+            };
+
+            nativeViewUtils = BaseApplicationContainAds.getInstance().createNativeViewUtilsInstance(loadCallback);
+            nativeViewUtils.startLoadAndDisplayAds(typeAds, this);
+//            nativeViewResult = BaseApplicationContainAds.getNativeManagerInstance()
+//                    .createNewAds(mContext, typeAds, this, loadCallback);
         }
 
         @Override protected void onDetachedFromWindow() {
             super.onDetachedFromWindow();
             L.d("NativeAdsViewUI onDetachedFromWindow");
-            nativeViewResult.destroyAds();
+            if (nativeViewUtils != null)
+                nativeViewUtils.destroy();
         }
     }
 }

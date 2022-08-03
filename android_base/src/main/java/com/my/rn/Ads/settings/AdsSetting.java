@@ -16,6 +16,10 @@ import java.util.ArrayList;
 public class AdsSetting {
     private SettingObj settingObj;
 
+    public static boolean isNativeBanner(int typeAds) {
+        return typeAds == TYPE_NATIVE_BANNER;
+    }
+
     private @Nullable SettingObj getSettingObj() {
         if (this.settingObj != null)
             return this.settingObj;
@@ -68,20 +72,9 @@ public class AdsSetting {
 
     //region native
     //region type native ========
-    /**
-     * Trạng thái sử dụng cái Native Banner Default do bọn facebook cung câp
-     */
-    public static final int TYPE_SUMMARY_LIST1 = 0;
-    /**
-     * Sử dụng cái Native Small Do mình thiết kế có kiểu giống RowSummary
-     */
-    public static final int TYPE_SUMMARY_LIST2 = 1;
-    /**
-     * Sử dụng cái Native dạng lớn. Có icon giống như facebook messaenger
-     */
     public static final int TYPE_SUMMARY_LIST3 = 3;
 
-    public static final int TYPE_NATIVE_BANNER = 5;
+    public static final int TYPE_NATIVE_BANNER = 2;
 
     /**
      * Trạng thái sử dụng cái Native Large Default do bọn facebook cung cấp
@@ -192,13 +185,20 @@ public class AdsSetting {
                 isUpdating = false;
                 isUpdated = true;
                 postAllCallback();
-                Log.d(TAG, "updateAdsSetting onError: " + errorStr);
+                Log.e(TAG, "updateAdsSetting onError: " + errorStr);
             }
         });
     }
 
     private void logTest() {
-        if (!KeysAds.IS_DEVELOPMENT) return;
+        if (!KeysAds.IS_DEVELOPMENT) {
+            try {
+                Log.w(TAG, "========== >>> Init Setting Success: " + getTypeShowFullCenter(0) + "==> " + getTypeShowFullCenter(1));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return;
+        }
         Log.d(TAG, "====== getTypeShowFullStart ============");
         for (int i = 0; i <= 6; i++)
             Log.d(TAG, i + ": " + getTypeShowFullStart(i) + " - " + getStartKey(getTypeShowFullStart(i)));

@@ -27,10 +27,6 @@ public class AdmobCenter extends BaseFullCenterAds {
     private InterstitialAd interstitialCenter;
 
     public AdmobCenter(){
-        List<String> testDeviceIds = Arrays.asList(KeysAds.DEVICE_TESTS);
-        RequestConfiguration configuration =
-                new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
-        MobileAds.setRequestConfiguration(configuration);
     }
 
     @Override protected String getLogTAG() {

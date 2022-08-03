@@ -1,6 +1,5 @@
 package com.my.rn.ads.mopub.ad_native;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -20,11 +19,13 @@ import com.my.rn.ads.INativeManager;
 
 public class NativeViewUtils implements INativeManager.INativeViewUtils {
     private MaxNativeAdLoader nativeAdLoader;
+    private boolean isDestroyed = false;
     private MaxAd nativeAd;
 
     private IAdLoaderCallback loaderCallback;
 
     @Override public void destroyAds() {
+        isDestroyed = true;
         try {
             if (nativeAd != null)
                 nativeAdLoader.destroy(nativeAd);
@@ -42,6 +43,20 @@ public class NativeViewUtils implements INativeManager.INativeViewUtils {
     }
 
     public void startLoadAndDisplayAds(int typeAds, Context context, final ViewGroup nativeAdContainer) {
+//        NativeViewUtils.java: medium-mopub project
+//        IAdLoaderCallback loaderCallback = new IAdLoaderCallback() {
+//            @Override public void onAdsFailedToLoad() {
+//                showLocalAdsBecauseNoNativeAds();
+//            }
+//
+//            @Override public void onAdsLoaded() {
+//                L.d("VNativeAds onAdsLoaded");
+//                hideLoading();
+//            }
+//        };
+//        nativeViewUtils = new NativeViewUtils(getContext(), loaderCallback);
+//        nativeViewUtils.startLoadAndDisplayAds(adsNativeObj.typeAds, layoutAds);
+        //=======
         nativeAdLoader = getMaxNativeAdLoader(typeAds, context);
         if (nativeAdLoader == null) {
             L.d("Native Ad Unit Is NULL: typeAds = " + typeAds);
@@ -52,7 +67,8 @@ public class NativeViewUtils implements INativeManager.INativeViewUtils {
         nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
             @Override
             public void onNativeAdLoaded(final MaxNativeAdView nativeAdView, final MaxAd ad) {
-                L.d("onNativeAdLoaded: " + ad.getNetworkName());
+                L.d("onNativeAdLoaded: " + ad.getNetworkName() + ", isDestroyed = " + isDestroyed);
+                if (isDestroyed) return;
                 if (nativeAd != null)
                     nativeAdLoader.destroy(nativeAd);
                 nativeAd = ad;
@@ -86,27 +102,20 @@ public class NativeViewUtils implements INativeManager.INativeViewUtils {
 
         nativeAdLoader.loadAd();
     }
+
     public static ColorStateList getSystemAttrColor(Context context,
                                                     int attr) {
-        TypedArray a = context.obtainStyledAttributes(new int[] { attr });
+        TypedArray a = context.obtainStyledAttributes(new int[]{attr});
         ColorStateList color = a.getColorStateList(a.getIndex(0));
         a.recycle();
         return color;
     }
+
     private MaxNativeAdLoader getMaxNativeAdLoader(int typeAds, Context context) {
-        String keyAds = typeAds >= 2 ? KeysAds.MAX_NATIVE_LARGE : KeysAds.MAX_NATIVE_SMALL;
+        String keyAds = typeAds >= 2 ? KeysAds.MAX_NATIVE_LARGE : null;
         if (TextUtils.isEmpty(keyAds))
             return null;
         return new MaxNativeAdLoader(KeysAds.MAX_NATIVE_LARGE, context);
-//        if (typeAds >= 2) {
-//            return (KeysAds.MAX_NATIVE_LARGE != null)
-//                    ? new MaxNativeAdLoader(KeysAds.MAX_NATIVE_LARGE, context)
-//                    : null;
-//        } else {
-//            return KeysAds.MAX_NATIVE_SMALL != null
-//                    ? new MaxNativeAdLoader(KeysAds.MAX_NATIVE_SMALL, context)
-//                    : null;
-//        }
     }
 }
 

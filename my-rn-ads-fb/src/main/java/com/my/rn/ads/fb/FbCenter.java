@@ -19,7 +19,6 @@ public class FbCenter extends BaseFullCenterAds {
     private InterstitialAd interstitialCenter;
 
     public FbCenter() {
-        AdSettings.addTestDevices(Arrays.asList(DeviceTestID.FB_TEST));
     }
 
     @Override protected String getLogTAG() {
@@ -45,7 +44,7 @@ public class FbCenter extends BaseFullCenterAds {
             keySave = AdsSetting.getStartKey(AdsSetting.ID_FB);
             if (!TextUtils.isEmpty(keySave))
                 return keySave;
-            return KeysAds.FB_FULL_START;
+            return KeysAds.FB_FULL_ADS;
         } else {
             keySave = AdsSetting.getCenterKey(AdsSetting.ID_FB);
             if (!TextUtils.isEmpty(keySave))

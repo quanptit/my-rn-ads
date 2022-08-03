@@ -6,15 +6,15 @@ import android.view.ViewGroup;
 import com.my.rn.ads.IAdLoaderCallback;
 import com.my.rn.ads.INativeManager;
 
-public class MopubNativeManager implements INativeManager {
+public class MopubNativeManager {
 
-    @Override public NativeViewUtils createNewAds(Context context, int typeAds, final ViewGroup nativeAdContainer,
-                                                   final IAdLoaderCallback loaderCallback) {
-        NativeViewUtils nativeViewUtils = new NativeViewUtils();
-        nativeViewUtils.setAdsCallback(loaderCallback);
-        nativeViewUtils.startLoadAndDisplayAds(typeAds, context, nativeAdContainer);
-        return nativeViewUtils;
-    }
+//    @Override public NativeViewUtils createNewAds(Context context, int typeAds, final ViewGroup nativeAdContainer,
+//                                                   final IAdLoaderCallback loaderCallback) {
+//        NativeViewUtils nativeViewUtils = new NativeViewUtils();
+//        nativeViewUtils.setAdsCallback(loaderCallback);
+//        nativeViewUtils.startLoadAndDisplayAds(typeAds, context, nativeAdContainer);
+//        return nativeViewUtils;
+//    }
 }
 
 //    private MoPubNative moPubNative;

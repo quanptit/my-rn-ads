@@ -20,6 +20,8 @@ ext.addAdsProjectSetting = { ->
         project(':my-rn-ads-unity').projectDir = new File(dirPathBaseLibAds + 'my-rn-ads-unity')
     }
     if (!skipAdmob) {
+        include ':my-rn-ads-admob-base'
+        project(':my-rn-ads-admob-base').projectDir = new File(dirPathBaseLibAds + 'my-rn-ads-admob-base')
         include ':my-rn-ads-admob'
         project(':my-rn-ads-admob').projectDir = new File(dirPathBaseLibAds + 'my-rn-ads-admob')
     }

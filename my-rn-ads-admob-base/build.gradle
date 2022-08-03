@@ -15,6 +15,6 @@ android {
 
 dependencies {
     implementation project(':my-rn-ads-base')
-    api project(':my-rn-ads-admob-base')
-    implementation project(path: ':my-rn-ads-base-react-native')
+    implementation project(':AppShareLibs')
+    api "com.google.android.gms:play-services-ads:$rootProject.ext.play_services_ads"
 }

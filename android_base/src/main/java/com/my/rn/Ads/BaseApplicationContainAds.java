@@ -14,11 +14,7 @@ public abstract class BaseApplicationContainAds extends BaseApplication {
 
     public abstract IAdInitUtils getIAdInitMopubUtils();
 
-    public abstract INativeManager getNativeManager();
-
-    public static INativeManager getNativeManagerInstance() {
-        return getInstance().getNativeManager();
-    }
+    public abstract BaseNativeViewUtils createNativeViewUtilsInstance(IAdLoaderCallback loaderCallback);
 
     public static AdsSetting getAdsSetting() {
         return getInstance()._GetAdsSetting();

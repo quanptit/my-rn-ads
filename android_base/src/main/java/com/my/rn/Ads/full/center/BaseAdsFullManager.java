@@ -1,6 +1,7 @@
 package com.my.rn.ads.full.center;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -64,7 +65,7 @@ public abstract class BaseAdsFullManager {
 
         try {
             final IAdLoaderCallback iAdLoaderCallback5 = new IAdLoaderCallback() {
-                @Override public void onAdsFailedToLoad() { if (loaderCallback != null) loaderCallback.onAdsFailedToLoad(); }
+                @Override public void onAdsFailedToLoad() {if (loaderCallback != null) loaderCallback.onAdsFailedToLoad();}
 
                 @Override public void onAdsLoaded() {
                     if (loaderCallback != null) loaderCallback.onAdsLoaded();
@@ -125,6 +126,12 @@ public abstract class BaseAdsFullManager {
         return showAdsCenter(activity, false, promise);
     }
 
+    public static boolean showFullCenterAds(Activity activity) {
+        if (getInstance() == null)
+            return false;
+        return getInstance().showAdsCenter(activity);
+    }
+
     public boolean showAdsCenter(Activity activity) {
         return showAdsCenter(activity, null);
     }
@@ -135,15 +142,16 @@ public abstract class BaseAdsFullManager {
 
     public boolean showAdsCenter(final Activity activity, final boolean isFromStart, final boolean skipCheck,
                                  final @Nullable IAdsCalbackOpen promise) {
+        Log.d("aa", "Call showAdsCenter");
         boolean isShowAds;
         if (skipCheck)
             isShowAds = true;
-        else{
+        else {
             boolean checkTimeCanShowAds = canShowAdsCenter(false);
-            if (!checkTimeCanShowAds){
+            if (!checkTimeCanShowAds) {
                 L.d("TIME: Can't show Center Ads. Because Time");
             }
-            isShowAds = !AdsUtils.isDoNotShowAds() && (checkTimeCanShowAds|| isFromStart);
+            isShowAds = !AdsUtils.isDoNotShowAds() && (checkTimeCanShowAds || isFromStart);
         }
 
 
@@ -207,19 +215,19 @@ public abstract class BaseAdsFullManager {
 
     //region save activity ref
     public static BaseAdsFullManager getInstance() {
-        if (BaseApplicationContainAds.getInstance()==null) return null;
+        if (BaseApplicationContainAds.getInstance() == null) return null;
         return BaseApplicationContainAds.getInstance().getAdsFullManager();
     }
 
     private WeakReference<Activity> mainActivityRef = null;
 
     public static void setMainActivity(Activity activity) {
-        if (getInstance()==null) return;
+        if (getInstance() == null) return;
         getInstance().mainActivityRef = new WeakReference<>(activity);
     }
 
     public static Activity getMainActivity() {
-        if (getInstance()==null || getInstance().mainActivityRef == null) return null;
+        if (getInstance() == null || getInstance().mainActivityRef == null) return null;
         return getInstance().mainActivityRef.get();
     }
     //endregion

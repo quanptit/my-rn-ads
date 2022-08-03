@@ -1,11 +1,11 @@
 package com.my.rn.ads;
 
+import androidx.annotation.Nullable;
+
 import com.baseLibs.BaseApplication;
 
 import java.util.LinkedList;
 import java.util.Queue;
-
-import javax.annotation.Nullable;
 
 public class ManagerLoaderCallback {
     Queue<WrapLoadCallback> listCallback = new LinkedList<>();
